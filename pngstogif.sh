@@ -1,0 +1,1 @@
+convert -delay 75 -loop 0 *.png or.gif
