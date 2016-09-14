@@ -1,0 +1,45 @@
+\documentclass[11.5pt,spanish,a4paper,titlepage]{article}
+\usepackage[compat2, a4paper]{geometry}
+\usepackage[utf8]{inputenc} %Para tener acentos
+\usepackage[spanish,activeacute]{babel}
+\usepackage{hyperref,fancyhdr,lastpage,caratula,graphicx,enumerate}
+\setlength{\headheight}{13.6pt}
+
+\pagestyle{fancy}
+\lhead{}
+\rhead{}
+\cfoot{\thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt} 
+\renewcommand{\footrulewidth}{0.4pt} 
+
+\newcommand{\diagrama}[3]{
+	\newpage
+%	\thispagestyle{empty}
+%	\addtolength{\oddsidemargin}{-2.3cm}
+%	\addtolength{\evensidemargin}{-2.3cm}
+	\addtolength{\topmargin}{-2cm}
+%	\addtolength{\footskip}{-2cm}
+	\includegraphics[width=#2, angle=#3]{Graficos/#1.pdf}
+	\newpage
+%	\addtolength{\oddsidemargin}{2.3cm}
+%	\addtolength{\evensidemargin}{2.3cm}
+	\addtolength{\topmargin}{2cm}
+%	\addtolength{\footskip}{2cm}
+}
+
+\begin{document}
+
+\materia{Redes Neuronales Artificiales}
+
+\fecha{2do. Cuatrimestre 2016}
+\titulo{Trabajo Práctico n$^\circ$ 1}
+\integrante{Panarello, Bernabé}{xxx/xx}{bpanarello@gmail.com}
+\integrante{Uhrich, Verónica}{021/10}{veronicauhrich@gmail.com}
+\integrante{Villanueva, Paula}{xxx/xx}{villanuevapaulasofia@gmail.com>}
+
+\instancia{Entrega}{}{}
+
+
+\maketitle
+
+\end{document}
