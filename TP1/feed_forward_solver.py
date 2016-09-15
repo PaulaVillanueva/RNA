@@ -1,12 +1,14 @@
 import numpy as np
+from layer_model import LayerModel
 
 
 class FeedForwardSolver:
-    def __init__(self, weights, activation_fn):
+    def __init__(self, weights, activation_fn, layer_model):
         self._weights = weights
         #self._activation_fn = np.vectorize(activation_fn)
         self._activation_fn = activation_fn
         self._solve_batch_and_return_result_array = np.vectorize(self.solve_sample_and_return_output)
+        self._layer_model = layer_model
     # nxm mx1
     # X: 1xm
     # Weight: mxn
@@ -28,3 +30,9 @@ class FeedForwardSolver:
     def solve_batch_and_return_result_array(self, batch):
         return self._solve_batch_and_return_result_array(batch)
 
+	def activation(self, sample):
+		y = sample + [-1] #con bias
+        # 1xm x mxn = 1xn
+        for j in range(1,LayerModel.getNumHiddenUnitsWithoutBiasUnit()):
+            y = self._activation_fn(np.dot(y, _weights[j])) #_weights pesos de todos??
+        return y

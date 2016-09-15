@@ -14,7 +14,7 @@ class LayerModel:
     #Se agregan las unidades de bias en la capa de input y las ocultas
     def getInitializedWeightMats(self):
         ret = []
-        num_all_layers = [self._numInputUnits + 1] + (self._hiddenLayers + 1) + [self._numOutputUnits]
+        num_all_layers = [self._numInputUnits + 1] + (self._hiddenLayers + 1) + [self._numOutputUnits] #
         for i in range(0,len(num_all_layers) - 1):
             weigth_mat = np.random.rand(num_all_layers[i], num_all_layers[i+1])
             ret.append(weigth_mat)
