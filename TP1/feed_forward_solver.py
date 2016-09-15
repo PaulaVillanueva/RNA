@@ -1,5 +1,6 @@
 import numpy as np
 from layer_model import LayerModel
+import sigmoid
 
 
 class FeedForwardSolver:
@@ -30,9 +31,19 @@ class FeedForwardSolver:
     def solve_batch_and_return_result_array(self, batch):
         return self._solve_batch_and_return_result_array(batch)
 
-	def activation(self, sample):
-		y = sample + [-1] #con bias
-        # 1xm x mxn = 1xn
-        for j in range(1,LayerModel.getNumHiddenUnitsWithoutBiasUnit()):
-            y = self._activation_fn(np.dot(y, _weights[j])) #_weights pesos de todos??
-        return y
+	#def activation(self, sample): #TODO: chequear shapes, guardar Y's
+		#y = sample + [-1] #con bias
+        ## 1xm x mxn = 1xn
+        #for j in range(1,LayerModel.getNumHiddenUnitsWithoutBiasUnit()):
+            #y = self._activation_fn(np.dot(y, _weights[j])) #_weights pesos de todos??
+        #return y
+        
+    #def correction(self, labels, our_result): #TODO: chequear shapes
+		#E = labels - our_result
+		#e = np.linalg.norm(E)
+		#dw = np.zeros(np.shape(labels))
+		#for j in range(LayerModel.getNumHiddenUnitsWithoutBiasUnit(), 0, -1):
+			#D = E * sigmoid.sigmoid_gradient_array(np.dot(y[j-1], _weights[j])
+			#dw = dw + coef*(np.dot(D, y[j-1])
+			#E = np.dot(D, np.transpose(_weights[j]))
+		#return e
