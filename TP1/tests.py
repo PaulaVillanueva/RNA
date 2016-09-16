@@ -20,10 +20,11 @@ from feed_forward_solver import FeedForwardSolver
 loader = ej1_data_loader.Ej1DataLoader()
 data = loader.LoadData()
 
-print data
+#print data
 
-features = data[0]
+features = data[0] #shape=(333,10)
 labels = data[1]
+labels.shape = (1,410)
 
 epochs = 40
 t = 0
@@ -31,6 +32,7 @@ epsilon = 0.01
 e = 999
 model = LayerModel(len(features) + 1, [len(features) + 2], 1, sigmoid.sigmoid_array)
 W = model.getInitializedWeightMats()
+print(W)
 ffsolver = FeedForwardSolver(W, sigmoid.sigmoid_array)
 E = np.array(1)
 coef = 0.01

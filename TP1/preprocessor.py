@@ -17,7 +17,7 @@ class OutlierFilter:
 
         features_wo_outliers = np.array(filter(self.isOutlier(feature_means,features_std), features))
 
-        print(len(features), len(features_wo_outliers))
+        #print(len(features), len(features_wo_outliers))
 
         # for i in range(len(features[0])):
         #     #boxplot

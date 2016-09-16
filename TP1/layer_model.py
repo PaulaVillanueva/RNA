@@ -12,11 +12,13 @@ class LayerModel:
 
     #Devuelve una lista de las matrices de pesos inicializadas en random para el modelo
     #Se agregan las unidades de bias en la capa de input y las ocultas
+    #tam de lista: #capas-1 (chequear)
+    #Cada matriz de pesos: tam ??
     def getInitializedWeightMats(self):
         ret = []
-        num_all_layers = [self._numInputUnits + 1] + (self._hiddenLayers + 1) + [self._numOutputUnits] #
+        num_all_layers = [self._numInputUnits + 1] + (self._hiddenLayers + 1) + [self._numOutputUnits] #TypeError: can only concatenate list (not "int") to list
         for i in range(0,len(num_all_layers) - 1):
-            weigth_mat = np.random.rand(num_all_layers[i], num_all_layers[i+1])
+            weigth_mat = np.random.uniform(-1,1,[num_all_layers[i], num_all_layers[i+1]])
             ret.append(weigth_mat)
 
         return ret

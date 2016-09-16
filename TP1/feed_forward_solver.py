@@ -55,7 +55,7 @@ class FeedForwardSolver:
 			#dwj = 0
 	
 	def batch(self,x,z):
-		p = LayerModel.getNumInputUnitsWithoutBiasUnit() # p seria la cantidad de entradas?
+		p = x.shape[0] # p: cant instancias del dataset
 		for h in range(1,p):
 			self.activation(x[h])
 			e = e + self.correction(z[h])
