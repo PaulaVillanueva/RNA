@@ -57,9 +57,9 @@ class FeedForwardSolver:
 	def batch(self,x,z):
 		p = self._numInputUnits # p seria la cantidad de entradas?
 		for h in range(1,p):
-			activacion(x[h])			# no se autocompleta activacion asi que supongo que 
-			e = e + correction(z[h])	# esta linea no esta bien escrita, lo mismo para las dos siguientes.
-		adaptation()
+			activacion(self,x[h])			# no se autocompleta activacion asi que supongo que 
+			e = e + correction(self,z[h])	# esta linea no esta bien escrita, lo mismo para las dos siguientes.
+		adaptation(self)
 		return e
 	
 			
