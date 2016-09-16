@@ -45,11 +45,3 @@ while (t < epochs) and (e < epsilon):
         i += 1
         e += np.linalg.norm(E) ** 2
 t += 1
-
-
-
-
-
-
-
-
