@@ -47,3 +47,20 @@ class FeedForwardSolver:
 			#dw = dw + coef*(np.dot(D, y[j-1])
 			#E = np.dot(D, np.transpose(_weights[j]))
 		#return e
+
+	#def adaptation(self):
+		#for j in range(2, LayerModel.getNumHiddenUnitsWithBiasUnit()):
+			#dwj = dwj + coef*(np.dot(D, y[j-1])
+			#_weights[j] = _weights[j] + dwj
+			#dwj = 0
+	
+	def batch(self,x,z):
+		p = self._numInputUnits # p seria la cantidad de entradas?
+		for h in range(1,p):
+			activacion(x[h])			# no se autocompleta activacion asi que supongo que 
+			e = e + correction(z[h])	# esta linea no esta bien escrita, lo mismo para las dos siguientes.
+		adaptation()
+		return e
+	
+			
+			
