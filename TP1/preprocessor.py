@@ -14,15 +14,26 @@ class OutlierFilter:
     def process(self, features):
         features_std = np.std(features, axis=0)
         feature_means = np.mean(features, axis=0)
+
         features_wo_outliers = np.array(filter(self.isOutlier(feature_means,features_std), features))
 
         print(len(features), len(features_wo_outliers))
-        #histograma de la 3era feature con cortes de outliers
-        plt.hist(features[:,2],bins=np.max(features[:,2])-np.min(features[:,2]))
-        plt.axvline(feature_means[2]-2*features_std[2], color='b', linestyle='dashed', linewidth=2)
-        plt.axvline(feature_means[2]+2*features_std[2], color='b', linestyle='dashed', linewidth=2)
-        plt.show()
+
+        # for i in range(len(features[0])):
+        #     #boxplot
+        #     fig = plt.figure(1, figsize=(9, 6))
+        #     ax = fig.add_subplot(111)
+        #     bp = ax.boxplot([features[:,i],features_wo_outliers[:,i]])
+        #     plt.show()
+
+        #     #histograma de la 3era feature con cortes de outliers
+        #     plt.hist(features[:,i],bins=np.max(features[:,i])-np.min(features[:,i]))
+        #     plt.axvline(feature_means[i]-2*features_std[i], color='b', linestyle='dashed', linewidth=2)
+        #     plt.axvline(feature_means[i]+2*features_std[i], color='b', linestyle='dashed', linewidth=2)
+        #     plt.show()
         
+
+
         return features_wo_outliers
 
     def isOutlier(self, means, std):

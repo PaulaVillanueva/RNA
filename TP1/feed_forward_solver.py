@@ -55,11 +55,11 @@ class FeedForwardSolver:
 			#dwj = 0
 	
 	def batch(self,x,z):
-		p = self._numInputUnits # p seria la cantidad de entradas?
+		p = LayerModel.getNumInputUnitsWithoutBiasUnit # p seria la cantidad de entradas?
 		for h in range(1,p):
-			activacion(x[h])			# no se autocompleta activacion asi que supongo que 
-			e = e + correction(z[h])	# esta linea no esta bien escrita, lo mismo para las dos siguientes.
-		adaptation()
+			self.activation(x[h])
+			e = e + self.correction(z[h])
+		self.adaptation()
 		return e
 	
 			
