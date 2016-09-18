@@ -44,3 +44,6 @@ class LayerModel:
 
     def getNumOutputUnits(self):
         self._numOutputUnits
+
+    def getNumHiddenLayers(self):
+        return self._hiddenLayers
