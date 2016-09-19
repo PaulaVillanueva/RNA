@@ -5,6 +5,7 @@ import sigmoid
 import ej1_data_loader
 from layer_model import LayerModel
 from feed_forward_solver import FeedForwardSolver
+import functools
 
 # X = np.genfromtxt('/Users/bpanarello/Dropbox/RN/P2/letters_1.txt', delimiter=" ")
 # B = np.ones((26, 1)) * -1
@@ -24,26 +25,16 @@ data = loader.LoadData()
 
 features = data[0] #shape=(333,10)
 labels = data[1]
-labels.shape = (1,410)
+#labels.shape = (1,410)
 
 epochs = 40
 t = 0
 epsilon = 0.01
 e = 999
-model = LayerModel(len(features) + 1, [len(features) + 2], 1, sigmoid.sigmoid_array)
+num_features=features.shape[1]
+model = LayerModel(num_features , [num_features + 2], 1, functools.partial( sigmoid.sigmoid_array,1),functools.partial( sigmoid.sigmoid_gradient_array,1))
 W = model.getInitializedWeightMats()
 print(W)
-ffsolver = FeedForwardSolver(W, sigmoid.sigmoid_array)
-E = np.array(1)
-coef = 0.01
-while (t < epochs) and (e < epsilon):
-    e = 0
-    i = 0
-    for j in range(0, len(data)-1):
-        Y = ffsolver.solve_sample_and_return_output(features[j], W)
-        E[j] = labels[j] - Y
-        dw = coef * np.inner(np.transpose(X), E)
-        W += dw
-        i += 1
-        e += np.linalg.norm(E) ** 2
-t += 1
+ffsolver = FeedForwardSolver(W,model)
+ffsolver.batch(features, labels)
+

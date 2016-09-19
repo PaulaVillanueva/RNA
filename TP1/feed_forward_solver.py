@@ -5,11 +5,9 @@ import sigmoid
 
 class FeedForwardSolver:
 
-    def __init__(self, weights, activation_fn, layer_model):
+    def __init__(self, weights, layer_model):
         self._weights = weights
-        #self._activation_fn = np.vectorize(activation_fn)
-        self._activation_fn = activation_fn
-        self._solve_batch_and_return_result_array = np.vectorize(self.solve_sample_and_return_output)
+        self._solve_batch_and_return_result_array = np.vectorize(self.solve_sample_and_return_activations)
         self._layer_model = layer_model
         self._dw = np.zeros(0)
     # nxm mx1
@@ -17,17 +15,20 @@ class FeedForwardSolver:
     # Weight: mxn
     # Z: 1xn
     # Aplicar feed-forward devolviendo la salida de la red para un input dado
-    def solve_sample_and_return_output(self, sample):
+    def solve_sample_and_return_activations(self, sample):
 
+        ret = []
         z = sample
+        ret.append(z)
         # 1xm x mxn = 1xn
         for w in self._weights:
             # Agrego la unidad de Bias. La ultima unidad calculada  va a salir sin Bias,
             # lo cual esta bien porque es la de salida
             z = [1] + z
-            z = self._activation_fn(np.dot(z, w))
+            z = self._layer_model.getActivationFn()(np.dot(z, w))
+            ret.append(z)
 
-        return z
+        return ret
 
     #Aplica solve_sample_and_return_output a un batch completo
     def solve_batch_and_return_result_array(self, batch):
@@ -35,37 +36,39 @@ class FeedForwardSolver:
 
     #TODO: chequear shapes
     def activation(self, Xh):
-        y = []
-        L = LayerModel.getNumHiddenLayers()+2 
-        y.append(Xh + [-1]) #con bias
+        return self.solve_sample_and_return_activations(Xh)
+        #y = []
+        #L = self._layer_model.get_total_layers()
+        #y.append(Xh + [-1]) #con bias
         # 1xm x mxn = 1xn
-        for j in range(1,L):
-            y.append(self._activation_fn(np.dot(y[j-1], _weights[j])) )
-        return y[L]
+        #for j in range(1,L):
+        #    y.append(self._activation_fn(np.dot(y[j-1], self._weights[j])) )
+        #return y[L]
 
-    def correction(self, Zh, y):
-        L = LayerModel.getNumHiddenLayers()+2
+    def correction(self, Zh, Y):
+        L = self._layer_model.get_total_layers() - 1
         _dw = np.zeros(np.shape(Zh))
         coef = 0.01 #TODO: hacerlo setteable
 
-        E = Zh - y[L]
+        E = Zh - Y[L]
         e = np.linalg.norm(E)
-        for j in range(L, 0, -1):
-            D = E * sigmoid.sigmoid_gradient_array(np.dot(y[j-1], _weights[j]))
-            _dw[:,j] = _dw[:,j] + coef*(np.dot(D, y[j-1]))
-            E = np.dot(D, np.transpose(_weights[j]))
+        for j in range(L-1, 0, -1):
+            D = E * self._layer_model.getActivationDerivativeFn()(np.dot(Y[j-1], self._weights[j]))
+            _dw[:,j] = _dw[:,j] + coef*(np.dot(D, Y[j-1]))
+            E = np.dot(D, np.transpose(self._weights[j]))
         return e
 
     def adaptation(self):
-        L = LayerModel.getNumHiddenLayers()+2 
+        L =  self._layer_model.get_total_layers()
         for j in range(1, L):
-            _weights[j] = _weights[j] + _dw[:,j]
-            _dw[:,j] = 0
+            self._weights[j] = self._weights[j] + self._dw[:,j]
+            self._dw[:,j] = 0
 
     def batch(self,X,Z):
+        e = 0
         p = X.shape[0] # p: cant instancias del dataset
-        for h in range(1,p):
-            self.activation(X[h])
-            e = e + self.correction(Z[h])
+        for h in range(0,p-1):
+            y = self.activation(X[h])
+            e = e + self.correction(Z[h], y)
         self.adaptation()
         return e

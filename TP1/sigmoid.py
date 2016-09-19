@@ -2,11 +2,11 @@ import numpy as np
 
 # Estamos poniendo beta=1, no tendriamos que poder variarlo? De ser asi tambien hay que cambiarlo en los demas .py
 
-def sigmoid_array(x): 
-    return 1 / (1 + np.exp(-x))
-
-def sigmoid_gradient_array(x):
-	return sigmoid_array(x)*(1-sigmoid_array(x))
+#def sigmoid_array(x):
+#    return 1 / (1 + np.exp(-x))
+#
+#def sigmoid_gradient_array(x):
+#	return sigmoid_array(x)*(1-sigmoid_array(x))
 	
 	# En la teorica de Segura la sigmoidea esta con un 2*b
 	
