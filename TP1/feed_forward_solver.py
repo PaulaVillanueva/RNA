@@ -51,16 +51,18 @@ class FeedForwardSolver:
         coef = 0.01 #TODO: hacerlo setteable
 
         E = Zh - Y[L]
-        print("Zh:",Zh)
+        print("Zh:",Zh.shape)
         print("YL:",Y[L].shape)
         e = np.linalg.norm(E)
         for j in range(L-1, 0, -1):
             print("Error shape: ", np.shape(E))
             print("Yj-1 shape: ", np.shape(Y[j-1]))
             print("wj shape: ", np.shape(self._weights[j]))
-            D = E * self._layer_model.getActivationDerivativeFn()(np.dot(Y[j-1], self._weights[j]))
-            _dw[:,j] = _dw[:,j] + coef*(np.dot(D, Y[j-1]))
-            E = np.dot(D, np.transpose(self._weights[j]))
+            #la lista de matrices de pesos arranca con la w1
+            dotprod = np.dot(np.transpose(Y[j-1]), self._weights[j-1])
+            D = E * self._layer_model.getActivationDerivativeFn()(dotprod)
+            _dw[j] = _dw[j] + coef*(np.dot(D, Y[j-1]))
+            E = np.dot(D, np.transpose(self._weights[j-1]))
         return e
 
     def adaptation(self):
