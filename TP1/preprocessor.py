@@ -7,6 +7,7 @@ class FeatureNormalizer:
         feature_means = np.mean(features, axis=0)
         features_std = np.std(features, axis=0)
         features_normalized = (features - feature_means) / features_std
+        #print("features_normalized:", features_normalized.shape)
         return features_normalized
 
 class OutlierFilter:
@@ -19,20 +20,20 @@ class OutlierFilter:
 
         #print(len(features), len(features_wo_outliers))
 
-        # for i in range(len(features[0])):
-        #     #boxplot
-        #     fig = plt.figure(1, figsize=(9, 6))
-        #     ax = fig.add_subplot(111)
-        #     bp = ax.boxplot([features[:,i],features_wo_outliers[:,i]])
-        #     plt.show()
+        #for i in range(len(features[0])):
+            ##boxplot
+            #fig = plt.figure(1, figsize=(9, 6))
+            #ax = fig.add_subplot(111)
+            #bp = ax.boxplot([features[:,i],features_wo_outliers[:,i]])
+            #plt.show()
 
-        #     #histograma de la 3era feature con cortes de outliers
-        #     plt.hist(features[:,i],bins=np.max(features[:,i])-np.min(features[:,i]))
-        #     plt.axvline(feature_means[i]-2*features_std[i], color='b', linestyle='dashed', linewidth=2)
-        #     plt.axvline(feature_means[i]+2*features_std[i], color='b', linestyle='dashed', linewidth=2)
-        #     plt.show()
+            ##histograma de la 3era feature con cortes de outliers
+            #plt.hist(features[:,i],bins=np.max(features[:,i])-np.min(features[:,i]))
+            #plt.axvline(feature_means[i]-2*features_std[i], color='b', linestyle='dashed', linewidth=2)
+            #plt.axvline(feature_means[i]+2*features_std[i], color='b', linestyle='dashed', linewidth=2)
+            #plt.show()
         
-
+        #print("features_wo_outliers:", features_wo_outliers.shape)
 
         return features_wo_outliers
 

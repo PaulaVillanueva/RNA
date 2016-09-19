@@ -25,6 +25,7 @@ data = loader.LoadData()
 
 features = data[0] #shape=(333,10)
 labels = data[1]
+#print ("labels shape ", labels.shape)
 #labels.shape = (1,410)
 
 epochs = 40
