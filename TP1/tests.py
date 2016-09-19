@@ -28,7 +28,7 @@ labels = data[1]
 #print ("labels shape ", labels.shape)
 #labels.shape = (1,410)
 
-epochs = 40
+T = 200
 t = 0
 epsilon = 0.01
 e = 999
@@ -36,6 +36,11 @@ num_features=features.shape[1]
 model = LayerModel(num_features , [num_features + 2], 1, functools.partial( sigmoid.sigmoid_array,1),functools.partial( sigmoid.sigmoid_gradient_array,1))
 W = model.getInitializedWeightMats()
 print(W)
-ffsolver = FeedForwardSolver(W,model)
-ffsolver.batch(features, labels)
 
+
+ffsolver = FeedForwardSolver(W,model)
+
+while e > epsilon and t < T:
+    e = ffsolver.batch(features, labels)
+    print ("Error: " , e)
+    t = t + 1

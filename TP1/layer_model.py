@@ -32,7 +32,7 @@ class LayerModel:
 
         num_all_layers = self.get_total_layers()
         for i in range(0,num_all_layers - 1):
-            weigth_mat = np.random.uniform(-1,1,[self._numUnitsPerLayer[i], self._numUnitsPerLayer[i+1]])
+            weigth_mat = np.zeros([self._numUnitsPerLayer[i], self._numUnitsPerLayer[i+1]])
             ret.append(weigth_mat)
 
         return ret
