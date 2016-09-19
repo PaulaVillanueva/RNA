@@ -24,7 +24,7 @@ class FeedForwardSolver:
         for w in self._weights:
             # Agrego la unidad de Bias. La ultima unidad calculada  va a salir sin Bias,
             # lo cual esta bien porque es la de salida
-            z = [-1] + z
+            z = [1] + z
             z = self._layer_model.getActivationFn()(np.dot(z, w))
             ret.append(z)
 
@@ -46,37 +46,41 @@ class FeedForwardSolver:
         #return y
 
     def correction(self, Zh, Y):
-        L = self._layer_model.get_total_layers() - 1
-        _dw = np.zeros(np.shape(Zh))
+        L = self._layer_model.get_total_layers()
+        _dw = _weights
         coef = 0.01 #TODO: hacerlo setteable
 
         E = Zh - Y[L-1]
-        print("Zh:",Zh.shape)
-        print("YL:",Y[L].shape)
+        #print("Zh:",Zh.shape)
+        #print("YL:",Y[L].shape)
         e = np.linalg.norm(E)
-        for j in range(L-1, 0, -1):
-            print("Error shape: ", np.shape(E))
-            print("Yj-1 shape: ", np.shape(Y[j-1]))
-            print("wj shape: ", np.shape(self._weights[j]))
+        for j in range(L, 1, -1):
+            #print("Error shape: ", np.shape(E))
+            print("Yj-1 shape: ", np.shape(Y[j-2]))
+            print("wj shape: ", np.shape(self._weights[j-2]))
             #la lista de matrices de pesos arranca con la w1
-            dotprod = np.dot(np.transpose(Y[j-1]), self._weights[j-1])
+            dotprod = np.dot(Y[j-2], self._weights[j-2])
             D = E * self._layer_model.getActivationDerivativeFn()(dotprod)
-            _dw[j] = _dw[j] + coef*(np.dot(D, Y[j-1]))
-            E = np.dot(D, np.transpose(self._weights[j-1]))
+            print("Yj-1 shape: ", np.shape(np.transpose(Y[j-2])))
+            print("D shape: ", np.shape(D))
+            print("dw shape: ", np.shape(_dw))
+            _dw[j-2] = _dw[j-2] + coef*(np.dot(np.transpose(Y[j-2]), D))
+            E = np.dot(D, np.transpose(self._weights[j-2]))
         return e
 
     def adaptation(self):
-        L =  self._layer_model.get_total_layers()
+        L =  self._layer_model.get_total_layers() - 1
         for j in range(1, L):
-            self._weights[j] = self._weights[j] + self._dw[:,j]
+            self._weights[j] = self._weights[j] + self._dw[j]
             self._dw[:,j] = 0
 
     def batch(self,X,Z):
         e = 0
         p = X.shape[0] # p: cant instancias del dataset
+        f = X.shape[1]
         for h in range(0,p-1):
-            print("X.shape",X.shape)
-            y = self.activation(X[h])
+            #print("Xh.shape",X[h].reshape((f,1)).shape)
+            y = self.activation(X[h].reshape((1,f)))
             e = e + self.correction(Z[h], y)
         self.adaptation()
         return e
