@@ -19,12 +19,12 @@ class FeedForwardSolver:
 
         ret = []
         z = sample
-        #ret.append(z)
+        ret.append(z)
         # 1xm x mxn = 1xn
         for w in self._weights:
             # Agrego la unidad de Bias. La ultima unidad calculada  va a salir sin Bias,
             # lo cual esta bien porque es la de salida
-            z = [1] + z
+            z = [-1] + z
             z = self._layer_model.getActivationFn()(np.dot(z, w))
             ret.append(z)
 
@@ -46,31 +46,29 @@ class FeedForwardSolver:
         #return y
 
     def correction(self, Zh, Y):
-        L = self._layer_model.get_total_layers() - 2
+        L = self._layer_model.get_total_layers() - 1
         _dw = np.zeros(np.shape(Zh))
         coef = 0.01 #TODO: hacerlo setteable
 
-        E = Zh - Y[L]
-        #print("Zh:",Zh.shape)
-        #print("YL:",Y[L].shape)
+        E = Zh - Y[L-1]
+        print("Zh:",Zh.shape)
+        print("YL:",Y[L].shape)
         e = np.linalg.norm(E)
         for j in range(L-1, 0, -1):
-            #print("Error shape: ", np.shape(E))
-            #print("Yj-1 shape: ", np.shape(Y[j-1]))
-            #print("wj shape: ", np.shape(self._weights[j]))
+            print("Error shape: ", np.shape(E))
+            print("Yj-1 shape: ", np.shape(Y[j-1]))
+            print("wj shape: ", np.shape(self._weights[j]))
             #la lista de matrices de pesos arranca con la w1
             dotprod = np.dot(np.transpose(Y[j-1]), self._weights[j-1])
             D = E * self._layer_model.getActivationDerivativeFn()(dotprod)
-            print("Yj-1 shape: ", np.shape(Y[j-1]))
-            print("D shape: ", np.shape(D))
-            _dw[j-1] = _dw[j-1] + coef*(np.dot(D, Y[j-1]))
+            _dw[j] = _dw[j] + coef*(np.dot(D, Y[j-1]))
             E = np.dot(D, np.transpose(self._weights[j-1]))
         return e
 
     def adaptation(self):
-        L =  self._layer_model.get_total_layers() -2
+        L =  self._layer_model.get_total_layers()
         for j in range(1, L):
-            self._weights[j] = self._weights[j] + self._dw[j]
+            self._weights[j] = self._weights[j] + self._dw[:,j]
             self._dw[:,j] = 0
 
     def batch(self,X,Z):
