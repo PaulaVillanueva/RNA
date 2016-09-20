@@ -18,14 +18,18 @@ class FeedForwardSolver:
     def solve_sample_and_return_activations(self, sample):
 
         ret = []
-        z = sample
+        # Bias
+        z = np.insert(sample,0,-1,axis=1)
         ret.append(z)
+        i = 0
         # 1xm x mxn = 1xn
         for w in self._weights:
+            i = i + 1
             # Agrego la unidad de Bias. La ultima unidad calculada  va a salir sin Bias,
             # lo cual esta bien porque es la de salida
-            z = [1] + z
             z = self._layer_model.getActivationFn()(np.dot(z, w))
+            if i < len(self._weights):
+                z = np.insert(z,0,-1,axis=1)
             ret.append(z)
 
         return ret
@@ -51,21 +55,12 @@ class FeedForwardSolver:
         coef = 0.1 #TODO: hacerlo setteable
 
         E = Zh - Y[L-1]
-        #print("Zh:",Zh.shape)
-        #print("YL:",Y[L].shape)
         e = np.linalg.norm(E)
         for j in range(L, 1, -1):
-            #print("Error shape: ", np.shape(E))
-            #print("Yj-1 shape: ", np.shape(Y[j-2]))
-            #print("wj shape: ", np.shape(self._weights[j-2]))
-            #la lista de matrices de pesos arranca con la w1
             dotprod = np.dot(Y[j-2], self._weights[j-2])
             D = E * self._layer_model.getActivationDerivativeFn()(dotprod)
-            #print("Yj-1 shape: ", np.shape(np.transpose(Y[j-2])))
-            #print("D shape: ", np.shape(D))
-            #print("dw shape: ", np.shape(self._dw))
             self._dw[j-2] = self._dw[j-2] + coef*(np.dot(np.transpose(Y[j-2]), D))
-            E = np.dot(D, np.transpose(self._weights[j-2]))
+            E = np.dot(D, np.transpose(np.delete(self._weights[j-2],1,0)))
         return e
 
     def adaptation(self):
