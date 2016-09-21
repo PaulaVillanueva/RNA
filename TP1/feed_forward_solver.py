@@ -44,27 +44,38 @@ class NetworkSolver:
 
 
 
-    def correction_mini_batch(self, mini_batch, lr):
-
+    def correction_mini_batch(self, mini_batch, lr, n, lmbda=0.0):
+        """
+        lr = learning rate
+        lmbda = regularization parameter
+        n = longitud del training set
+        """
         grad_b = [np.zeros(b.shape) for b in self._biases]
         grad_w = [np.zeros(w.shape) for w in self._weights]
         for x, y in mini_batch:
             delta_grad_b, delta_grad_w = self.do_backprop_and_return_grad(x, y)
             grad_b = [gb+deltagb for gb, deltagb in zip(grad_b, delta_grad_b)]
             grad_w = [gw+deltagw for gw, deltagw in zip(grad_w, delta_grad_w)]
-        self._weights = [w - (lr / len(mini_batch)) * gw
+        #lmbda=regularization parameter
+        #si lmbda=0.0 hace lo mismo que el clasico
+        self._weights = [(1.0 - lr*(lmbda/n)) * w - (lr/len(mini_batch)) * gw
                         for w, gw in zip(self._weights, grad_w)]
+        #clasico sin regularizacion
+        #    self._weights = [w - (lr / len(mini_batch)) * gw
+        #                for w, gw in zip(self._weights, grad_w)]
         self._biases = [b - (lr / len(mini_batch)) * gb
                        for b, gb in zip(self._biases, grad_b)]
 
 
-    def learn_minibatch(self, mini_batches, lr, epochs, epsilon):
+    def learn_minibatch(self, mini_batches, lr, epochs, epsilon, lmbda=0.0):
+        """si lmbda no se especifica no se usa regularizacion"""
         T = epochs
         t = 0
         e = 999
+        n = sum([len(mbatch) for mbatch in mini_batches])
         while e > epsilon and t < T:
             for b in mini_batches:
-                self.correction_mini_batch(b, lr)
+                self.correction_mini_batch(b, lr, n, lmbda)
             t = t + 1
             e = self.get_training_error(mini_batches, False)
             print ("Error: ", e)
