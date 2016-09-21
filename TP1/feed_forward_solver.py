@@ -1,6 +1,7 @@
 import numpy as np
 from layer_model import LayerModel
 import sigmoid
+import plotter
 
 
 class NetworkSolver:
@@ -72,6 +73,8 @@ class NetworkSolver:
         t = 0
         e = 999
         n = sum([len(mbatch) for mbatch in mini_batches])
+        training_errors = []
+        val_errors = []
         while e > epsilon and t < T:
             for b in mini_batches:
                 self.correction_mini_batch(b, lr, n, lmbda)
@@ -79,6 +82,11 @@ class NetworkSolver:
             e = self.get_prediction_error(mini_batches, False)
             et = self.get_prediction_error(mini_batches_testing, False)
             print ("Training Error: ", e, "Val error:", et)
+            training_errors.append(e)
+            val_errors.append(et)
+
+        plotter.plot_error(training_errors,"Training Error")
+        plotter.plot_error(val_errors, "Val Error")
 
         #e = self.get_prediction_error(mini_batches, True)
 
