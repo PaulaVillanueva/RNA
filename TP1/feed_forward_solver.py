@@ -10,6 +10,7 @@ class NetworkSolver:
         self._biases = layer_model.getInitializedBiasVectors()
         self._layer_model = layer_model
 
+
     def do_activation(self, sample):
 
         aa = [np.reshape(sample, (len(sample), 1))]
@@ -84,3 +85,15 @@ class NetworkSolver:
                     print e / cant, np.linalg.norm(aa[-1] - y),aa[-1][0][0], y[0]
 
         return e / cant
+
+    def get_hits(self, test_data):
+        """Devuelve el numero de aciertos de inputs de test para los que
+        los outputs que devuelve la red son correctos.
+        Con una neurona, el resultado es el mas cercano entre 0 y 1
+        al resultado que devolvio la red"""
+        test_results = [(self.get_result(self.do_activation(x)[0][-1]), y)
+                        for (x, y) in test_data]
+        return sum(int(x == y) for (x, y) in test_results)
+
+    def get_result(self, act):
+        return np.argmin([abs(act-0), abs(act-1)])
