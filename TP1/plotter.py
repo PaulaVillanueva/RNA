@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def plot_error(errors, y_title):
     fig = plt.figure()
     ax = fig.add_subplot(111)

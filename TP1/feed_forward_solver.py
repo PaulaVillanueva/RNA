@@ -1,7 +1,6 @@
 import numpy as np
 from layer_model import LayerModel
 import sigmoid
-import plotter
 
 
 class NetworkSolver:
@@ -12,7 +11,6 @@ class NetworkSolver:
         self._layer_model = layer_model
 
     def do_activation(self, sample):
-
         aa = [np.reshape(sample, (len(sample), 1))]
         zz = []
         # Bias
@@ -46,9 +44,10 @@ class NetworkSolver:
 
     def correction_mini_batch(self, mini_batch, lr, n, lmbda=0.0):
         """
-        lr = learning rate
-        lmbda = regularization parameter
-        n = longitud del training set
+        :param mini_batch: set de entrenamiento
+        :param lr: learning rate
+        :param n: cantidad de samples
+        :param lmbda: regularization parameter
         """
         grad_b = [np.zeros(b.shape) for b in self._biases]
         grad_w = [np.zeros(w.shape) for w in self._weights]
@@ -56,8 +55,7 @@ class NetworkSolver:
             delta_grad_b, delta_grad_w = self.do_backprop_and_return_grad(x, y)
             grad_b = [gb+deltagb for gb, deltagb in zip(grad_b, delta_grad_b)]
             grad_w = [gw+deltagw for gw, deltagw in zip(grad_w, delta_grad_w)]
-        #lmbda=regularization parameter
-        #si lmbda=0.0 hace lo mismo que el clasico
+
         self._weights = [(1.0 - lr*(lmbda/n)) * w - (lr/len(mini_batch)) * gw
                         for w, gw in zip(self._weights, grad_w)]
         #clasico sin regularizacion
@@ -68,13 +66,19 @@ class NetworkSolver:
 
 
     def learn_minibatch(self, mini_batches, mini_batches_testing, lr, epochs, epsilon, lmbda=0.0):
-        """si lmbda no se especifica no se usa regularizacion"""
+        """
+        :param mini_batches: set de entrenamiento
+        :param mini_batches_testing: set de testing
+        :param lr: learning rate
+        :param epochs: cantidad de epocas
+        :param epsilon: cota de error
+        :param lmbda: parametro de regularizacion, si no se especifica, no se regulariza
+        imprime errores de entrenamiento y testing por cada epoca
+        """
         T = epochs
         t = 0
         e = 999
         n = sum([len(mbatch) for mbatch in mini_batches])
-        training_errors = []
-        val_errors = []
         while e > epsilon and t < T:
             for b in mini_batches:
                 self.correction_mini_batch(b, lr, n, lmbda)
@@ -82,11 +86,6 @@ class NetworkSolver:
             e = self.get_prediction_error(mini_batches, False)
             et = self.get_prediction_error(mini_batches_testing, False)
             print ("Training Error: ", e, "Val error:", et)
-            training_errors.append(e)
-            val_errors.append(et)
-
-        plotter.plot_error(training_errors,"Training Error")
-        plotter.plot_error(val_errors, "Val Error")
 
         #e = self.get_prediction_error(mini_batches, True)
 
@@ -107,13 +106,19 @@ class NetworkSolver:
         return e / cant
 
     def get_hits(self, test_data):
-        """Devuelve el numero de aciertos de inputs de test para los que
+        """
+        :param test_data: set de datos de testing
+        :return: Devuelve el numero de aciertos de inputs de test para los que
         los outputs que devuelve la red son correctos.
-        Con una neurona, el resultado es el mas cercano entre 0 y 1
-        al resultado que devolvio la red"""
+        """
         test_results = [(self.get_result(self.do_activation(x)[0][-1]), y)
                         for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
 
     def get_result(self, act):
+        """
+        :param act: resultado de nuestra red
+        :return: el resultado es el mas cercano al resultado
+        que devolvio la red entre 0 y 1
+        """
         return np.argmin([abs(act-0), abs(act-1)])

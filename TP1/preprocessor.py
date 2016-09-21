@@ -4,15 +4,22 @@ import matplotlib.pyplot as plt
 class FeatureNormalizer:
 
     def process(self, features):
+        """
+        :param features: datos a normalizar
+        :return: devuelve datos normalizados por columna
+        """
         feature_means = np.mean(features, axis=0)
         features_std = np.std(features, axis=0)
         features_normalized = (features - feature_means) / features_std
-        #print("features_normalized:", features_normalized.shape)
         return features_normalized
 
 class OutlierFilter:
 
     def process(self, features):
+        """
+        :param features: datos
+        :return: datos sin outliers
+        """
         features_std = np.std(features, axis=0)
         feature_means = np.mean(features, axis=0)
 

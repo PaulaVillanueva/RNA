@@ -34,6 +34,5 @@ solver = NetworkSolver(layer_model=model)
 lr = 0.005
 epochs = 1000
 epsilon = 0.05
-reg_param = 0.01
+reg_param = 0.0
 solver.learn_minibatch(mini_batches_training,mini_batches_testing,lr,epochs,epsilon,reg_param)
-
