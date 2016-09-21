@@ -8,8 +8,8 @@ class LayerModel:
         self._activationFn = activationFn
         self._activationDerivativeFunction = activationDerivativeFunction
 
-        self._biases = [np.random.randn(y, 1) for y in layerSizes[1:]]
-        self._weights = [np.random.randn(y, x)
+        self._biases = [np.random.randn(y, 1) / 1000 for y in layerSizes[1:]]
+        self._weights = [np.random.randn(y, x) / 1000
                         for x, y in zip(layerSizes[:-1], layerSizes[1:])]
 
         self._layer_sizes = layerSizes

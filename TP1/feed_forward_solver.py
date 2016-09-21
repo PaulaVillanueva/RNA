@@ -10,7 +10,6 @@ class NetworkSolver:
         self._biases = layer_model.getInitializedBiasVectors()
         self._layer_model = layer_model
 
-
     def do_activation(self, sample):
 
         aa = [np.reshape(sample, (len(sample), 1))]
@@ -67,7 +66,7 @@ class NetworkSolver:
                        for b, gb in zip(self._biases, grad_b)]
 
 
-    def learn_minibatch(self, mini_batches, lr, epochs, epsilon, lmbda=0.0):
+    def learn_minibatch(self, mini_batches, mini_batches_testing, lr, epochs, epsilon, lmbda=0.0):
         """si lmbda no se especifica no se usa regularizacion"""
         T = epochs
         t = 0
@@ -77,12 +76,14 @@ class NetworkSolver:
             for b in mini_batches:
                 self.correction_mini_batch(b, lr, n, lmbda)
             t = t + 1
-            e = self.get_training_error(mini_batches, False)
-            print ("Error: ", e)
+            e = self.get_prediction_error(mini_batches, False)
+            et = self.get_prediction_error(mini_batches_testing, False)
+            print ("Training Error: ", e, "Val error:", et)
 
-        e = self.get_training_error(mini_batches, True)
+        #e = self.get_prediction_error(mini_batches, True)
 
-    def get_training_error(self, mini_batches, bprint):
+
+    def get_prediction_error(self, mini_batches, bprint):
         e = 0
         cant = 0
         for b in mini_batches:
