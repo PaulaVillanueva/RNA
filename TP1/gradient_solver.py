@@ -1,5 +1,5 @@
 import numpy as np
-from feed_forward_solver import FeedForwardSolver
+from feed_forward_solver import NetworkSolver
 
 
 class GradientSolver:
@@ -11,7 +11,7 @@ class GradientSolver:
         self._fforwardFn
 
     def get_gradient(self, features, labels, weights):
-        ff_solver = FeedForwardSolver(weights, self._activation_fn)
+        ff_solver = NetworkSolver(weights, self._activation_fn)
         features_batch = features(0, self._batch_size - 1)
         labels_batch = labels(0, self._batch_size - 1)
         Y = ff_solver.solve_batch_and_return_result_array(features_batch)

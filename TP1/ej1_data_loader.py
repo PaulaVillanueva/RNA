@@ -15,10 +15,13 @@ class Ej1DataLoader:
 
         #Primero filtramos labels con features, luego separamos
         transformed_data=OutlierFilter().process(raw_data)
-        transformed_data=FeatureNormalizer().process(transformed_data)
+
+        #transformed_data=FeatureNormalizer().process(transformed_data)
         features = transformed_data[:, 1:]
+        transformed_features = FeatureNormalizer().process(features)
+
         labels = transformed_data[:, 0]
         labels = labels.reshape((labels.shape[0],1))
         #print("features ", features.shape)
         #print("labels shape ",labels.shape)
-        return [features,labels]
+        return [transformed_features,labels]

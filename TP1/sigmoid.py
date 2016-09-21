@@ -11,10 +11,10 @@ import numpy as np
 	# En la teorica de Segura la sigmoidea esta con un 2*b
 	
 def sigmoid_array(b,x): 
-	return 1 / (1 + np.exp(b*x))
+	return 1.0 / (1.0 + np.exp(-b*x))
 
 def sigmoid_gradient_array(b,x):
-	return -b*sigmoid_array(b,x)*(1-sigmoid_array(b,x))
+	return -b*sigmoid_array(b,x)*(1.0-sigmoid_array(b,x))
 	
 def sigmoid_tanh_array(b,x):
 	return np.tanh(b*x)

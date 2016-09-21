@@ -4,42 +4,28 @@ class LayerModel:
     # numInputUnits: Cantidad de unidades de entrada
     # hiddenLayers: Array con la cantidad de hidden layers de la red
     # numOutputLayers: Cantidad de unidades de salida
-    def __init__(self, numInputUnits, hiddenLayers, numOutputUnits, activationFn, activationDerivativeFunction):
-        self._numInputUnits = numInputUnits
-        self._unitsPerHiddenLayer = np.array([hiddenLayers])
-        self._numOutputUnits = numOutputUnits
+    def __init__(self, layerSizes, activationFn, activationDerivativeFunction):
         self._activationFn = activationFn
         self._activationDerivativeFunction = activationDerivativeFunction
-        self._numUnitsPerLayer =np.array([numInputUnits] + hiddenLayers + [numOutputUnits])
-        self._numHiddenLayers = len(hiddenLayers)
 
-    #Devuelve una lista de las matrices de pesos inicializadas en random para el modelo
-    #Se agregan las unidades de bias en la capa de input y las ocultas
-    #tam de lista: #capas-1 (chequear)
-    #Cada matriz de pesos: tam ??
+        self._biases = [np.random.randn(y, 1) for y in layerSizes[1:]]
+        self._weights = [np.random.randn(y, x)
+                        for x, y in zip(layerSizes[:-1], layerSizes[1:])]
+
+        self._layer_sizes = layerSizes
+        self._num_layers = len(layerSizes)
+
     def getInitializedWeightMats(self):
-        ret = []
+        return self._weights
 
-        num_all_layers = self.get_total_layers()
-        for i in range(0,num_all_layers - 1):
-            weigth_mat = np.random.uniform(-1 / np.sqrt(self._numUnitsPerLayer[i]), 1/ np.sqrt(self._numUnitsPerLayer[i]), [self._numUnitsPerLayer[i] + 1, self._numUnitsPerLayer[i + 1]])
-            ret.append(weigth_mat)
+    def getInitializedBiasVectors(self):
+        return self._biases
 
-        return ret
-        
-    def getInitializedDeltaWMats(self):
-        ret = []
+    def getZeroDeltaW(self):
+        return [np.zeros(w.shape) for w in self._weights]
 
-        num_all_layers = self.get_total_layers()
-        for i in range(0,num_all_layers - 1):
-            weigth_mat = np.zeros([self._numUnitsPerLayer[i] + 1, self._numUnitsPerLayer[i+1]])
-            ret.append(weigth_mat)
-
-        return ret
-
-    def get_total_layers(self):
-        return self._numHiddenLayers + 2
-
+    def getZeroDeltaB(self):
+        return [np.zeros(b.shape) for b in self._biases]
 
     def getActivationFn(self):
         return self._activationFn
@@ -47,24 +33,8 @@ class LayerModel:
     def getActivationDerivativeFn(self):
         return self._activationDerivativeFunction
 
-    def getNumInputUnitsWithBiasUnit(self):
-        self._numInputUnits + 1
+    def getNumLayers(self):
+        return self._num_layers
 
 
-    def getNumInputUnitsWithoutBiasUnit(self):
-        self._numInputUnits
 
-
-    def getNumHiddenUnitsWithBiasUnit(self):
-        self._unitsPerHiddenLayer + 1
-
-
-    def getNumHiddenUnitsWithoutBiasUnit(self):
-        self._unitsPerHiddenLayer
-
-
-    def getNumOutputUnits(self):
-        self._numOutputUnits
-
-    def getNumHiddenLayers(self):
-        return self._unitsPerHiddenLayer
