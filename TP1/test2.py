@@ -18,7 +18,7 @@ test_data = all_data[num_training_samples:len(all_data) -1]
 
 mini_batch_size = 1
 n = len(training_data)
-beta = -5
+beta = 5
 
 mini_batches_training = [
                 training_data[k:k+mini_batch_size]
@@ -36,13 +36,4 @@ epochs = 1000
 epsilon = 0.05
 reg_param = 0.01
 solver.learn_minibatch(mini_batches_training,mini_batches_testing,lr,epochs,epsilon,reg_param)
-
-
-
-print "<<INICIANDO TRAINING>>"
-
-model =  LayerModel([10,12,1], functools.partial( sigmoid.sigmoid_array,5),functools.partial( sigmoid.sigmoid_gradient_array,5))
-solver = NetworkSolver(layer_model=model)
-
-e_train=solver.learn_minibatch(mini_batches_training,mini_batches_testing,0.005,500,0.001)
 
