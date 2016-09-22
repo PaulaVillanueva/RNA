@@ -27,7 +27,6 @@ Parámetros elegidos fijos:
 \end{figure}
 
 
-
 \begin{figure}[h]	
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,01_eps0,05_regparam0,00_beta5_batch1.png}
@@ -39,6 +38,14 @@ Parámetros elegidos fijos:
 	\caption{\textbf{learning rate: 0.01}}
 \end{figure}
 
+En estos gráficos se puede ver que el error fue menor a epsilon = 0,05.
+ En el primero de ellos el coeficiente de aprendizaje utilizado es 
+ 0.0075 y en el segundo 0.01. Se observa que coeficiente de aprendizaje
+  más pequeño el error sube. Por otro lado, se puede ver que cuanto 
+  más chico paso más épocas fueron necesarias para minimizar el error. 
+Por lo que elegimos 0.01 como mejor learning rate.
+
+\newpage
 
 \begin{figure}[h]	
 	\begin{subfigure}[b]{0.5\textwidth}
@@ -64,5 +71,10 @@ Parámetros elegidos fijos:
 	\caption{\textbf{learning rate: 0.05}}
 \end{figure}
 
-
+Estos dos gráficos muestran que al ser el coeficiente de aprendizaje es
+ muy grande y se han encontrado mínimos locales por lo que el error empezó
+  a oscilar. En estos casos, el error también fue menor a epsilon = 0.05 
+  pero fueron necesarias mayor cantidad de épocas para hacerlo. Estos 
+  learning rate no son óptimos para este modelo por lo que no son 
+  los elegidos.
 \newpage
