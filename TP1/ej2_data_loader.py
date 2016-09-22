@@ -5,7 +5,7 @@ from preprocessor import OutlierFilter, FeatureNormalizer
 
 class Ej2DataLoader:
     def LoadData(self):
-        raw_data = np.genfromtxt('/Users/bpanarello/Dropbox/RN/RNA/TP1/ds/tp1_ej2_training.csv', delimiter=",")
+        raw_data = np.genfromtxt('./ds/tp1_ej2_training.csv', delimiter=",")
         np.random.shuffle(raw_data)
 
         #Primero filtramos labels con features, luego separamos

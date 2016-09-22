@@ -17,61 +17,64 @@ Parámetros elegidos fijos:
 
 \begin{figure}[h]	
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,001_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,0075_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/valerror_lr0,001_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,0075_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 
-	\caption{\textbf{learning rate: 0.001}}
-\end{figure}
-
-\begin{figure}[h]	
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,0025_eps0,05_regparam0,00_beta5_batch1.png}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/valerror_lr0,0025_eps0,05_regparam0,00_beta5_batch1.png}
-	\end{subfigure}
-
-	\caption{\textbf{learning rate: 0.0025}}
+	\caption{\textbf{learning rate: 0.0075}}
 \end{figure}
 
 
 \begin{figure}[h]	
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,005_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,01_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/valerror_lr0,005_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,01_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 
-	\caption{\textbf{learning rate: 0.005}}
+	\caption{\textbf{learning rate: 0.01}}
 \end{figure}
+
+En estos gráficos se puede ver que el error fue menor a epsilon = 0,05.
+ En el primero de ellos el coeficiente de aprendizaje utilizado es 
+ 0.0075 y en el segundo 0.01. Se observa que coeficiente de aprendizaje
+  más pequeño el error sube. Por otro lado, se puede ver que cuanto 
+  más chico paso más épocas fueron necesarias para minimizar el error. 
+Por lo que elegimos 0.01 como mejor learning rate.
 
 \newpage
-\subsection{Código fuente}
 
-\subsubsection*{Carga de datos}
+\begin{figure}[h]	
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,025_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,025_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
 
-\lstinputlisting[language=Python]{../ej1_data_loader.py}
+	\caption{\textbf{learning rate: 0.025}}
+\end{figure}
 
-\subsubsection*{Preprocesamiento de datos}
 
-\lstinputlisting[language=Python]{../preprocessor.py}
 
-\subsubsection*{Modelo}
+\begin{figure}[h]	
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,05_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,05_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
 
-\lstinputlisting[language=Python]{../layer_model.py}
+	\caption{\textbf{learning rate: 0.05}}
+\end{figure}
 
-\subsubsection*{Funciones sigmoideas}
-
-\lstinputlisting[language=Python]{../sigmoid.py}
-
-\subsubsection*{Algoritmos}
-
-\lstinputlisting[language=Python]{../feed_forward_solver.py}
-
-\subsubsection*{Test}
-
-\lstinputlisting[language=Python]{../test2.py}
+Estos dos gráficos muestran que al ser el coeficiente de aprendizaje es
+ muy grande y se han encontrado mínimos locales por lo que el error empezó
+  a oscilar. En estos casos, el error también fue menor a epsilon = 0.05 
+  pero fueron necesarias mayor cantidad de épocas para hacerlo. Estos 
+  learning rate no son óptimos para este modelo por lo que no son 
+  los elegidos.
+\newpage
