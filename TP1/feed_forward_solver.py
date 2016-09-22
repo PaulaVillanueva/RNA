@@ -5,18 +5,20 @@ import sigmoid
 
 class NetworkSolver:
 
-    def __init__(self, layer_model):
-        self._weights = layer_model.getInitializedWeightMats()
-        self._biases = layer_model.getInitializedBiasVectors()
+    def __init__(self, layer_model, weights, biases):
+        self._weights = weights
+        self._biases = biases
         self._layer_model = layer_model
 
     def do_activation(self, sample):
         aa = [np.reshape(sample, (len(sample), 1))]
         zz = []
         # Bias
+        l = 0
         for b, w in zip(self._biases, self._weights):
+            l = l + 1
             z = np.dot(w, aa[-1]) + b
-            a = self._layer_model.getActivationFn()(z)
+            a = self._layer_model.getActivationFns()[l](z)
             zz.append(z)
             aa.append(a)
         return (aa,zz)
@@ -28,13 +30,13 @@ class NetworkSolver:
 
         # feedforward
         activations, zs = self.do_activation(x)
-        delta = (activations[-1] - np.reshape(y, (len(y), 1))) * self._layer_model.getActivationDerivativeFn()(zs[-1])
+        delta = (activations[-1] - np.reshape(y, (len(y), 1))) * self._layer_model.getDerivativeFns()[-1](zs[-1])
         grad_b[-1] = delta
         grad_w[-1] = np.dot(delta, activations[-2].transpose())
 
         for l in xrange(2, self._layer_model.getNumLayers()):
             z = zs[-l]
-            sp = self._layer_model.getActivationDerivativeFn()(z)
+            sp = self._layer_model.getDerivativeFns()[-l](z)
             delta = np.dot(self._weights[-l+1].transpose(), delta) * sp
             grad_b[-l] = delta
             grad_w[-l] = np.dot(delta, activations[-l-1].transpose())
@@ -104,6 +106,15 @@ class NetworkSolver:
                     print e / cant, np.linalg.norm(aa[-1] - y),aa[-1][0][0], y[0]
 
         return e / cant
+
+    def predict(self, batch):
+        e = 0
+        for x, y in batch:
+            aa, zz = self.do_activation(x)
+            e = e + np.linalg.norm(aa[-1] - y)
+            print "Original: ", y[0], "Predicted:",aa[-1][0]
+
+        return e / len(batch)
 
     def get_hits(self, test_data):
         """

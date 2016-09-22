@@ -1,0 +1,14 @@
+{
+	"layers": [{
+		"type": "input",
+		"size": 10
+	}, {
+		"type": "sigmoid",
+		"size": 12,
+		"beta": 5
+	}, {
+		"type": "sigmoid",
+		"size": 1,
+		"beta": 5
+	}]
+}

@@ -1,5 +1,7 @@
 import sigmoid
 import ej1_data_loader
+from TP1.model_io import ModelIO
+from TP1.params_io import ParamsIO
 from layer_model import LayerModel
 from feed_forward_solver import NetworkSolver
 import functools
@@ -28,11 +30,17 @@ mini_batches_testing = [
                 test_data[k:k+mini_batch_size]
                 for k in xrange(0, num_test_samples - 1, mini_batch_size)]
 
-model =  LayerModel([10,12,1], functools.partial( sigmoid.sigmoid_array,beta),functools.partial( sigmoid.sigmoid_gradient_array,beta))
-solver = NetworkSolver(layer_model=model)
+#model =  LayerModel([10,12,1], functools.partial( sigmoid.sigmoid_array,beta),functools.partial( sigmoid.sigmoid_gradient_array,beta))
+mloader = ModelIO()
+model =  mloader.load_model("/home/berna/PycharmProjects/RNA/TP1/models/ej1.lmodel")
+
+#solver = NetworkSolver(layer_model=model,weights=model.getInitializedWeightMats(),biases=model.getInitializedBiasVectors())
+solver = NetworkSolver(model,weights=model.getInitializedWeightMats(),biases=model.getInitializedBiasVectors())
 
 lr = 0.005
-epochs = 1000
+epochs = 100
 epsilon = 0.05
 reg_param = 0.0
 solver.learn_minibatch(mini_batches_training,mini_batches_testing,lr,epochs,epsilon,reg_param)
+pio=ParamsIO()
+pio.save_params("./prueba.params", solver._weights, solver._biases)

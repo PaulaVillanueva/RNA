@@ -1,11 +1,19 @@
 import numpy as np
-
+from cStringIO import StringIO
 from preprocessor import OutlierFilter, FeatureNormalizer
 
 
 class Ej1DataLoader:
-    def LoadData(self):
-        raw_data = np.genfromtxt('./ds/tp1_ej1_training.csv', delimiter=",")
+    def LoadData(self, fname):
+
+
+        str_data=open (fname, "r").read()
+
+        #Reemplazo M y B por enteros
+        str_data = str_data.replace("B", "0")
+        str_data = str_data.replace("M", "1")
+
+        raw_data = np.genfromtxt(StringIO(str_data), delimiter=",")
         #np.random.shuffle(raw_data)
 
         #Primero filtramos labels con features, luego separamos
