@@ -4,7 +4,7 @@ import preprocessor
 import sigmoid
 import ej1_data_loader
 from layer_model import LayerModel
-from feed_forward_solver import FeedForwardSolver
+from feed_forward_solver import NetworkSolver
 import functools
 
 # X = np.genfromtxt('/Users/bpanarello/Dropbox/RN/P2/letters_1.txt', delimiter=" ")
@@ -28,19 +28,20 @@ labels = data[1]
 #print ("labels shape ", labels.shape)
 #labels.shape = (1,410)
 
-T = 200
+T = 1500
 t = 0
 epsilon = 0.01
 e = 999
 num_features=features.shape[1]
-model = LayerModel(num_features , [num_features + 2], 1, functools.partial( sigmoid.sigmoid_array,1),functools.partial( sigmoid.sigmoid_gradient_array,1))
+model = LayerModel(num_features , [num_features +1], 1, functools.partial( sigmoid.sigmoid_array,1),functools.partial( sigmoid.sigmoid_gradient_array,1))
 W = model.getInitializedWeightMats()
-print(W)
+#print(W)
 
 
-ffsolver = FeedForwardSolver(W,model)
+ffsolver = NetworkSolver(W, model)
 
 while e > epsilon and t < T:
     e = ffsolver.batch(features, labels)
     print ("Error: " , e)
+    #print W
     t = t + 1

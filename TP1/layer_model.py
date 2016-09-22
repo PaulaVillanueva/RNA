@@ -36,5 +36,8 @@ class LayerModel:
     def getNumLayers(self):
         return self._num_layers
 
+    def getLayerSizes(self):
+        return self._layer_sizes
+
 
 

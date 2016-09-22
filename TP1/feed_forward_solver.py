@@ -28,7 +28,7 @@ class NetworkSolver:
 
         # feedforward
         activations, zs = self.do_activation(x)
-        delta = (activations[-1] - y) * self._layer_model.getActivationDerivativeFn()(zs[-1])
+        delta = (activations[-1] - np.reshape(y, (len(y), 1))) * self._layer_model.getActivationDerivativeFn()(zs[-1])
         grad_b[-1] = delta
         grad_w[-1] = np.dot(delta, activations[-2].transpose())
 
