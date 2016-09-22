@@ -6,22 +6,16 @@ from preprocessor import OutlierFilter, FeatureNormalizer
 class Ej1DataLoader:
     def LoadData(self):
         raw_data = np.genfromtxt('./ds/tp1_ej1_training.csv', delimiter=",")
-        np.random.shuffle(raw_data)
-        #features = raw_data[:, 1:]
-        #labels = raw_data[:, 0]
-        #transformed_features=OutlierFilter().process(features)
-        #transformed_features=FeatureNormalizer().process(transformed_features)
-        #return [transformed_features,labels]
+        #np.random.shuffle(raw_data)
 
         #Primero filtramos labels con features, luego separamos
         transformed_data=OutlierFilter().process(raw_data)
 
-        #transformed_data=FeatureNormalizer().process(transformed_data)
         features = transformed_data[:, 1:]
-        transformed_features = FeatureNormalizer().process(features)
-
         labels = transformed_data[:, 0]
         labels = labels.reshape((labels.shape[0],1))
-        #print("features ", features.shape)
-        #print("labels shape ",labels.shape)
+
+        #Normalizamos features
+        transformed_features = FeatureNormalizer().process(features)
+
         return [transformed_features,labels]
