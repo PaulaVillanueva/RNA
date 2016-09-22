@@ -17,61 +17,52 @@ Parámetros elegidos fijos:
 
 \begin{figure}[h]	
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,001_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,0075_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/valerror_lr0,001_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,0075_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 
-	\caption{\textbf{learning rate: 0.001}}
+	\caption{\textbf{learning rate: 0.0075}}
 \end{figure}
 
-\begin{figure}[h]	
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,0025_eps0,05_regparam0,00_beta5_batch1.png}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/valerror_lr0,0025_eps0,05_regparam0,00_beta5_batch1.png}
-	\end{subfigure}
-
-	\caption{\textbf{learning rate: 0.0025}}
-\end{figure}
 
 
 \begin{figure}[h]	
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,005_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,01_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[width=\linewidth]{fig/valerror_lr0,005_eps0,05_regparam0,00_beta5_batch1.png}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,01_eps0,05_regparam0,00_beta5_batch1.png}
 	\end{subfigure}
 
-	\caption{\textbf{learning rate: 0.005}}
+	\caption{\textbf{learning rate: 0.01}}
 \end{figure}
+
+
+\begin{figure}[h]	
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,025_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,025_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
+
+	\caption{\textbf{learning rate: 0.025}}
+\end{figure}
+
+
+
+\begin{figure}[h]	
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/trainingerror_lr0,05_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{fig/valerror_lr0,05_eps0,05_regparam0,00_beta5_batch1.png}
+	\end{subfigure}
+
+	\caption{\textbf{learning rate: 0.05}}
+\end{figure}
+
 
 \newpage
-\subsection{Código fuente}
-
-\subsubsection*{Carga de datos}
-
-\lstinputlisting[language=Python]{../ej1_data_loader.py}
-
-\subsubsection*{Preprocesamiento de datos}
-
-\lstinputlisting[language=Python]{../preprocessor.py}
-
-\subsubsection*{Modelo}
-
-\lstinputlisting[language=Python]{../layer_model.py}
-
-\subsubsection*{Funciones sigmoideas}
-
-\lstinputlisting[language=Python]{../sigmoid.py}
-
-\subsubsection*{Algoritmos}
-
-\lstinputlisting[language=Python]{../feed_forward_solver.py}
-
-\subsubsection*{Test}
-
-\lstinputlisting[language=Python]{../test2.py}
