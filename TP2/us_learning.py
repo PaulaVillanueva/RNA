@@ -30,4 +30,7 @@ class HebbianNN:
                 weights += dw
 
         return weights
-
+    
+    def orthogonal(self, we, eps):
+		dif = np.dot(we.transpose(),we) - np.identity(we.shape[1])
+		return (dif < eps).all()
