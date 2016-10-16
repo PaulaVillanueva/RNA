@@ -14,7 +14,7 @@ def normalize(v):
 A = np.random.random_integers(1, 100, 6)
 print("A:", A)
 
-epochs = 100
+epochs = 200
 
 DS = []
 for t in range(epochs):
@@ -28,12 +28,11 @@ HB = HebbianNN(6, 4)
 
 # OjaM
 
-we = HB.train(DS, epochs, True)
+we = HB.train(DS, 0.001, epochs, True)
 
 print("weights OjaM: ")
 print(we)
-print("check orthogonality: ", HB.orthogonal(we,0.01))
-print(np.dot(we.transpose(),we))
+print("check orthogonality: ", HB.orthogonal(we,0.001))
 plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
 plt.colorbar()
 plt.show()
@@ -46,12 +45,11 @@ print("var: ", np.var(outputs, axis=0))
 
 # Sanger
 
-we = HB.train(DS, epochs)
+we = HB.train(DS, 0.001, epochs)
 
 print("weights Sanger: ")
 print(we)
-print("check orthogonality: ", HB.orthogonal(we,0.01))
-print(np.dot(we.transpose(),we))
+print("check orthogonality: ", HB.orthogonal(we,0.001))
 plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
 plt.colorbar()
 plt.show()
