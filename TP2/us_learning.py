@@ -1,5 +1,8 @@
 import numpy as np
 
+
+# TODO: optimizar y chequear
+
 class HebbianNN:
     def __init__(self, inputs, outputs):
 

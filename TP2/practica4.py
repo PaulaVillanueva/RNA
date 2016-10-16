@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from us_learning import HebbianNN
 
-# TODO: optimizar y chequear
 
 def normalize(v):
     means = np.mean(v, axis=0)
@@ -15,7 +14,7 @@ def normalize(v):
 A = np.random.random_integers(1, 100, 6)
 print("A:", A)
 
-epochs = 200
+epochs = 100
 
 DS = []
 for t in range(epochs):
@@ -33,6 +32,8 @@ we = HB.train(DS, epochs, True)
 
 print("weights OjaM: ")
 print(we)
+print("check orthogonality: ")
+print(np.dot(we.transpose(),we))
 plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
 plt.colorbar()
 plt.show()
@@ -49,6 +50,8 @@ we = HB.train(DS, epochs)
 
 print("weights Sanger: ")
 print(we)
+print("check orthogonality: ")
+print(np.dot(we.transpose(),we))
 plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
 plt.colorbar()
 plt.show()
