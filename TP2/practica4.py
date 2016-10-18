@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.pylab as pyl
 from us_learning import HebbianNN
 
 # los datos tienen que estar centrados en 00, no normalizados
@@ -31,15 +32,16 @@ HB = HebbianNN(6, 4, 0.5)
 
 # OjaM
 
-we = HB.train(DS, eps, lrcons, epochs, True)
-print we
+# we = HB.train(DS, eps, lrcons, epochs, True)
+# print we
 we = HB.train_opt(DS, eps, lrcons, epochs, True)
 print we
 
 print "check orthogonality: ", HB.orthogonal(we,eps)
 print "check norm == 1: ", np.linalg.norm(we, axis=0)
 
-plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
+cmap = pyl.cm.get_cmap('bwr',3) 
+plt.matshow(we, cmap=cmap, vmin=-1, vmax=1)
 plt.colorbar()
 plt.show()
 
@@ -52,18 +54,19 @@ print "var: ", np.var(outputs, axis=0)
 
 # Sanger
 
-eps = 0.001
+eps = 0.005
 #lrcons = 0.0001
 
-we = HB.train(DS, eps, lrcons, epochs)
-print we
+# we = HB.train(DS, eps, lrcons, epochs)
+# print we
 we = HB.train_opt(DS, eps, lrcons, epochs)
 print we
 
 print "check orthogonality: ", HB.orthogonal(we,eps)
 print "check norm == 1: ", np.linalg.norm(we, axis=0)
 
-plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
+cmap = pyl.cm.get_cmap('bwr',3) 
+plt.matshow(we, cmap=cmap, vmin=-1, vmax=1)
 plt.colorbar()
 plt.show()
 
