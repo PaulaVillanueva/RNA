@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from us_learning import HebbianNN
 
-# los datos tienen que estar centralizados, no normalizados
+# los datos tienen que estar centrados en 00, no normalizados
 # en este caso, se supone que ya estarian centrados por la uniforme alrededor del 0
 
 def centralize(v):
@@ -43,11 +43,6 @@ plt.show()
 
 outputs = np.array([np.dot(x.transpose(), we) for x in DS])
 
-# print outputs
-# plt.matshow(outputs[:,0], outputs[:,1], cmap='hot', vmin=-4, vmax=4)
-# plt.colorbar()
-# plt.show()
-
 print("mean: ", np.mean(outputs, axis=0))
 print("std: ", np.std(outputs, axis=0))
 print("var: ", np.var(outputs, axis=0))
@@ -72,7 +67,6 @@ outputs = np.array([np.dot(x.transpose(), we) for x in DS])
 print("mean: ", np.mean(outputs, axis=0))
 print("std: ", np.std(outputs, axis=0))
 print("var: ", np.var(outputs, axis=0))
-
 
 # plt.plot(outputs[:,0], outputs[:,1], 'ro')
 # plt.show()
