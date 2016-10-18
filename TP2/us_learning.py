@@ -33,14 +33,13 @@ class HebbianNN:
         
     def train(self, ds, eps, lrcons, max_epochs, oja=False):
         weights = np.matrix.copy(self._weights)
-        print weights
         e = 0
         while (not self.orthogonal(weights,eps)) and e < max_epochs:
             e+=1
             lr = lrcons / e
 
             for x in ds:
-                y = np.dot(x.transpose(), weights)
+                y = np.dot(x, weights)
                 dw = np.zeros((self._inputs, self._outputs), dtype=float)
 
                 for j in range(self._outputs):
@@ -54,6 +53,35 @@ class HebbianNN:
         print("epocas: ", e)
         return weights
     
+
+    def train_opt(self, ds, eps, lrcons, max_epochs, oja=False):
+        weights = np.matrix.copy(self._weights)
+        e = 0
+        if not oja:
+            dim = (self._outputs, self._outputs)
+            U = np.triu(np.ones(dim))
+        while (not self.orthogonal(weights,eps)) and e < max_epochs:
+            e+=1
+            lr = lrcons / e
+
+            for x in ds:
+                x = np.array([x])
+                y = np.dot(x, weights)
+                x_mo = np.zeros(x.shape)
+                dw = np.zeros((self._inputs, self._outputs), dtype=float)
+
+                if oja:
+                    x_mo[:] = np.dot(y, weights.transpose())
+                    dw[:,:] = lr * np.dot((x - x_mo).transpose(), y)
+                else:
+                    x_mo[:] = np.dot(y.transpose() * U, weights.transpose())
+                    dw[:,:] = lr * np.dot((x - x_mo).transpose(), y)
+
+                weights += dw
+        print("epocas: ", e)
+        return weights
+
+
     def orthogonal(self, we, eps):
 		dif = np.dot(we.transpose(),we) - np.identity(we.shape[1])
 		return (np.abs(dif) < eps).all()

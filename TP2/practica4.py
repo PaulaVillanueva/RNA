@@ -32,8 +32,10 @@ HB = HebbianNN(6, 4, 0.5)
 # OjaM
 
 we = HB.train(DS, eps, lrcons, epochs, True)
-
 print we
+we = HB.train_opt(DS, eps, lrcons, epochs, True)
+print we
+
 print "check orthogonality: ", HB.orthogonal(we,eps)
 print "check norm == 1: ", np.linalg.norm(we, axis=0)
 
@@ -43,36 +45,38 @@ plt.show()
 
 outputs = np.array([np.dot(x.transpose(), we) for x in DS])
 
-print("mean: ", np.mean(outputs, axis=0))
-print("std: ", np.std(outputs, axis=0))
-print("var: ", np.var(outputs, axis=0))
+print "outputs: "
+print "mean: ", np.mean(outputs, axis=0)
+print "std: ", np.std(outputs, axis=0)
+print "var: ", np.var(outputs, axis=0)
 
 # Sanger
 
-eps = 0.007
+# eps = 0.007
 
-we = HB.train(DS, eps, lrcons, epochs)
+# we = HB.train(DS, eps, lrcons, epochs)
 
-print we
-print "check orthogonality: ", HB.orthogonal(we,eps)
-print "check norm == 1: ", np.linalg.norm(we, axis=0)
+# print we
+# #print "check orthogonality: ", HB.orthogonal(we,eps)
+# #print "check norm == 1: ", np.linalg.norm(we, axis=0)
 
+# we = HB.train_opt(DS, eps, lrcons, epochs)
+# print we
+# #plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
+# #plt.colorbar()
+# #plt.show()
 
-plt.matshow(we, cmap='hot', vmin=-1, vmax=1)
-plt.colorbar()
-plt.show()
+# outputs = np.array([np.dot(x.transpose(), we) for x in DS])
 
-outputs = np.array([np.dot(x.transpose(), we) for x in DS])
+# print("mean: ", np.mean(outputs, axis=0))
+# print("std: ", np.std(outputs, axis=0))
+# print("var: ", np.var(outputs, axis=0))
 
-print("mean: ", np.mean(outputs, axis=0))
-print("std: ", np.std(outputs, axis=0))
-print("var: ", np.var(outputs, axis=0))
+# # plt.plot(outputs[:,0], outputs[:,1], 'ro')
+# # plt.show()
 
-# plt.plot(outputs[:,0], outputs[:,1], 'ro')
-# plt.show()
+# # plt.plot(outputs[:,1], outputs[:,2], 'ro')
+# # plt.show()
 
-# plt.plot(outputs[:,1], outputs[:,2], 'ro')
-# plt.show()
-
-# plt.plot(outputs[:,2], outputs[:,3], 'ro')
-# plt.show()
+# # plt.plot(outputs[:,2], outputs[:,3], 'ro')
+# # plt.show()
