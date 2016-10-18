@@ -36,7 +36,7 @@ class HebbianNN:
         e = 0
         while (not self.orthogonal(weights,eps)) and e < max_epochs:
             e+=1
-            lr = lrcons / e
+            lr = lrcons * (e**-2)
 
             for x in ds:
                 y = np.dot(x, weights)
@@ -62,7 +62,7 @@ class HebbianNN:
             U = np.triu(np.ones(dim))
         while (not self.orthogonal(weights,eps)) and e < max_epochs:
             e+=1
-            lr = lrcons / e
+            lr = lrcons * (e**-2)
 
             for x in ds:
                 x = np.array([x])
@@ -74,8 +74,9 @@ class HebbianNN:
                     x_mo[:] = np.dot(y, weights.transpose())
                     dw[:,:] = lr * np.dot((x - x_mo).transpose(), y)
                 else:
-                    x_mo[:] = np.dot(y.transpose() * U, weights.transpose())
-                    dw[:,:] = lr * np.dot((x - x_mo).transpose(), y)
+                    xy = np.dot(x.transpose(), y)
+                    x_moy = np.dot(np.tril(np.dot(y.transpose(), y)), weights.transpose()).transpose()
+                    dw[:,:] = lr * ( xy - x_moy )
 
                 weights += dw
         print("epocas: ", e)
