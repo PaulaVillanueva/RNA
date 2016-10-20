@@ -20,5 +20,4 @@ class DataLoader:
     # los datos tienen que estar centrados en el 0, no normalizados
     def centralize(self, v):
         means = np.mean(v, axis=0)
-        print np.mean(v, axis=0)
         return v - means

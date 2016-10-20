@@ -50,7 +50,7 @@ class HebbianNN:
                         dw[i][j] = lr * y.transpose()[j] * (x[i] - xi_mo)
 
                 weights += dw
-        print("epocas: ", e)
+        print "epocas: ", e
         return weights
     
 
@@ -79,10 +79,17 @@ class HebbianNN:
                     dw[:,:] = lr * ( xy - x_moy )
 
                 weights += dw
-        print("epocas: ", e)
+        print "epocas: ", e
         return weights
 
 
     def orthogonal(self, we, eps):
-		dif = np.dot(we.transpose(),we) - np.identity(we.shape[1])
-		return (np.abs(dif) < eps).all()
+        dif = np.dot(we.transpose(),we) - np.identity(we.shape[1])
+        return (np.abs(dif) < eps).all()
+
+    def norm_eq1(self, we, eps):
+        norms = np.linalg.norm(we, axis=0)
+        return (np.abs(norms - np.ones(norms.shape)) < eps).all()
+
+    def activate(self, we, ds):
+        return [ [data[0]] + np.dot(data[1:], we).tolist() for data in ds ]

@@ -62,6 +62,11 @@ eps = 0.005
 we = HB.train_opt(DS, eps, lrcons, epochs)
 print we
 
+norms = np.linalg.norm(we, axis=1)
+dif = np.abs(norms - np.ones(norms.shape)) < 0.1
+componentes = [i for i, x in enumerate(dif) if x == True]
+print componentes
+
 print "check orthogonality: ", HB.orthogonal(we,eps)
 print "check norm == 1: ", np.linalg.norm(we, axis=0)
 
@@ -76,11 +81,11 @@ print("mean: ", np.mean(outputs, axis=0))
 print("std: ", np.std(outputs, axis=0))
 print("var: ", np.var(outputs, axis=0))
 
-# plt.plot(outputs[:,0], outputs[:,1], 'ro')
-# plt.show()
+plt.plot(outputs[:,0], outputs[:,1], 'ro')
+plt.show()
 
-# plt.plot(outputs[:,1], outputs[:,2], 'ro')
-# plt.show()
+plt.plot(outputs[:,1], outputs[:,2], 'ro')
+plt.show()
 
-# plt.plot(outputs[:,2], outputs[:,3], 'ro')
-# plt.show()
+plt.plot(outputs[:,2], outputs[:,3], 'ro')
+plt.show()
