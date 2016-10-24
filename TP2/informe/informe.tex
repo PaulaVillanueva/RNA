@@ -1,0 +1,134 @@
+% Configuración del tipo páginas
+	\documentclass[11pt, a4paper,english,spanish]{article}
+	\parindent = 11pt
+	\parskip = 0 pt	
+	\usepackage[width=15.5cm, left=3cm, top=2.5cm, height= 24.5cm]{geometry}
+
+% Paquete para reconocer la separación en sílabas en español
+	\usepackage[utf8]{inputenc}
+	\usepackage[spanish]{babel}
+
+% Paquetes especiales
+	\usepackage{amsmath}
+	\usepackage{amsthm} %paquete para teoremas y propiedades
+	\usepackage{amsfonts}
+	\usepackage{amssymb}
+	\usepackage{upgreek}
+	\usepackage{ifthen}
+	\usepackage{alltt}
+	\usepackage[pdftex]{graphicx}
+  	\usepackage{textcomp}
+	\usepackage{float}
+	%\usepackage{dsfont}
+	\usepackage{graphicx} %paquete para incluir imagenes
+
+	\usepackage{caption}
+	\usepackage{subcaption}
+
+\usepackage{tabularx}
+\usepackage{multirow}
+
+% Paquete para incluir hypervinculos
+	\usepackage{color}
+	\usepackage{url}
+	\definecolor{lnk}{rgb}{0,0,0.4}
+	%colores para la inclusion del codigo
+	\definecolor{gray97}{gray}{.97}
+	\definecolor{gray75}{gray}{.75}
+	\definecolor{gray45}{gray}{.45}
+	\usepackage[colorlinks=true,linkcolor=lnk,citecolor=black,urlcolor=black]{hyperref}
+
+	\newcommand{\todo}{\textbf{\textcolor{red}{TODO: }}}
+
+% Paquete para armar índices
+	\usepackage{makeidx}
+	\makeindex
+
+\renewcommand{\thefootnote}{\arabic{footnote}} %config de footnote
+
+%Paquete y su config para incluir los codigos de python
+\usepackage{times}
+\usepackage{listings}
+\lstset{ frame=Ltb,
+framerule=0pt,
+aboveskip=0.5cm,
+framextopmargin=3pt,
+framexbottommargin=3pt,
+framexleftmargin=0.4cm,
+framesep=0pt,
+rulesep=.4pt,
+backgroundcolor=\color{gray97},
+rulesepcolor=\color{black},
+%
+stringstyle=\ttfamily,
+showstringspaces = false,
+basicstyle=\footnotesize\ttfamily,
+commentstyle=\color{gray45},
+keywordstyle=\bfseries,
+language=python,
+%
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+numberfirstline = false,
+breaklines=true,
+}
+
+\lstset{emph={%  
+    size_t, clock_t%
+    }, emphstyle={\bfseries}%
+}%
+
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\lstdefinestyle{consola}
+{basicstyle=\scriptsize\bf\ttfamily,
+backgroundcolor=\color{gray75},
+}
+
+\lstdefinestyle{Python}
+{language=Python}
+
+	
+% Carátula
+	\usepackage{caratula}
+
+\newcommand{\comment}[1]{\emph{// {#1}\;}} 
+\newcommand{\la}{\(\leftarrow\)}
+\newcommand{\ra}{\(\rightarrow\)}
+
+\hypersetup{ 
+pdfauthor = {},
+pdftitle = {}, 
+pdfkeywords = {},
+pdfstartview={XYZ null null 0.80},
+}
+
+\begin{document}
+\titulo{TP2}
+%\subtitulo{Grupo ???}
+%\resumen{
+%	\textbf{Resumen: } \\ \\
+%	\indent \textbf{Keywords: }
+%}
+\fecha{Fecha de entrega: 27/10/2016}
+\materia{Redes Neuronales Artificiales}
+\integrante{Panarello, Bernabé}{194/01}{bpanarello@gmail.com}
+\integrante{Uhrich, Verónica}{021/10}{veronicauhrich@gmail.com}
+\integrante{Paula Villanueva}{701/10}{villanuevapaulasofia@gmail.com}
+
+\maketitle
+% Índice
+\newpage \printindex \tableofcontents
+\normalsize
+
+\newpage
+
+
+\appendix
+
+
+
+\end{document}
