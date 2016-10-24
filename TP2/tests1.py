@@ -30,6 +30,35 @@ print "mean: ", np.mean(outputs, axis=0)
 print "std: ", np.std(outputs, axis=0)
 print "var: ", np.var(outputs, axis=0)
 
+
+# plot 
+
+reduced_ds_train = [ [data[0]] + data[1].tolist() for data in zip(ls[:600],outputs) ]
+
+val_fs = fs[600:]
+outputs_val = np.array([np.dot(x.transpose(), we) for x in val_fs])
+reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs_val) ]
+
+colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w', '0.4']
+labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+# 3d
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+for data in reduced_ds_train:
+    ax.scatter([data[1]], [data[2]], [data[3]], marker='o', c=colors[int(data[0]) - 1])
+    pass
+
+for data in reduced_ds_val:
+    ax.scatter([data[1]], [data[2]], [data[3]], marker='d', c=colors[int(data[0]) - 1])
+    pass
+
+
+plt.show()
+
+
 # Sanger
 
 we = HB.train_opt(train_fs, eps, lrcons, epochs)
