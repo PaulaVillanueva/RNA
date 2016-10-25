@@ -11,22 +11,22 @@ class HeatMap:
         #Al final voy a tener, para esa unidad, la cantidad de activacion total por categoria
         #Puedo normalizar ese vector y finalmente multiplico cada componente por su id de categoria correspondiente.
 
+        cat_qtys = {}
         for i in range (layout[0]):
             for j in range (layout[1]):
-                w = W[(i,j)]
-                cat_buckets = np.zeros(Y.shape)
+                cat_qtys[(i,j)] = np.zeros(10)
 
-                for (x,y) in zip(X,Y):
-                    cat_buckets[y] += aFn(np.dot (np.transpose(x), w))
+        for (x, y) in zip(X, Y):
+            winner = min(W.keys(), key=lambda k: np.linalg.norm(W[k] - x))
+            cat_qtys[winner][y] = cat_qtys[winner][y] + 1
 
-                cat_buckets_normalized = cat_buckets / np.linalg.norm(cat_buckets)
 
-                final_color = 0
-                for y in Y:
-                    final_color+= cat_buckets_normalized[y] * y
+        final_colors = np.zeros(layout)
+        for i in range (layout[0]):
+            for j in range (layout[1]):
+                final_colors[i][j] = np.argmax(cat_qtys[(i,j)])
 
-                color_matrix[i,j] = final_color / len(Y)
 
-        plt.matshow(color_matrix)
+        plt.matshow(final_colors)
         plt.show()
         raw_input("")

@@ -12,6 +12,7 @@ class Kohonen:
     def train(self, X, epochs):
         self.initialize_weigths()
         for n in range(1,epochs+1):
+            self.printH(n)
             for x in X:
                 winner = self.get_winner_unit_for_sample (x)
                 self.update_neighbordhood_weights (winner, x, n)
@@ -28,13 +29,17 @@ class Kohonen:
 
     def sigma(self, n):
         return self._sigma0 * math.exp(-n / self._tau)
+        #return self._sigma0 / (1+n*self._sigma0 * self._tau)
 
     def h(self, n, j, i):
         return math.exp(-(self.ddistance(i,j)**2)/2*self.sigma(n)**2)
 
     def update_neighbordhood_weights(self, winner, x, n):
+
         for u in self._weights.keys():
-            self._weights[u] = self._weights[u] + self.lr(n) * self.h(n, u, winner) * (x - self._weights[u])
+            hache = self.h(n, u, winner)
+            self._weights[u] = self._weights[u] + self.lr(n) * hache * (x - self._weights[u])
+
 
     def ddistance(self, i, j):
         #TODO:  Me falta calcular esta funcion
@@ -46,3 +51,12 @@ class Kohonen:
     def weights(self):
         return self._weights
 
+    def printH(self,n):
+        nb = 0
+        for i in range(self._output_layout[0]):
+            for j in range(self._output_layout[1]):
+                    hache = self.h(n, (5,5), (i,j))
+                    print "H:", hache
+                    if hache > 0.1 :
+                        nb = nb + 1
+        print "Vecinos: ", nb
