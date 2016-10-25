@@ -128,6 +128,10 @@ class HebbianNN:
             ax.plot([], [], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
             ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1))
 
+        ax.set_xlabel('PC1')
+        ax.set_ylabel('PC2')
+        ax.set_zlabel('PC3')
+
         plt.legend(numpoints=1,ncol=6)
 
         plt.show()
@@ -162,7 +166,10 @@ class HebbianNN:
             ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
             ax.scatter(data_x_cat_val[c+1][1], data_x_cat_val[c+1][2], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
             pass
-
+        
+        ax.set_xlabel('PC1')
+        ax.set_ylabel('PC2')
+        
         ax = fig.add_subplot(132)
 
         for c in range(0,9):
@@ -170,12 +177,18 @@ class HebbianNN:
             ax.scatter(data_x_cat_val[c+1][2], data_x_cat_val[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
             pass
 
+        ax.set_xlabel('PC2')
+        ax.set_ylabel('PC3')
+
         ax = fig.add_subplot(133)
 
         for c in range(0,9):
             ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][3], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
             ax.scatter(data_x_cat_val[c+1][1], data_x_cat_val[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
             pass
+
+        ax.set_xlabel('PC1')
+        ax.set_ylabel('PC3')
 
         plt.legend(numpoints=1,ncol=6)
 

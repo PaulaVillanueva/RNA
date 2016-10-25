@@ -7,6 +7,7 @@ class DataLoader:
         str_data=open (fname, "r").read()
 
         raw_data = np.genfromtxt(StringIO(str_data), delimiter=",")
+        np.random.shuffle(raw_data)
 
         labels = raw_data[:, 0]
         features = raw_data[:, 1:]

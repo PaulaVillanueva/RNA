@@ -1,9 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from us_learning import HebbianNN
 from data_loader import DataLoader
-from mpl_toolkits.mplot3d import Axes3D
-from collections import defaultdict
 
 
 loader = DataLoader()
