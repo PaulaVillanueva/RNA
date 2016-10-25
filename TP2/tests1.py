@@ -1,9 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.pylab as pyl
 from us_learning import HebbianNN
 from data_loader import DataLoader
-from mpl_toolkits.mplot3d import Axes3D
 
 
 loader = DataLoader()
@@ -39,25 +36,13 @@ val_fs = fs[600:]
 outputs_val = np.array([np.dot(x.transpose(), we) for x in val_fs])
 reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs_val) ]
 
-colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w', '0.4']
-labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-
 # 3d
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+HB.plot3d(reduced_ds_train, reduced_ds_val)
 
-for data in reduced_ds_train:
-    ax.scatter([data[1]], [data[2]], [data[3]], marker='o', c=colors[int(data[0]) - 1])
-    pass
+# plots 2d
 
-for data in reduced_ds_val:
-    ax.scatter([data[1]], [data[2]], [data[3]], marker='d', c=colors[int(data[0]) - 1])
-    pass
-
-
-plt.show()
-
+HB.plot2d(reduced_ds_train, reduced_ds_val)
 
 # Sanger
 
@@ -81,49 +66,9 @@ val_fs = fs[600:]
 outputs_val = np.array([np.dot(x.transpose(), we) for x in val_fs])
 reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs_val) ]
 
-colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w', '0.4']
-labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-
 # 3d
-
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-for data in reduced_ds_train:
-    ax.scatter([data[1]], [data[2]], [data[3]], marker='o', c=colors[int(data[0]) - 1])
-    pass
-
-for data in reduced_ds_val:
-    ax.scatter([data[1]], [data[2]], [data[3]], marker='d', c=colors[int(data[0]) - 1])
-    pass
-
-
-plt.show()
+HB.plot3d(reduced_ds_train, reduced_ds_val)
 
 # plots 2d
 
-fig = plt.figure()
-ax = fig.add_subplot(131)
-
-for data in reduced_ds_train:
-    ax.scatter([data[1]], [data[2]], marker='o', c=colors[int(data[0]) - 1])
-    pass
-
-ax = fig.add_subplot(132)
-
-for data in reduced_ds_train:
-    ax.scatter([data[2]], [data[3]], marker='o', c=colors[int(data[0]) - 1])
-    pass
-
-ax = fig.add_subplot(133)
-
-for data in reduced_ds_train:
-    ax.scatter([data[3]], [data[1]], marker='o', c=colors[int(data[0]) - 1])
-    pass
-
-# for data in reduced_ds_val:
-#     ax.scatter([data[1]], [data[2]], marker='d', c=colors[int(data[0]) - 1])
-#     pass
-
-
-plt.show()
+HB.plot2d(reduced_ds_train, reduced_ds_val)

@@ -1,5 +1,7 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from collections import defaultdict
 
 class HebbianNN:
     def __init__(self, inputs, outputs, wint):
@@ -91,3 +93,103 @@ class HebbianNN:
 
     def activate(self, we, ds):
         return [ [data[0]] + np.dot(data[1:], we).tolist() for data in ds ]
+        
+    def plot3d(self, reduced_ds_train, reduced_ds_val):
+        colors = ['b', 'g', 'r', 'c', 'm', 'gold', 'k', 'pink', '0.8']        
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        data_x_cat = defaultdict(dict)
+        for data in reduced_ds_train:
+            cat = int(data[0])
+            if not data_x_cat[cat]:
+                data_x_cat[cat] = defaultdict(list)
+
+            data_x_cat[cat][1].append(data[1])
+            data_x_cat[cat][2].append(data[2])
+            data_x_cat[cat][3].append(data[3])
+
+        for c in range(0,9):
+            ax.plot([], [], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
+            ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='o', color=colors[c], label='categoria '+ str(c + 1))
+
+        data_x_cat = defaultdict(dict)
+        for data in reduced_ds_val:
+            cat = int(data[0])
+            if not data_x_cat[cat]:
+                data_x_cat[cat] = defaultdict(list)
+
+            data_x_cat[cat][1].append(data[1])
+            data_x_cat[cat][2].append(data[2])
+            data_x_cat[cat][3].append(data[3])
+
+
+        for c in range(0,9):
+            ax.plot([], [], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
+            ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1))
+
+        ax.set_xlabel('PC1')
+        ax.set_ylabel('PC2')
+        ax.set_zlabel('PC3')
+
+        plt.legend(numpoints=1,ncol=6)
+
+        plt.show()
+
+    def plot2d(self, reduced_ds_train, reduced_ds_val):
+        colors = ['b', 'g', 'r', 'c', 'm', 'gold', 'k', 'pink', '0.8']
+
+        fig = plt.figure()
+        ax = fig.add_subplot(131)
+
+        data_x_cat = defaultdict(dict)
+        for data in reduced_ds_train:
+            cat = int(data[0])
+            if not data_x_cat[cat]:
+                data_x_cat[cat] = defaultdict(list)
+
+            data_x_cat[cat][1].append(data[1])
+            data_x_cat[cat][2].append(data[2])
+            data_x_cat[cat][3].append(data[3])
+
+        data_x_cat_val = defaultdict(dict)
+        for data in reduced_ds_val:
+            cat = int(data[0])
+            if not data_x_cat_val[cat]:
+                data_x_cat_val[cat] = defaultdict(list)
+
+            data_x_cat_val[cat][1].append(data[1])
+            data_x_cat_val[cat][2].append(data[2])
+            data_x_cat_val[cat][3].append(data[3])
+
+        for c in range(0,9):
+            ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
+            ax.scatter(data_x_cat_val[c+1][1], data_x_cat_val[c+1][2], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
+            pass
+        
+        ax.set_xlabel('PC1')
+        ax.set_ylabel('PC2')
+        
+        ax = fig.add_subplot(132)
+
+        for c in range(0,9):
+            ax.scatter(data_x_cat[c+1][2], data_x_cat[c+1][3], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
+            ax.scatter(data_x_cat_val[c+1][2], data_x_cat_val[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
+            pass
+
+        ax.set_xlabel('PC2')
+        ax.set_ylabel('PC3')
+
+        ax = fig.add_subplot(133)
+
+        for c in range(0,9):
+            ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][3], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
+            ax.scatter(data_x_cat_val[c+1][1], data_x_cat_val[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
+            pass
+
+        ax.set_xlabel('PC1')
+        ax.set_ylabel('PC3')
+
+        plt.legend(numpoints=1,ncol=6)
+
+        plt.show()
