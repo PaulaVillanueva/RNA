@@ -12,7 +12,7 @@ loader = DataLoader()
 fs, ls =  loader.LoadData("ds/tp2_training_dataset.csv")
 
 
-epochs = 15
+epochs = 30
 lrcons = 0.07
 eps = 0.01
 

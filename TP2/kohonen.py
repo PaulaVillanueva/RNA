@@ -11,7 +11,7 @@ class Kohonen:
 
     def train(self, X, epochs):
         self.initialize_weigths()
-        for n in range(epochs):
+        for n in range(1,epochs+1):
             for x in X:
                 winner = self.get_winner_unit_for_sample (x)
                 self.update_neighbordhood_weights (winner, x, n)
@@ -41,7 +41,7 @@ class Kohonen:
         return math.sqrt((i[0] - j[0])**2 + (i[1] - j[1])**2)
 
     def lr(self, n):
-        return 0.001
+        return 0.01 / (n **2)
 
     def weights(self):
         return self._weights
