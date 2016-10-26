@@ -6,8 +6,10 @@ class Kohonen:
         self._output_layout = output_layout
         self._num_input = num_input
         self._weights = None
-        self._sigma0 = 1
-        self._tau = 1
+        self._sigma0 = 2.7
+        #self._tau = 50.0
+        self._tau = 0.0005
+
 
     def train(self, X, epochs):
         self.initialize_weigths()
@@ -17,6 +19,8 @@ class Kohonen:
                 winner = self.get_winner_unit_for_sample (x)
                 self.update_neighbordhood_weights (winner, x, n)
             print "Finished epoch ", n
+            if n % 20 == 0 and self._plot_hook != None:
+                self._plot_hook()
 
     def initialize_weigths(self):
         self._weights = {}
@@ -28,12 +32,17 @@ class Kohonen:
         return min(self._weights.keys(), key=lambda k: np.linalg.norm(self._weights[k] - sample))
 
     def sigma(self, n):
-        return self._sigma0 * math.exp(-n / self._tau)
-        #return self._sigma0 / (1+n*self._sigma0 * self._tau)
+        #return self._sigma0 * math.exp(-(n / self._tau))
+        return self._sigma0 / (1+n*self._sigma0 * self._tau)
 
     def h(self, n, j, i):
-        return math.exp(-(self.ddistance(i,j)**2)/2*self.sigma(n)**2)
-
+        return math.exp(
+            -(
+                (self.ddistance(i,j)**2)
+                /
+                (2*self.sigma(n)**2)
+            )
+        )
     def update_neighbordhood_weights(self, winner, x, n):
 
         for u in self._weights.keys():
@@ -46,7 +55,7 @@ class Kohonen:
         return math.sqrt((i[0] - j[0])**2 + (i[1] - j[1])**2)
 
     def lr(self, n):
-        return 0.01 / (n **2)
+        return 0.01
 
     def weights(self):
         return self._weights
@@ -57,6 +66,13 @@ class Kohonen:
             for j in range(self._output_layout[1]):
                     hache = self.h(n, (5,5), (i,j))
                     print "H:", hache
-                    if hache > 0.1 :
+                    if hache > 0.05 :
                         nb = nb + 1
         print "Vecinos: ", nb
+
+
+    def plotKook(self, hook):
+        return self._plot_hook
+
+    def setPlotHook(self, hook):
+        self._plot_hook = hook

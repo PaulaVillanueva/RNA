@@ -2,6 +2,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 class HeatMap:
+    def __init__(self):
+        self._figure = 0
+        self._plot_handler = None
+
     def displayHeatMap (self, layout, W, X, Y, aFn):
         color_matrix = np.zeros((layout[0],layout[1]))
         #Los colores son asignados directamente a las categorias si se representan con numeros contínuos
@@ -27,6 +31,7 @@ class HeatMap:
                 final_colors[i][j] = np.argmax(cat_qtys[(i,j)])
 
 
+        self._figure = self._figure + 1
+        plt.ion()
         plt.matshow(final_colors)
         plt.show()
-        raw_input("")
