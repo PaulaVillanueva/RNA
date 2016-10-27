@@ -18,7 +18,7 @@ Regla Sanger:
 
 \subsection{Modelo}
 
-Nuestro dataset contiene 900 entradas, y cada entrada contiene 856 atributos.
+Cada entrada del dataset contiene 856 atributos, por lo tanto tenemos 856 unidades de entrada. Como queremos reducir el conjuntos de datos a 3 dimensiones, tenemos 3 unidades de salida.
 
 \begin{itemize}
 	\item$X \in \mathbb{R}^{856}$
@@ -33,3 +33,54 @@ Nuestro dataset contiene 900 entradas, y cada entrada contiene 856 atributos.
 	\caption{Modelo de red}
 \end{figure}
 
+\subsection{Implementación}
+
+\subsubsection{Prepocesamiento de datos}
+
+El dataset se preprocesa centrando los datos en el 0, calculando la media de las frecuencias de cada palabra (posición del vector) y restándosela a cada una de ellas. De esta forma, la media de cada columna del dataset resultante es 0 y los datos quedan distribuidos alrededor del 0.
+
+\subsubsection{Pseudocódigo}
+
+Inicializamos la matriz de pesos con valores random $\in[-1/2, 1/2]$.
+
+\begin{algorithm}[H]
+\caption{train}
+\begin{algorithmic}
+	\State e = 0
+    \While {not fin}
+        \State e+=1
+        \State lr = lrcons * e$^{-1}$
+        \For {x in dataset}
+            \State y = x $\bullet$ weights
+            \State aplicamos regla
+            \State weights += dw
+        \EndFor
+    \EndWhile
+    \State return weights
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{fin}
+\begin{algorithmic}
+	\State return (e == max\_epochs) or (weights es ortogonal)
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{ortogonal}
+\begin{algorithmic}
+	\State return (weigths$^t$ $\bullet$ weights) - identity matrix $<$ epsilon * identity matrix
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsection{Ejecución}
+
+\subsubsection{Modo de uso}
+
+\subsubsection{Requerimientos}
+
+Python
+
+Numpy, Matplotlib
