@@ -62,7 +62,7 @@ class HebbianNN:
             U = np.triu(np.ones(dim))
         while (not self.orthogonal(weights,eps)) and e < max_epochs:
             e+=1
-            lr = lrcons * (e**-2)
+            lr = lrcons * (e**-1)
 
             for x in ds:
                 x = np.array([x])
@@ -136,60 +136,25 @@ class HebbianNN:
 
         plt.show()
 
-    def plot2d(self, reduced_ds_train, reduced_ds_val):
-        colors = ['b', 'g', 'r', 'c', 'm', 'gold', 'k', 'pink', '0.8']
-
-        fig = plt.figure()
-        ax = fig.add_subplot(131)
-
+    def get_data_x_cat(self, reduced_ds):
         data_x_cat = defaultdict(dict)
-        for data in reduced_ds_train:
+        for data in reduced_ds:
             cat = int(data[0])
             if not data_x_cat[cat]:
                 data_x_cat[cat] = defaultdict(list)
 
-            data_x_cat[cat][1].append(data[1])
-            data_x_cat[cat][2].append(data[2])
-            data_x_cat[cat][3].append(data[3])
+            for i in range(1,len(reduced_ds[0])):
+                data_x_cat[cat][i].append(data[i])
+        return data_x_cat
 
-        data_x_cat_val = defaultdict(dict)
-        for data in reduced_ds_val:
-            cat = int(data[0])
-            if not data_x_cat_val[cat]:
-                data_x_cat_val[cat] = defaultdict(list)
-
-            data_x_cat_val[cat][1].append(data[1])
-            data_x_cat_val[cat][2].append(data[2])
-            data_x_cat_val[cat][3].append(data[3])
+    def plot2d(self, data_x_cat, data_x_cat_val, ax, pc1, pc2):
+        colors = ['b', 'g', 'r', 'c', 'm', 'gold', 'k', 'pink', '0.8']
 
         for c in range(0,9):
-            ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
-            ax.scatter(data_x_cat_val[c+1][1], data_x_cat_val[c+1][2], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
+            ax.scatter(data_x_cat[c+1][pc1], data_x_cat[c+1][pc2], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
+            ax.scatter(data_x_cat_val[c+1][pc1], data_x_cat_val[c+1][pc2], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
             pass
         
-        ax.set_xlabel('PC1')
-        ax.set_ylabel('PC2')
+        ax.set_xlabel('PC'+str(pc1))
+        ax.set_ylabel('PC'+str(pc2))
         
-        ax = fig.add_subplot(132)
-
-        for c in range(0,9):
-            ax.scatter(data_x_cat[c+1][2], data_x_cat[c+1][3], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
-            ax.scatter(data_x_cat_val[c+1][2], data_x_cat_val[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
-            pass
-
-        ax.set_xlabel('PC2')
-        ax.set_ylabel('PC3')
-
-        ax = fig.add_subplot(133)
-
-        for c in range(0,9):
-            ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][3], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
-            ax.scatter(data_x_cat_val[c+1][1], data_x_cat_val[c+1][3], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
-            pass
-
-        ax.set_xlabel('PC1')
-        ax.set_ylabel('PC3')
-
-        plt.legend(numpoints=1,ncol=6)
-
-        plt.show()
