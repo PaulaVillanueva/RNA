@@ -1,14 +1,16 @@
 \section{Mapeo de características}
 
+\subsection{Introducción}
+
 Utilizando el mismo dataset de Bag of Words (BOW) del ejercicio anterior debemos construir un modelo de mapeo de características auto-organizado que clasifique automáticamente los 
-documentos en un arreglo de dos dimensiones. Este problema será resuelto utilizando la Regla de Kohonen.
+documentos en un arreglo de dos dimensiones. Este problema será resuelto utilizando Kohonen.
 
 Kohonen:
 \begin{itemize}
 	\item Propone un orden topológico y un modelo competitivo
 	\item Función de transferencia 
 				\begin{align*}
-					O_{i}=f(\varepsilon, W_{i}) donde W_{i}=(w_{i1}, ..., w_{in}) \in I\!R_{n}
+					O_{i}=f(\varepsilon, W_{i}) donde W_{i}=(w_{i1}, ..., w_{in}) \in \mathbb{R}_{n}
 				\end{align*}
 	
 	\item PRINCIPIO DE ADAPTACIÓN: Consiste en detectar la unidad cuyos parámetros sean más parecidos a la entrada $\varepsilon$.
@@ -27,11 +29,7 @@ Kohonen:
 			
 			\item Se establece una topología de entrada a partir de establecer funciones de vecindad, esto fuerza a que los pesos no crezcan de una forma desmedida respecto de los 
 			pesos de las unidades vecinas. Esto hace que los entornos sean amplios al principio pero pequeños al final, hasta limitarse solo a la unidad seleccionada.
-				\begin{figure}[ht!]
-					\centering
-					\includegraphics[width=0.2\linewidth]{img/parte2-vecindario.jpg}
-					\caption{Función de vecindad.}
-				\end{figure}
+				
 			\item REGLA DE KOHONEN: Actualización de los $W_{i}$.
 					\begin{align*}
 					 W_{i}(t+1) &=  \begin{cases}
@@ -42,20 +40,44 @@ Kohonen:
 			\item $\eta(t)$ es el coeficiente de aprendizaje dinámico, decreciente en el tiempo.
 				\begin{align*}
 					\Delta W_{ij} = \alpha(t) [ \varepsilon(t) - W_{i}(t) ]
-					\alpha(t) = \eta \lambda(i,c)
-					\lambda(i,c) = {\rm e}^x 
+				\end{align*}
+				\begin{align*}
+					\alpha(t) = \eta \Lambda(i,c)
+				\end{align*}
+				\begin{align*}
+					\Lambda(i,c) = \begin{cases}
+										1 & i = c \\
+										decrece a mayor distancia entre i y c 
+									\end{cases} \\
 				\end{align*}
 		\end{itemize}
+	\item TEOREMA DE KOHONEN: Con probabilidad 1 los $W_{i}$ se ordenan de forma ascendientes o descendientes cuando $t \to
+		\infty$ si $\alpha(t) \to 0$ con suficiente lentitud.
 \end{itemize}
- 
+
+\subsection{Modelo}
+
+Al igual que en el ejercicio anterior nuestro dataset tiene 900 entradas, y cada una de ellas contiene 856 atributos.
+
+Para que un modelo sea auto-organizado debemos elegir el sigma $\sigma$ y  el eta $\eta$ adecuados. El sigma será utilizado como parámetro de la Gauseana y medirá la dispersión, cuantas 
+neuronas vecinas a la neurona activada modificarán sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuestra red.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.7\linewidth]{img/parte2-comparacion.jpg}
+	\caption{Comparación}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.3\linewidth]{img/parte2-vecindario.jpg}
+	\caption{Función de vecindad.}
+\end{figure}
 
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.7\linewidth]{img/kohonen4clases.jpg}
+	\includegraphics[width=0.8\linewidth]{img/kohonen4clases.jpg}
 	\caption{Ejemplo con cuatro clases.}
 \end{figure}
-
-Para que un modelo sea auto-organizado debemos elegir el sigma $\sigma$ y  el eta $\eta$ adecuados. El sigma será utilizado como parámetro de la Gauseana y medirá la dispersión, cuantas 
-neuronas vecinas a la neurona activada modificarán sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuestra red.
 
