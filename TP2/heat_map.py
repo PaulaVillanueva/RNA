@@ -33,5 +33,6 @@ class HeatMap:
 
         self._figure = self._figure + 1
         #plt.ion()
-        plt.matshow(final_colors)
-        plt.show()
+        #plt.matshow(final_colors)
+        #plt.show()
+        print (final_colors)
