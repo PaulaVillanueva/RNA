@@ -10,14 +10,15 @@ class ParamsIO:
         biases = [np.loadtxt(StringIO(s), delimiter=",") for s in bstrings]
         return (weigths, biases)
 
-    def save_params(self, fname, weights, epochs):
+    def save_params(self, fname, layout, weights, epochs):
         wstrings = {}
-        for k in weights.keys:
+        for k in weights.keys():
             s = StringIO()
             np.savetxt(s,weights[k],delimiter=",")
-            wstrings[k] = s.getvalue()
+            wstrings[str(k)] = s.getvalue()
 
         d = {}
+        d["layout"] = str(layout)
         d["epochs"] = epochs
         d["weights"] = wstrings
 

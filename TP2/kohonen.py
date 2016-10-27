@@ -7,22 +7,27 @@ class Kohonen:
         self._num_input = num_input
         self._weights = None
         # Normalizo el sigma inicial basado en valor experimental calculado para 10x10
-        self._sigma0 = 2.7 * ((self._output_layout[0] / 10))
+        self._sigma0 = 4.5 * ((self._output_layout[0] / 10))
         #self._tau = 50.0
 
-        self._tau = 0.001
+        self._tau = 0.005
+        self._epoch = 0
 
 
     def train(self, X, epochs):
         self.initialize_weigths()
         for n in range(1,epochs+1):
+            self._epoch = n
             self.printH(n)
             for x in X:
                 winner = self.get_winner_unit_for_sample (x)
                 self.update_neighbordhood_weights (winner, x, n)
             print "Finished epoch ", n
-            if n % 250 == 0 and self._plot_hook != None:
+            if n % 5 == 0 and self._plot_hook != None:
                 self._plot_hook()
+            if n % 5 == 0 and self._checkpoint_hook != None:
+                self._checkpoint_hook()
+
 
     def initialize_weigths(self):
         self._weights = {}
@@ -89,3 +94,12 @@ class Kohonen:
 
     def setPlotHook(self, hook):
         self._plot_hook = hook
+
+    def setCheckpointHook(self, hook):
+        self._checkpoint_hook = hook
+
+
+
+
+    def get_epoch(self):
+        return self._epoch
