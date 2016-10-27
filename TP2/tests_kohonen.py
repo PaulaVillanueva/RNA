@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pylab as pyl
 
+from kohonen_category_mapper import KohonenCategoryMapper
 from params_io import ParamsIO
 from preprocessor import FeatureNormalizer
 #from kohonen_classifier import KohonenClassifier
@@ -26,12 +27,12 @@ train_fs = fs[:600]
 
 test_fs = fs[600:]
 test_ls = ls[600:]
-
+layout = (15,15)
 HT = HeatMap()
 param_saver = ParamsIO()
-KH = Kohonen((15,15), train_fs.shape[1])
-plot_hook = lambda : HT.displayHeatMap((15,15), KH.weights(), train_fs, train_ls, lambda x : x)
-checkpoint_hook =  lambda : param_saver.save_params("./kohonen.params", KH._output_layout, KH.weights(), KH.get_epoch())
+KH = Kohonen(layout, train_fs.shape[1])
+plot_hook = lambda : HT.displayHeatMap(layout, KH.weights(), train_fs, train_ls, lambda x : x)
+checkpoint_hook =  lambda : param_saver.save_params("./kohonen.params", KH._output_layout, KH.weights(), KohonenCategoryMapper().getCategoryMap(layout, KH.weights(), train_fs, train_ls ) ,  KH.get_epoch())
 KH.setPlotHook(plot_hook)
 KH.setCheckpointHook(checkpoint_hook)
 KH.train(train_fs, epochs)
