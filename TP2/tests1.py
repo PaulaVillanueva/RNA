@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from us_learning import HebbianNN
 from data_loader import DataLoader
 
@@ -9,9 +10,9 @@ fs, ls =  loader.LoadData("ds/tp2_training_dataset.csv")
 
 epochs = 500
 lrcons = 0.07
-eps = 0.01
+eps = 0.05
 
-HB = HebbianNN(len(fs[0]), 3, 0.5)
+HB = HebbianNN(len(fs[0]), 9, 0.5)
 train_fs = fs[:600]
 
 # OjaM
@@ -42,7 +43,18 @@ HB.plot3d(reduced_ds_train, reduced_ds_val)
 
 # plots 2d
 
-HB.plot2d(reduced_ds_train, reduced_ds_val)
+data_x_cat = HB.get_data_x_cat(reduced_ds_train)
+
+data_x_cat_val = HB.get_data_x_cat(reduced_ds_val)
+
+f, axarr = plt.subplots(9, 9)
+for i in range(1,10):
+    for j in range(1,10):
+        HB.plot2d(data_x_cat, data_x_cat_val, axarr[i-1, j-1], i, j)
+
+plt.legend(numpoints=1,ncol=6)
+
+plt.show()
 
 # Sanger
 
@@ -69,6 +81,17 @@ reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs
 # 3d
 HB.plot3d(reduced_ds_train, reduced_ds_val)
 
-# plots 2d
+## plots 2d
 
-HB.plot2d(reduced_ds_train, reduced_ds_val)
+data_x_cat = HB.get_data_x_cat(reduced_ds_train)
+
+data_x_cat_val = HB.get_data_x_cat(reduced_ds_val)
+
+f, axarr = plt.subplots(9, 9)
+for i in range(1,10):
+    for j in range(1,10):
+        HB.plot2d(data_x_cat, data_x_cat_val, axarr[i-1, j-1], i, j)
+
+plt.legend(numpoints=1,ncol=6)
+
+plt.show()
