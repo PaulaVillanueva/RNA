@@ -22,3 +22,5 @@ class DataLoader:
     def centralize(self, v):
         means = np.mean(v, axis=0)
         return v - means
+
+

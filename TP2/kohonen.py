@@ -6,9 +6,11 @@ class Kohonen:
         self._output_layout = output_layout
         self._num_input = num_input
         self._weights = None
-        self._sigma0 = 2.7
+        # Normalizo el sigma inicial basado en valor experimental calculado para 10x10
+        self._sigma0 = 2.7 * ((self._output_layout[0] / 10))
         #self._tau = 50.0
-        self._tau = 0.0005
+
+        self._tau = 0.001
 
 
     def train(self, X, epochs):
@@ -19,7 +21,7 @@ class Kohonen:
                 winner = self.get_winner_unit_for_sample (x)
                 self.update_neighbordhood_weights (winner, x, n)
             print "Finished epoch ", n
-            if n % 20 == 0 and self._plot_hook != None:
+            if n % 250 == 0 and self._plot_hook != None:
                 self._plot_hook()
 
     def initialize_weigths(self):
@@ -50,9 +52,20 @@ class Kohonen:
             self._weights[u] = self._weights[u] + self.lr(n) * hache * (x - self._weights[u])
 
 
+    # Distancia Toroide
     def ddistance(self, i, j):
         #TODO:  Me falta calcular esta funcion
-        return math.sqrt((i[0] - j[0])**2 + (i[1] - j[1])**2)
+        w = self._output_layout[0]
+        h = self._output_layout[1]
+        min_x = min(i[0], j[0])
+        min_y = min(i[1], j[1])
+        max_x = max(i[0], j[0])
+        max_y = max(i[1], j[1])
+
+        dist_x = min(max_x-min_x, min_x + w - max_x)
+        dist_y = min(max_y - min_y, min_y + h - max_y)
+
+        return math.sqrt(dist_x**2 + dist_y**2)
 
     def lr(self, n):
         return 0.01
