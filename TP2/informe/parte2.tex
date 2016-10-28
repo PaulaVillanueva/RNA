@@ -62,42 +62,7 @@ correspondientes a compañías Brasileñas clasificadas en nueve categorías dis
 En primer lugar sabemos que la red a entrenar tendrá un aprendizaje no supervisado, ya que no sabemos el resultado al que
 queremos llegar.
 
-Para diseñar la estructura de la red debemos saber cuantas clases existen en el dataset, como dijimos anteriomente son nueve.
-
-Sabemos que unidades de entradas cercanas deben activar unidades de salidas cercanas.
-
-Definimos:
-\begin{align*}
-	n, M, M_{1}, M_{2} \in \mathbb{N} \\
-	M = M_{1} . M_{2} \\
-	X \in \mathbb{R}_{n} \\
-	Y \in \mathbb{R}_{M} \\
-	W \in \mathbb{R}_{n.M} \\
-\end{align*}
-
-donde:
-
-$Y$ es el vector de entrada.
-
-$W$ es la matriz de pesos asociado a cada par de neuronas. 
-
-$X$ es el vector de salida de nuestra red, cuyos índice $i$ indicará el número de unidad. Dicho índice contiene una matriz con
- los pesos $W_{i}$ asociado a cada neurona $j$.\\
-
-Para calcular la activación de una capa Kohonen ve cuánto estímulo recibe una neurona de la capa anterior y ve cuál se activa.
-Para saber cula se activa debemos establecer un criterio de activación. Elegimos a la unidad ganadora como el $j$ que más se 
-parece a mi vector de entrada y con esto sabemos que es la neurona que se encuentra a menor distancia. 
-
-En nuestro caso utilizamos la distancia euclidiana:
-
-\begin{align*}
-		j* = argmin_{j}||Y^{T} \bullet W_{\bullet j}(t)||_{2}
-\end{align*}
-
-De esta forma calculamos la distancia entre $Y$ y cada columna de $W$ y posteriomente nos quedamos con la neurona $j$ 
-cuya distancia minimiza la función. En la figura 2, mostramos cómo se realiza dicha comparación teniendo en cuenta las dimensiones.
-
-\newpage
+Definimos nuestro modelo como:
 
 \begin{figure}[ht!]
 	\centering
@@ -105,8 +70,35 @@ cuya distancia minimiza la función. En la figura 2, mostramos cómo se realiza 
 	\caption{Comparación}
 \end{figure}
 
-El vector X tiene dimensión $1 x M$ con $M = M_{1} . M_{2}$. Esto indica que el vector $M$ esta formado por $M_{2}$ vectores $M_{1}$.
-EXPLICAR ESTO!!!!!!!
+$X$ es el vector de entrada. $X \in \mathbb{R}^{856x1}$ \\
+
+$W$ es diccionario de salida de nuestra red, cuyas claves son pares $(i,j)$ y los significados son vectores en $\mathbb{R}^{856}$.\\
+
+$Y$ es la matriz resultado. $Y \in \mathbb{R}^{M}$ con $M = M_{1} . M_{2}$ que es el tamaño del layout.\\
+
+El layout es un plano en el que coloreamos las coordenadas del color asociado a la categoria de la neurona ganadora. Este puede tener distintas 
+dimensiones según lo definamos. Por ejemplo puede tener dimensión $15 x 15$ y estar coloreado como se ve en la Figura 3.
+
+%\begin{figure}[ht!]
+%	\centering
+%	\includegraphics[width=0.7\linewidth]{img/parte2-layout.jpg}
+%	\caption{Ejemplo de Layout de dimensión $15 x 15$.}
+%\end{figure}
+
+\subsection{Implementación}
+
+Para calcular la activación de una capa Kohonen ve cuánto estímulo recibe una neurona de la capa anterior y ve cuál se activa.
+Para saber cual se activa debemos establecer un criterio de activación. Elegimos a la unidad ganadora como el $j$ que más se 
+parece a mi vector de entrada y con esto sabemos que es la neurona que se encuentra a menor distancia. 
+
+En nuestro caso utilizamos la distancia euclidiana:
+
+\begin{align*}
+		j* = argmin_{j}||Y^{T} - W_{\bullet j}(t)||_{2}
+\end{align*}
+
+De esta forma calculamos la distancia entre $X$ y cada columna de $W$ y posteriomente nos quedamos con la neurona $j$ 
+cuya distancia minimiza la función. En la Figura 2, mostramos cómo se realiza dicha comparación teniendo en cuenta las dimensiones.
 
 Con esto logramos que una salida se apodere de un sector de la entrada y en consecuencia puede llegar a suceder que en nuestra red
 no haya un orden topológico. Por lo tanto, una vez elegida la neurona ganadora debemos implementar una topología de entrada.
@@ -118,9 +110,25 @@ La topología que utilizamos se muestra en la siguiente figura.
 	\caption{Función de vecindario.}
 \end{figure}
 
+\begin{algorithm}[H]
+	\caption{def ddistance(self, i, j):}
+	\begin{algorithmic}
+		\State $w = self._output_layout[0]$
+		\State $h = self._output_layout[1]$
+		\State $min_x = min(i[0], j[0])$
+		\State $min_y = min(i[1], j[1])$
+		\State $max_x = max(i[0], j[0])$
+		\State $max_y = max(i[1], j[1])$
+
+		\State $dist_x = min(max_x-min_x, min_x + w - max_x)$
+		\State $dist_y = min(max_y - min_y, min_y + h - max_y)$
+
+		\State return $math.sqrt(dist_x**2 + dist_y**2)$
+	\end{algorithmic}
+\end{algorithm}
+
 Este tipo de topología fuerza a que los pesos no crezcan en forma desmedida con respecto a las neuronas vecinas. 
-Dichos pesos los 
-actualizamos mediante la Regla de Kohonen:
+Dichos pesos los actualizamos mediante la Regla de Kohonen:
 
 \begin{align*}
 	W_{i}(t+1) &=  \begin{cases}
