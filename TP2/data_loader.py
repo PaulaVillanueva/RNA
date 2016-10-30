@@ -17,6 +17,14 @@ class DataLoader:
 
         return (centrated_features,labels)
 
+    def LoadRawData(self, fname):
+
+        str_data=open (fname, "r").read()
+
+        raw_data = np.genfromtxt(StringIO(str_data), delimiter=",")
+        np.random.shuffle(raw_data)
+
+        return raw_data
 
     # los datos tienen que estar centrados en el 0, no normalizados
     def centralize(self, v):

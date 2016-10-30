@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from us_learning import HebbianNN
 from data_loader import DataLoader
+from hbplot import plot3d, plot2d, get_data_x_cat
 
 
 loader = DataLoader()
@@ -11,8 +12,9 @@ fs, ls =  loader.LoadData("ds/tp2_training_dataset.csv")
 epochs = 500
 lrcons = 0.07
 eps = 0.05
+noutputs = 3
 
-HB = HebbianNN(len(fs[0]), 9, 0.5)
+HB = HebbianNN(len(fs[0]), noutputs, 0.5)
 train_fs = fs[:600]
 
 # OjaM
@@ -20,7 +22,6 @@ train_fs = fs[:600]
 we = HB.train_opt(train_fs, eps, lrcons, epochs, True)
 
 print "check orthogonality: ", HB.orthogonal(we,eps)
-print "check norm == 1: ", HB.norm_eq1(we,eps)
 
 outputs = np.array([np.dot(x.transpose(), we) for x in train_fs])
 print "outputs: "
@@ -39,29 +40,29 @@ reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs
 
 # 3d
 
-HB.plot3d(reduced_ds_train, reduced_ds_val)
+plot3d(reduced_ds_train, reduced_ds_val)
 
 # plots 2d
 
-data_x_cat = HB.get_data_x_cat(reduced_ds_train)
 
-data_x_cat_val = HB.get_data_x_cat(reduced_ds_val)
+data_x_cat = get_data_x_cat(reduced_ds_train)
 
-f, axarr = plt.subplots(9, 9)
-for i in range(1,10):
-    for j in range(1,10):
-        HB.plot2d(data_x_cat, data_x_cat_val, axarr[i-1, j-1], i, j)
+data_x_cat_val = get_data_x_cat(reduced_ds_val)
 
-plt.legend(numpoints=1,ncol=6)
 
-plt.show()
+for i in range(1,noutputs+1):
+    for j in range(i+1,noutputs+1):
+        f, axarr = plt.subplots(1,1)
+        plot2d(data_x_cat, data_x_cat_val, axarr, i, j)
+        plt.savefig('2dplots/oja/pc'+str(i)+'-pc'+str(j)+'.png')
+        plt.close(f)
+
 
 # Sanger
 
 we = HB.train_opt(train_fs, eps, lrcons, epochs)
 
 print "check orthogonality: ", HB.orthogonal(we,eps)
-print "check norm == 1: ", HB.norm_eq1(we,eps)
 
 outputs = np.array([np.dot(x.transpose(), we) for x in train_fs])
 print "outputs: "
@@ -79,19 +80,19 @@ outputs_val = np.array([np.dot(x.transpose(), we) for x in val_fs])
 reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs_val) ]
 
 # 3d
-HB.plot3d(reduced_ds_train, reduced_ds_val)
+plot3d(reduced_ds_train, reduced_ds_val)
 
 ## plots 2d
 
-data_x_cat = HB.get_data_x_cat(reduced_ds_train)
+data_x_cat = get_data_x_cat(reduced_ds_train)
 
-data_x_cat_val = HB.get_data_x_cat(reduced_ds_val)
+data_x_cat_val = get_data_x_cat(reduced_ds_val)
 
-f, axarr = plt.subplots(9, 9)
-for i in range(1,10):
-    for j in range(1,10):
-        HB.plot2d(data_x_cat, data_x_cat_val, axarr[i-1, j-1], i, j)
 
-plt.legend(numpoints=1,ncol=6)
+for i in range(1,noutputs+1):
+    for j in range(i+1,noutputs+1):
+        f, axarr = plt.subplots(1,1)
+        plot2d(data_x_cat, data_x_cat_val, axarr, i, j)
+        plt.savefig('2dplots/sanger/pc'+str(i)+'-pc'+str(j)+'.png')
+        plt.close(f)
 
-plt.show()
