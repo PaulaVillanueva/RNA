@@ -9,11 +9,11 @@ class ParamsIO:
         j = json.load(json_data)
         epochs = int(j["epochs"])
         json_weights = j["weights"]
-        #json_categories = j["categories"]
+        json_categories = j["categories"]
         layout = self.str_to_tuple(str(j["layout"]))
         weights = { self.str_to_tuple(str(k)):np.loadtxt(StringIO(v), delimiter=",") for k,v in json_weights.iteritems()}
-        #categories = { self.str_to_tuple(k):np.loadtxt(StringIO(v), delimiter=",") for k,v in json_categories.iteritems()}
-        categories={}
+        categories = { self.str_to_tuple(str(k)):v for k,v in json_categories.iteritems()}
+
         return {
                     "weights": weights,
                     "categories": categories,

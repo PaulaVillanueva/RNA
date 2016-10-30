@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: latin-1 -*-
 import argparse
 import ej1_data_loader
 from model_io import ModelIO

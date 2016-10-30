@@ -23,11 +23,15 @@ class Kohonen:
                 winner = self.get_winner_unit_for_sample (x)
                 self.update_neighbordhood_weights (winner, x, n)
             print "Finished epoch ", n
-            if n % 5 == 0 and self._plot_hook != None:
+            if n % 50 == 0 and self._plot_hook != None:
                 self._plot_hook()
-            if n % 5 == 0 and self._checkpoint_hook != None:
+            if n % 50 == 0 and self._checkpoint_hook != None:
                 self._checkpoint_hook()
 
+        if self._plot_hook != None:
+            self._plot_hook()
+        if self._checkpoint_hook != None:
+            self._checkpoint_hook()
 
     def initialize_weigths(self):
         self._weights = {}

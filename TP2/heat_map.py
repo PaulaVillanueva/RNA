@@ -6,7 +6,7 @@ class HeatMap:
         self._figure = 0
         self._plot_handler = None
 
-    def displayHeatMap (self, layout, W, X, Y, aFn):
+    def displayHeatMap (self, layout, W, X, Y, textOnly=True):
         color_matrix = np.zeros((layout[0],layout[1]))
         #Los colores son asignados directamente a las categorias si se representan con numeros contínuos
 
@@ -30,9 +30,21 @@ class HeatMap:
             for j in range (layout[1]):
                 final_colors[i][j] = np.argmax(cat_qtys[(i,j)])
 
+        if textOnly:
+            print (final_colors)
+        else:
+            plt.ion()
+            plt.matshow(final_colors)
+            plt.show()
 
-        self._figure = self._figure + 1
-        #plt.ion()
-        #plt.matshow(final_colors)
-        #plt.show()
-        print (final_colors)
+    def show_from_category_dictionary(self, cdict, layout, textOnly=True):
+        final_colors = np.zeros(layout)
+        for i in range (layout[0]):
+            for j in range (layout[1]):
+                final_colors[i][j] = cdict[(i,j)]
+
+        print final_colors
+        if not textOnly:
+            plt.ion()
+            plt.matshow(final_colors)
+            plt.show()
