@@ -22,20 +22,26 @@ def plot3d(reduced_ds_train, reduced_ds_val):
     data_x_cat = get_data_x_cat(reduced_ds_train)
 
     for c in range(0,9):
-        ax.plot([], [], marker='o', color=colors[c], label='categoria '+ str(c + 1) + ' training')
-        ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='o', color=colors[c])
+        ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='o', s=30, c=colors[c],label='cat'+ str(c + 1) + ' train', edgecolors='none')
 
     data_x_cat = get_data_x_cat(reduced_ds_val)
 
     for c in range(0,9):
-        ax.plot([], [], marker='x', color=colors[c], label='categoria '+ str(c + 1) + ' validation')
-        ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='x', color=colors[c])
+        ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='^', s=30, c=colors[c], label='cat'+ str(c + 1) + ' val',edgecolors='none')
 
     ax.set_xlabel('PC1')
     ax.set_ylabel('PC2')
     ax.set_zlabel('PC3')
 
-    plt.legend(numpoints=1,ncol=6)
+    plt.legend(numpoints=1,ncol=6,shadow=True, fancybox=True)
+
+    leg = plt.gca().get_legend()
+    ltext  = leg.get_texts()  # all the text.Text instance in the legend
+    llines = leg.get_lines()  # all the lines.Line2D instance in the legend
+    frame  = leg.get_frame()  # the patch.Rectangle instance surrounding the legend
+
+    plt.setp(ltext, fontsize='small')    # the legend text fontsize
+    plt.setp(llines, linewidth=1.5)      # the legend linewidth
 
     plt.show()
 
@@ -44,7 +50,7 @@ def plot2d(data_x_cat, data_x_cat_val, ax, pc1, pc2):
 
     for c in range(0,9):
         ax.scatter(data_x_cat[c+1][pc1], data_x_cat[c+1][pc2], marker='o', color=colors[c], label='c'+ str(c + 1) + ' training')
-        ax.scatter(data_x_cat_val[c+1][pc1], data_x_cat_val[c+1][pc2], marker='x', color=colors[c], label='c'+ str(c + 1) + ' validation')
+        ax.scatter(data_x_cat_val[c+1][pc1], data_x_cat_val[c+1][pc2], marker='^', color=colors[c], label='c'+ str(c + 1) + ' validation')
         pass
     
     ax.set_xlabel('PC'+str(pc1))
