@@ -7,12 +7,12 @@ from hbplot import plot3d, plot2d, get_data_x_cat
 
 
 def saveAs(saveIn, obj):
-	print "Guardando la red en %s" % saveIn
+	print "Guardando en %s" % saveIn
 	with open(saveIn, 'wb') as f:
 		cPickle.dump(obj, f, protocol=cPickle.HIGHEST_PROTOCOL)
 
 def load(loadFrom):
-	print "Cargando red desde %s" % loadFrom
+	print "Cargando desde %s" % loadFrom
 	with open(loadFrom, 'rb') as f:
 		return cPickle.load(f)
 
@@ -41,7 +41,7 @@ ds = loader.LoadRawData(input_file)
 reduced_ds_test = HB.reduce(HB.weights_oja(),ds)
 reduced_ds_train = load("oja_reduced_ds")
 
-plot3d(reduced_ds_train, reduced_ds_test)
+plot3d(reduced_ds_train, reduced_ds_test,1,2,3)
 
 data_x_cat = get_data_x_cat(reduced_ds_train)
 data_x_cat_test = get_data_x_cat(reduced_ds_test)
@@ -57,7 +57,7 @@ plt.show()
 reduced_ds_test = HB.reduce(HB.weights_sanger(),ds)
 reduced_ds_train = load("sanger_reduced_ds")
 
-plot3d(reduced_ds_train, reduced_ds_test)
+plot3d(reduced_ds_train, reduced_ds_test,1,2,3)
 
 data_x_cat = get_data_x_cat(reduced_ds_train)
 data_x_cat_test = get_data_x_cat(reduced_ds_test)

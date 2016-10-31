@@ -100,9 +100,13 @@ optional arguments:
   -n N        Cantidad maxima de epochs
 \end{lstlisting}
 
-Ejemplo: 
+No hace falta especificar una cantidad máxima de épocas, por default es 100.
 
-\noindent\texttt{python hbtrain.py -p net.o -x ds/tp2\_training\_dataset.csv -n 100} \\
+Ejemplos: 
+
+\noindent\texttt{python hbtrain.py -p net.o -x ds/tp2\_training\_dataset.csv}
+
+\noindent\texttt{python hbtrain.py -p net.o -x ds/tp2\_training\_dataset.csv -n 50} \\
 
 \textbf{Para cargar datos de validación y visualizar contra los de entrenamiento:}
 
@@ -119,7 +123,7 @@ optional arguments:
 
 Ejemplo:
 
-\noindent\texttt{python hbreduction.py -p net.o -x ds/tp2\_testing\_dataset.csv} \\
+\noindent\texttt{python hbreduction.py -p net.o -x ds/tp2\_testing\_dataset.csv} 
 
 \subsubsection{Requerimientos}
 
@@ -131,19 +135,12 @@ Python:
 
 \subsection{Resultados}
 
-A continuación, se pueden observar representaciones gráficas de las posiciones en el espacio $\mathbb{R}^3$ que el modelo le asigna a cada documento, con la red entrenada con 600 datos y 300 datos de validación.
+A continuación, se pueden observar representaciones gráficas de los datos reducidos en el espacio $\mathbb{R}^3$ y $\mathbb{R}^2$ que el modelo le asigna a cada documento, con la red entrenada con 600 datos y 300 datos de validación.
 
 \subsubsection{Oja}
 
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=0.9\linewidth]{img/parte1-vista3d-oja.png}
-
-	\caption{Vista 3d de datos reducidos a tres dimensiones con regla Oja}
-\end{figure}
-
 \begin{figure}[ht!]	
-	\begin{subfigure}[b]{0.5\textwidth}
+	\begin{subfigure}[b]{0.49\textwidth}
 		\includegraphics[width=\linewidth]{img/oja/3dim-pc1-pc2.png}
 	\end{subfigure}%
 	~
@@ -159,15 +156,24 @@ A continuación, se pueden observar representaciones gráficas de las posiciones
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\linewidth]{img/oja/3dim-pc2-pc3.png}
 	\end{subfigure}%
-	\caption{Vistas de dos dimensiones}
+	\caption{Vistas de dos dimensiones con regla Oja}
 \end{figure}
-
-
-\subsubsection{Sanger}
 
 \begin{figure}[ht!]
 	\centering
-	\includegraphics[width=0.9\linewidth]{img/parte1-vista3d-sanger.png}
+	\includegraphics[width=0.8\linewidth]{img/parte1-vista3d-oja.png}
+
+	\caption{Vista 3d de datos reducidos a tres dimensiones con regla Oja}
+\end{figure}
+
+\newpage
+\subsubsection{Sanger}
+
+
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.8\linewidth]{img/parte1-vista3d-sanger.png}
 
 	\caption{Vista 3d de datos reducidos a tres dimensiones con regla Sanger}
 \end{figure}
@@ -188,16 +194,89 @@ A continuación, se pueden observar representaciones gráficas de las posiciones
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[width=\linewidth]{img/sanger/3dim-pc2-pc3.png}
 	\end{subfigure}%
-	\caption{Vistas de dos dimensiones}
+	\caption{Vistas de dos dimensiones con regla Sanger}
+\end{figure}
+
+
+\newpage
+
+\subsection{Conclusiones}
+
+Observando las representaciones gráficas en la sección de resultados obtenidas con el modelo de red propuesto de 3 unidades de salida, podemos concluir que este modelo de red no resulta bueno para la clasificación de estos documentos. Los datos reducidos de las distintas categorías no se diferencian bien. Esto se debe a que reducimos a sólo 3 dimensiones, tenemos 9 categorías y, además, que el número de categoría de cada documento corresponde a la actividad principal de la empresa, no necesariamente la única. 
+
+Para obtener mejores resultados, proponemos un modelo de red con 9 unidades de salida. Si bien esto complica la visualización de los datos reducidos, ya que tendríamos 9 dimensiones, se puede hacer una representación gráfica en dos dimensiones de cada par de componentes principales y analizar los datos en conjunto.
+
+Con este modelo propuesto obtuvimos, por ejemplo, los siguientes resultados con Sanger, observando primero los gráficos en dos dimensiones de cada par de componentes y eligiendo posteriormente 3 componentes para visualizar en conjunto.\\
+
+\begin{figure}[ht!]	
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-COLLAGE1}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-COLLAGE2}
+	\end{subfigure}%
+
+\end{figure}
+
+\begin{figure}[ht!]	
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-COLLAGE3}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-COLLAGE4}
+	\end{subfigure}%
+
+\end{figure}
+
+\begin{figure}[ht!]	
+	~\centering
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-COLLAGE5}
+	\end{subfigure}%
+	\caption{Vistas de dos dimensiones con regla Sanger}
+\end{figure}
+
+
+\begin{figure}[ht!]	
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-pc5-pc7.png}
+	\end{subfigure}%
+	~
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-pc5-pc8.png}
+	\end{subfigure}%
+
+\end{figure}
+
+\begin{figure}[ht!]	
+	~\centering
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[width=\linewidth]{img/sanger/9dim-pc7-pc8.png}
+	\end{subfigure}%
+	\caption{Vistas elegidas de dos dimensiones con regla Sanger con componentes principales 5, 7 y 8}
+\end{figure}
+
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.85\linewidth]{img/parte1-vista3d-sanger-9dim1.png}
+
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.85\linewidth]{img/parte1-vista3d-sanger-9dim2.png}
+
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.85\linewidth]{img/parte1-vista3d-sanger-9dim3.png}
+
 \end{figure}
 
 
 
-\subsection{Conslusiones}
-
-Observando las representaciones gráficas en la sección de resultados de los datos reducidos obtenidos con el modelo de red propuesto de 3 unidades de salida, podemos concluir que este modelo de red no resulta bueno para la clasificación de estos documentos. Los datos reducidos de las distintas categorías no se diferencian bien. Esto se debe a que reducimos a sólo 3 dimensiones, tenemos 9 categorías y, además, que el número de categoría de cada documento corresponde a la actividad principal de la empresa, no necesariamente la única. 
-
-Para obtener mejores resultados, proponemos un modelo de red con 9 unidades de salida. Si bien esto complica la visualización de los datos reducidos, ya que tendríamos 9 dimensiones, se puede hacer una representación gráfica en dos dimensiones de cada par de componentes principales y analizar los datos en conjunto.
-
-
-
+Se puede observar que obtuvimos una mejora respecto a la reducción de 3 dimensiones, en estos últimos resultados los datos reducidos de las distintas categorías se pueden diferenciar mejor en forma de ''nubes''.

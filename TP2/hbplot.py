@@ -14,7 +14,7 @@ def get_data_x_cat(reduced_ds):
     return data_x_cat
 
 
-def plot3d(reduced_ds_train, reduced_ds_val):
+def plot3d(reduced_ds_train, reduced_ds_val, i, j, k):
     colors = ['b', 'g', 'r', 'c', 'm', 'gold', 'k', 'pink', '0.8']        
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -22,16 +22,16 @@ def plot3d(reduced_ds_train, reduced_ds_val):
     data_x_cat = get_data_x_cat(reduced_ds_train)
 
     for c in range(0,9):
-        ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='o', s=30, c=colors[c],label='cat'+ str(c + 1) + ' train', edgecolors='none')
+        ax.scatter(data_x_cat[c+1][i], data_x_cat[c+1][j], data_x_cat[c+1][k], marker='o', s=30, c=colors[c],label='cat'+ str(c + 1) + ' train', edgecolors='none')
 
     data_x_cat = get_data_x_cat(reduced_ds_val)
 
     for c in range(0,9):
-        ax.scatter(data_x_cat[c+1][1], data_x_cat[c+1][2], data_x_cat[c+1][3], marker='^', s=30, c=colors[c], label='cat'+ str(c + 1) + ' val',edgecolors='none')
+        ax.scatter(data_x_cat[c+1][i], data_x_cat[c+1][j], data_x_cat[c+1][k], marker='^', s=30, c=colors[c], label='cat'+ str(c + 1) + ' val',edgecolors='none')
 
-    ax.set_xlabel('PC1')
-    ax.set_ylabel('PC2')
-    ax.set_zlabel('PC3')
+    ax.set_xlabel('PC'+str(i))
+    ax.set_ylabel('PC'+str(j))
+    ax.set_zlabel('PC'+str(k))
 
     plt.legend(numpoints=1,ncol=6,shadow=True, fancybox=True)
 

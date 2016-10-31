@@ -6,12 +6,12 @@ from data_loader import DataLoader
 
 
 def saveAs(saveIn, obj):
-	print "Guardando la red en %s" % saveIn
+	print "Guardando en %s" % saveIn
 	with open(saveIn, 'wb') as f:
 		cPickle.dump(obj, f, protocol=cPickle.HIGHEST_PROTOCOL)
 
 def load(loadFrom):
-	print "Cargando red desde %s" % loadFrom
+	print "Cargando desde %s" % loadFrom
 	with open(loadFrom, 'rb') as f:
 		return cPickle.load(f)
 
@@ -23,26 +23,20 @@ parser = argparse.ArgumentParser(description='Parametros de la red')
 parser.add_argument('-p', type=str,
                     help='Ruta del archivo de salida para guardar la red', required=True)
 
-parser.add_argument('-x', type=str, default=1,
+parser.add_argument('-x', type=str, 
                     help='Ruta de dataset de entrenamiento', required=True)
 
-parser.add_argument('-n', type=int, default=1,
+parser.add_argument('-n', type=int, default=100,
                     help='Cantidad maxima de epochs', required=False)
 
 args = parser.parse_args()
 
 params_file = args.p
 input_file = args.x
-
+epochs = args.n
 
 loader = DataLoader()
 fs, ls =  loader.LoadData(args.x)
-
-
-if args.n:
-	epochs = args.n
-else:
-	epochs = 100
 
 train_ls = ls
 train_fs = fs

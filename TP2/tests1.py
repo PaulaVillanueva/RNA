@@ -12,7 +12,7 @@ fs, ls =  loader.LoadData("ds/tp2_training_dataset.csv")
 epochs = 500
 lrcons = 0.07
 eps = 0.05
-noutputs = 3
+noutputs = 9
 
 HB = HebbianNN(len(fs[0]), noutputs, 0.5)
 train_fs = fs[:600]
@@ -40,7 +40,7 @@ reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs
 
 # 3d
 
-plot3d(reduced_ds_train, reduced_ds_val)
+plot3d(reduced_ds_train, reduced_ds_val,1,2,3)
 
 # plots 2d
 
@@ -51,12 +51,16 @@ data_x_cat_val = get_data_x_cat(reduced_ds_val)
 
 
 for i in range(1,noutputs+1):
-    for j in range(i+1,noutputs+1):
+    for j in range(i,noutputs+1):
         f, axarr = plt.subplots(1,1)
         plot2d(data_x_cat, data_x_cat_val, axarr, i, j)
-        plt.savefig('2dplots/oja/pc'+str(i)+'-pc'+str(j)+'.png')
+        plt.savefig('2dplots/oja/9dim-pc'+str(i)+'-pc'+str(j)+'.png')
         plt.close(f)
 
+rawinput = raw_input("Ingrese 3 enteros separados por espacios correspondientes a componentes principales que desea visualizar: ")
+pcs = [int(x) for x in rawinput.split()]
+
+plot3d(reduced_ds_train, reduced_ds_val,pcs[0],pcs[1],pcs[2])
 
 # Sanger
 
@@ -80,7 +84,7 @@ outputs_val = np.array([np.dot(x.transpose(), we) for x in val_fs])
 reduced_ds_val = [ [data[0]] + data[1].tolist() for data in zip(ls[600:],outputs_val) ]
 
 # 3d
-plot3d(reduced_ds_train, reduced_ds_val)
+plot3d(reduced_ds_train, reduced_ds_val,1,2,3)
 
 ## plots 2d
 
@@ -90,9 +94,15 @@ data_x_cat_val = get_data_x_cat(reduced_ds_val)
 
 
 for i in range(1,noutputs+1):
-    for j in range(i+1,noutputs+1):
+    for j in range(i,noutputs+1):
         f, axarr = plt.subplots(1,1)
         plot2d(data_x_cat, data_x_cat_val, axarr, i, j)
-        plt.savefig('2dplots/sanger/pc'+str(i)+'-pc'+str(j)+'.png')
+        plt.savefig('2dplots/sanger/9dim-pc'+str(i)+'-pc'+str(j)+'.png')
         plt.close(f)
 
+## plots3d elegidos
+
+rawinput = raw_input("Ingrese 3 enteros separados por espacios correspondientes a componentes principales que desea visualizar: ")
+pcs = [int(x) for x in rawinput.split()]
+
+plot3d(reduced_ds_train, reduced_ds_val,pcs[0],pcs[1],pcs[2])
