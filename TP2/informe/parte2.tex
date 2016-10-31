@@ -67,68 +67,73 @@ Definimos nuestro modelo como:
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.7\linewidth]{img/parte2-comparacion.jpg}
-	\caption{Comparación}
+	\caption{\textbf{Figura X1}Comparación}
 \end{figure}
 
 $X$ es el vector de entrada. $X \in \mathbb{R}^{856x1}$ \\
 
 $W$ es diccionario de salida de nuestra red, cuyas claves son pares $(i,j)$ y los significados son vectores en $\mathbb{R}^{856}$.\\
 
-$Y$ es la matriz resultado. $Y \in \mathbb{R}^{M}$ con $M = M_{1} . M_{2}$ que es el tamaño del layout.\\
-
-El layout es un plano en el que coloreamos las coordenadas del color asociado a la categoria de la neurona ganadora. Este puede tener distintas 
-dimensiones según lo definamos. Por ejemplo puede tener dimensión $15 x 15$ y estar coloreado como se ve en la Figura 3.
-
-%\begin{figure}[ht!]
-%	\centering
-%	\includegraphics[width=0.7\linewidth]{img/parte2-layout.jpg}
-%	\caption{Ejemplo de Layout de dimensión $15 x 15$.}
-%\end{figure}
+$Y$ es la matriz resultado. $Y \in \mathbb{R}^{M}$ con $M = M_{1} . M_{2}$ que es el tamaño del layout, el cual será definido más adelante.\\
 
 \subsection{Implementación}
 
-Para calcular la activación de una capa Kohonen ve cuánto estímulo recibe una neurona de la capa anterior y ve cuál se activa.
-Para saber cual se activa debemos establecer un criterio de activación. Elegimos a la unidad ganadora como el $j$ que más se 
-parece a mi vector de entrada y con esto sabemos que es la neurona que se encuentra a menor distancia. 
+\subsubsection{Prepocesamiento de datos}
+Al igual que el ejercicio anterior, preprocesamos el dataset centrando los datos en el 0. Calculamos la media de las frecuencias de cada palabra (posición del vector) y le restamosa cada una de ellas. De esta forma, la media de cada columna del dataset resultante es 0 y los datos quedan distribuidos alrededor del 0. En este caso, los datos no se normalizan ya que quedarían todas las dimensiones con la misma varianza y la red no podría aprender correctamente.
 
-En nuestro caso utilizamos la distancia euclidiana:
+\subsubsection{Pseudocódigo}
+
+Inicializamos la matriz de pesos con valores random $\in[-1/2, 1/2]$.
+
+Aclaramos que utilizamos un 70$\%$ del dataset para entrenamiento y el 30$\%$ restante lo utilizamos para validación, esto lo hicimos lara reservarnos datos y poder ver que tan bien anda nuestra red al mostrarle nuevos ejemplos.
+
+Para calcular la activación de una capa Kohonen ve cuánto estímulo recibe una neurona de la capa anterior y ve cuál se activa. Para saber cual se activa debemos establecer un criterio de activación. Elegimos a la unidad ganadora como el $j$ que más se parece a mi vector de entrada y con esto sabemos que es la neurona que se encuentra a menor distancia. Nosotros elegimos utilizar la distancia euclidiana:
 
 \begin{align*}
 		j* = argmin_{j}||Y^{T} - W_{\bullet j}(t)||_{2}
 \end{align*}
 
 De esta forma calculamos la distancia entre $X$ y cada columna de $W$ y posteriomente nos quedamos con la neurona $j$ 
-cuya distancia minimiza la función. En la Figura 2, mostramos cómo se realiza dicha comparación teniendo en cuenta las dimensiones.
+cuya distancia minimiza la función. En la \textbf{Figura X1}, mostramos cómo se realiza dicha comparación teniendo en cuenta las dimensiones.
 
 Con esto logramos que una salida se apodere de un sector de la entrada y en consecuencia puede llegar a suceder que en nuestra red
 no haya un orden topológico. Por lo tanto, una vez elegida la neurona ganadora debemos implementar una topología de entrada.
-La topología que utilizamos se muestra en la siguiente figura.
+La topología que utilizamos se muestra en la \textbf{Figura X2}.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.3\linewidth]{img/parte2-vecindario.jpg}
-	\caption{Función de vecindario.}
+	\caption{\textbf{Figura X2}: Función de vecindario.}
 \end{figure}
 
-\begin{algorithm}[H]
-	\caption{def ddistance(self, i, j):}
-	\begin{algorithmic}
-		\State $w = self._output_layout[0]$
-		\State $h = self._output_layout[1]$
-		\State $min_x = min(i[0], j[0])$
-		\State $min_y = min(i[1], j[1])$
-		\State $max_x = max(i[0], j[0])$
-		\State $max_y = max(i[1], j[1])$
+Esta topología esta definida como la distacia euclidiana. 
 
-		\State $dist_x = min(max_x-min_x, min_x + w - max_x)$
-		\State $dist_y = min(max_y - min_y, min_y + h - max_y)$
+%\begin{algorithm}[H]
+%	\caption{def ddistance(self, i, j):}
+%	\begin{algorithmic}
+%		\State $w = self._output_layout[0]$
+%		\State $h = self._output_layout[1]$
+%		\State $min_x = min(i[0], j[0])$
+%		\State $min_y = min(i[1], j[1])$
+%		\State $max_x = max(i[0], j[0])$
+%		\State $max_y = max(i[1], j[1])$
+%
+%		\State $dist_x = min(max_x-min_x, min_x + w - max_x)$
+%		\State $dist_y = min(max_y - min_y, min_y + h - max_y)$
+%
+%		\State return $math.sqrt(dist_x**2 + dist_y**2)$
+%	\end{algorithmic}
+%\end{algorithm}
 
-		\State return $math.sqrt(dist_x**2 + dist_y**2)$
-	\end{algorithmic}
-\end{algorithm}
+Este algoritmo tiene la característica particular de ser toroidal lo cual la superficie de revolución generada por el plano gire alrededor de un eje tal como se muestra en la \textbf{Figura X3}.
 
-Este tipo de topología fuerza a que los pesos no crezcan en forma desmedida con respecto a las neuronas vecinas. 
-Dichos pesos los actualizamos mediante la Regla de Kohonen:
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{img/parte2-toroidal.jpg}
+	\caption{\textbf{Figura X3}: Distancia euclidiana toroidal}
+\end{figure}
+
+En la figura anterior se puede ver que dada una neurona ganadora $c$, se definen $N_{c1}$, $N_{c2}$, $N_{c3}$, $N_{c4}$ como las neuronas vecinas,siedo , $N_{c1}$ las vecinas inmediatas y , $N_{c4}$ las vecinas más lejanas a $c$. Este tipo de topología fuerza a que los pesos no crezcan en forma desmedida con respecto a las neuronas vecinas. Dichos pesos los actualizamos mediante la Regla de Kohonen:
 
 \begin{align*}
 	W_{i}(t+1) &=  \begin{cases}
@@ -137,20 +142,107 @@ Dichos pesos los actualizamos mediante la Regla de Kohonen:
 					\end{cases} \\
 \end{align*}
 
+Inicialmente el vecindario está definido como todas las neuronas del plano, pero con el correr del tiempo 
+este vecindario disminuye su tamaño hasta afectar solamente el peso de la neurona ganadora. Esto lo regulamos con la variable $tau$. Si inicialmente, $tau$ es muy chico
+
+
+
+Para colorear el layout utilizamos el siguiente criterio: A cada categoría le asignamos un color. Para cada unidad de entrada contamos los inputs  que están asociados a la misma categoría y de ellos elegimos la categoría que corresponda a la mayoría. Uno de los problemas que no solucionamos fue cuando los porcentajes de categorías son similares. Por ejemplo: Dadas las categorías A, B y C. Si a una neurona le corresponde en un 40$\%$ la Categoría A, 40$\%$ la Categoría B y 20$\%$ la Categoría C nuestro algoritmo no es del todo confiable.
+
+El layout es un plano en el que coloreamos las coordenadas del color asociado a la categoría de la neurona ganadora. Este puede tener distintas dimensiones según lo definamos. Nosotros elegimos que nuestro layout tenga dimensión 15 $x$ 15 y un ejemplo de coloreo es la \textbf{Figura X4}.
+
+%\begin{figure}[ht!]
+%	\centering
+%	\includegraphics[width=0.7\linewidth]{img/parte2-layout.jpg}
+%	\caption{\textbf{Figura X4}: Ejemplo de Layout de dimensión $15 x 15$.}
+%\end{figure}
+
+En cuanto al clasificador del conjunto de test, para un X dado buscamos la unidad que más se parece a $X$ en $W$ y asignamos la categoría de la misma, como señala la \textbf{Figura X1}. En este clasificador no consideramos las unidades a las que el training no les asignó categoría.
+
+\subsection{Ejecución}
+
+\subsubsection{Modo de uso}
+
+\textbf{Para entrenar la red:}
+
+\begin{lstlisting}[style=bash]
+usage: khtrain.py [-h] -p P -x X -w W -l L -n N
+
+Parametros de la red
+
+optional arguments:
+
+  -h, --help  show this help message and exit
+
+  -p P        Ruta del archivo de salida para escribir pesos
+
+  -x X        Archivo de training features
+
+  -w W        Ancho del arreglo de neuronas de salida
+
+  -l L        Alto del arreglo de neuronas de salida
+
+  -n N        Cantidad de epochs a entrenar
+\end{lstlisting}
+
+Ejemplo: 
+
+\noindent\texttt{python khtrain.py -h} \\
+
+\textbf{Para mostrar el mapa coloreado según las categorías:}
+
+\begin{lstlisting}[style=bash]
+usage: khdispplaymap.py [-h] -p P
+
+Parametros
+
+optional arguments:
+
+  -h, --help  show this help message and exit
+
+  -p P        Ruta del archivo de entrada con los pesos para mostrar el mapa
+
+\end{lstlisting}
+
+Ejemplo:
+
+\noindent\texttt{python khdispplaymap.py -h} \\
+
+
+\textbf{Para el clasificador:}
+
+\begin{lstlisting}[style=bash]
+usage: khclassify.py [-h] -p P -x X
+
+Parametros de la red
+
+optional arguments:
+
+  -h, --help  show this help message and exit
+
+  -p P        Ruta del archivo de entrada con los pesos
+
+  -x X        Archivo de features
+\end{lstlisting}
+
+Ejemplo:
+
+\noindent\texttt{python khclassify.py -h} \\
+
 
 Para que un modelo sea auto-organizado debemos elegir el sigma $\sigma$ y  el eta $\eta$ adecuados. El sigma será 
 utilizado como parámetro de la Gauseana y medirá la dispersión, cuantas neuronas vecinas a la neurona activada modificarán 
 sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuestra red.
 
-
-
-
-
-
-
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{img/parte2-kohonen9clases.jpg}
-	\caption{Clasificación con Kohonen}
+	\caption{\textbf{Figura X4}Clasificación con Kohonen}
 \end{figure}
+
+
+\subsection{Resultados}
+
+
+\subsection{Conclusiones}
 

@@ -45,42 +45,42 @@ Inicializamos la matriz de pesos con valores random $\in[-1/2, 1/2]$. El dataset
 
 Elegimos un $lrcons$ igual a 0.07 ya que, luego de realizar varias experimentaciones, observamos que convergía más rápido que otros valores con los que experimentamos.
 
-\begin{algorithm}[H]
-\caption{train}
-\begin{algorithmic}
-	\State e = 0
-    \While {not fin}
-        \State e+=1
-        \State lr = lrcons * e$^{-1}$
-        \For {x in dataset}
-            \State y = x $\bullet$ weights
-            \State aplicamos regla
-            \State weights += dw
-        \EndFor
-    \EndWhile
-    \State return weights
-\end{algorithmic}
-\end{algorithm}
+%\begin{algorithm}[H]
+%\caption{train}
+%\begin{algorithmic}
+%	\State e = 0
+%    \While {not fin}
+%        \State e+=1
+%        \State lr = lrcons * e$^{-1}$
+%        \For {x in dataset}
+%            \State y = x $\bullet$ weights
+%            \State aplicamos regla
+%            \State weights += dw
+%        \EndFor
+%    \EndWhile
+%    \State return weights
+%\end{algorithmic}
+%\end{algorithm}
 
 Como criterio de parada para saber que convergió el algoritmo utilizamos que los vectores de la matriz de pesos formen una base ortonormal. 
 
 Para evitar que cicle infinitamente si la matriz de pesos no tiende a una base ortonormal para el $\varepsilon$ que hayamos elegido, optamos por parar el algoritmo si se llega a un máximo de épocas definido.
 
-\begin{algorithm}[H]
-\caption{fin}
-\begin{algorithmic}
-	\State return (e == max\_epochs) or (weights es ortogonal)
-\end{algorithmic}
-\end{algorithm}
+%\begin{algorithm}[H]
+%\caption{fin}
+%\begin{algorithmic}
+%	\State return (e == max\_epochs) or (weights es ortogonal)
+%\end{algorithmic}
+%\end{algorithm}
 
 Sabemos que si una matriz $M$ es ortonormal, entonces $M^t \bullet M = I$ donde $I$ es la matriz identidad. Más específicamente, como se trata de valores reales, chequeamos que cada valor de $|M^t \bullet M - I|$ sea menor a $ \varepsilon $ donde $0 < \varepsilon < 0.5$.
 
-\begin{algorithm}[H]
-\caption{ortogonal}
-\begin{algorithmic}
-	\State return ($|$ weigths$^t$ $\bullet$ weights - I $|$ $<$ $\varepsilon$ ).all()
-\end{algorithmic}
-\end{algorithm}
+%\begin{algorithm}[H]
+%\caption{ortogonal}
+%\begin{algorithmic}
+%	\State return ($|$ weigths$^t$ $\bullet$ weights - I $|$ $<$ $\varepsilon$ ).all()
+%\end{algorithmic}
+%\end{algorithm}
 
 \subsection{Ejecución}
 
