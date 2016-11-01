@@ -58,7 +58,7 @@ Kohonen:
 \subsection{Modelo}
 Al igual que en el ejercicio anterior, el conjunto de datos contiene 900 documentos con 856 descripciones de texto correspondientes a compañías Brasileñas clasificadas en nueve categorías distintas.
 
-En primer lugar sabemos que la red a entrenar tendrá un aprendizaje no supervisado, ya que no sabemos el resultado al quequeremos llegar.
+En primer lugar sabemos que la red a entrenar tendrá un aprendizaje no supervisado, ya que no sabemos el resultado al que queremos llegar.
 
 Definimos nuestro modelo como:
 
@@ -78,7 +78,7 @@ $Y$ es la matriz resultado. $Y \in \mathbb{R}^{M}$ con $M = M_{1} . M_{2}$ que e
 \subsection{Implementación}
 
 \subsubsection{Prepocesamiento de datos}
-Al igual que el ejercicio anterior, preprocesamos el dataset centrando los datos en el 0. Calculamos la media de las frecuencias de cada palabra (posición del vector) y le restamosa cada una de ellas. De esta forma, la media de cada columna del dataset resultante es 0 y los datos quedan distribuidos alrededor del 0. En este caso, los datos no se normalizan ya que quedarían todas las dimensiones con la misma varianza y la red no podría aprender correctamente.
+Al igual que el ejercicio anterior, preprocesamos el dataset centrando los datos en el 0. Calculamos la media de las frecuencias de cada palabra (posición del vector) y le restamos a cada una de ellas. De esta forma, la media de cada columna del dataset resultante es 0 y los datos quedan distribuidos alrededor del 0. En este caso, los datos no se normalizan ya que quedarían todas las dimensiones con la misma varianza y la red no podría aprender correctamente.
 
 \subsubsection{Pseudocódigo}
 
@@ -172,13 +172,13 @@ El layout es un plano en el que coloreamos las coordenadas del color asociado a 
 	\label{ejemplo}
 \end{figure}
 
-Para el clasificador del conjunto de test, dado un X buscamos la unidad que más se parece a $X$ en $W$ y asignamos la categoría de la misma, como señala la Fig~\ref{comparacion} y da como resultado, por ejemplo, la Fig~\ref{ejemplo}. En este clasificador no consideramos las unidades a las que el training no les asignó categoría. En la Fig~\ref{ejemplo} se puede ver como se clasificó según las distintas categorías, pero algunas no fueron clasificadas, como por ejemplo las de color azul. Esto se debe a que ... \textbf{COMPLETAR!!!}
+Para el clasificador del conjunto de test, dado un X buscamos la unidad que más se parece a $X$ en $W$ y asignamos la categoría de la misma, como señala la Fig~\ref{comparacion} y da como resultado, por ejemplo, la Fig~\ref{ejemplo}. En este clasificador no consideramos las unidades a las que el training no les asignó categoría. En la Fig~\ref{ejemplo} se puede ver como se clasificó según las distintas categorías, pero algunas no fueron clasificadas, como por ejemplo las de color azul.
 
 \subsection{Ejecución}
 
 \subsubsection{Modo de uso}
 
-\textbf{Para entrenar la red:}
+\textbf{Para entrenar 1000 epochs con $15x15$ neuronas usando el training set $tp2\_training\_dataset.csv$, dejando los pesos resultantes en $parametros.params ($importante, el archivo de pesos se actualiza cada 50 epochs, esto está hardcodeado$)$:}
 
 \begin{lstlisting}[style=bash]
 usage: khtrain.py [-h] -p P -x X -w W -l L -n N
@@ -200,11 +200,11 @@ optional arguments:
   -n N        Cantidad de epochs a entrenar
 \end{lstlisting}
 
-Ejemplo: 
+Ejemplo:
 
-\noindent\texttt{python khtrain.py -x <el archivo con los datos de train> -p <el archivo de salida con los pesos> -w 15 -l 15 -n <epochs>} \\
+\noindent\texttt{python khtrain.py -p parametros.parms -x $tp2\_training\_dataset.csv$ -w 15 -l 15 -n 1000} \\
 
-\textbf{Para mostrar el mapa coloreado según las categorías:}
+\textbf{Para visualizar el mapa generado por el ejemplo anterior:}
 
 \begin{lstlisting}[style=bash]
 usage: khdispplaymap.py [-h] -p P
@@ -219,12 +219,11 @@ optional arguments:
 
 \end{lstlisting}
 
-Ejemplo:
+Ejemplo: 
 
-\noindent\texttt{python khdispplaymap.py -h} \\
+\noindent\texttt{python khdispplaymap.py -p parametros.params} \\
 
-
-\textbf{Para el clasificador:}
+\textbf{Para clasificar los ejemplos del test set $tp2\_testing\_dataset.csv$ con los parametros generados en el primer ejemplo:}
 
 \begin{lstlisting}[style=bash]
 usage: khclassify.py [-h] -p P -x X
@@ -242,15 +241,7 @@ optional arguments:
 
 Ejemplo:
 
-\noindent\texttt{python khclassify.py -h} \\
-
-\begin{figure}[ht!]
-	\centering
-	\includegraphics[width=0.8\linewidth]{img/parte2-kohonen9clases.jpg}
-	\caption{Clasificación con Kohonen}
-	\label{Kohonen}
-\end{figure}
-
+\noindent\texttt{python khclassify.p -p parametros.params -x $tp2\_testing\_dataset.csv$} \\
 
 \subsection{Resultados}
 Como resultados importantes podemos decir que llegamos a un orden de predicción de clasificación del 80$\%$, lo cual nos parece bastante bueno considerando que eran pocos datos de entrenamiento y que los datos del dataset no eran totalmente separables.
