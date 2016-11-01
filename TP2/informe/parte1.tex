@@ -66,7 +66,7 @@ Como criterio de parada para saber que convergió el algoritmo utilizamos que lo
 
 Para evitar que cicle infinitamente si la matriz de pesos no tiende a una base ortonormal para el $\varepsilon$ que hayamos elegido, optamos por parar el algoritmo si se llega a un máximo de épocas definido.
 
-\begin{algorithm}[H]
+%\begin{algorithm}[H]
 \caption{fin}
 \begin{algorithmic}
 	\State return (e == max\_epochs) or (weights es ortogonal)
@@ -276,7 +276,5 @@ Con este modelo propuesto obtuvimos, por ejemplo, los siguientes resultados con 
 	\includegraphics[width=0.85\linewidth]{img/parte1-vista3d-sanger-9dim3.png}
 
 \end{figure}
-
-
 
 Se puede observar que obtuvimos una mejora respecto a la reducción de 3 dimensiones, en estos últimos resultados los datos reducidos de las distintas categorías se pueden diferenciar mejor en forma de ''nubes''.

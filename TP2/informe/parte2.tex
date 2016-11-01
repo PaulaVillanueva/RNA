@@ -1,7 +1,7 @@
+\newpage
 \section{Mapeo de características}
 
 \subsection{Introducción}
-
 Utilizando el mismo dataset de Bag of Words (BOW) del ejercicio anterior debemos construir un modelo de mapeo de características auto-organizado que clasifique automáticamente los 
 documentos en un arreglo de dos dimensiones. Este problema será resuelto utilizando Kohonen.
 
@@ -56,11 +56,9 @@ Kohonen:
 \end{itemize}
 
 \subsection{Modelo}
-Al igual que en el ejercicio anterior, el conjunto de datos contiene 900 documentos con 856 descripciones de texto 
-correspondientes a compañías Brasileñas clasificadas en nueve categorías distintas.
+Al igual que en el ejercicio anterior, el conjunto de datos contiene 900 documentos con 856 descripciones de texto correspondientes a compañías Brasileñas clasificadas en nueve categorías distintas.
 
-En primer lugar sabemos que la red a entrenar tendrá un aprendizaje no supervisado, ya que no sabemos el resultado al que
-queremos llegar.
+En primer lugar sabemos que la red a entrenar tendrá un aprendizaje no supervisado, ya que no sabemos el resultado al quequeremos llegar.
 
 Definimos nuestro modelo como:
 
@@ -93,12 +91,9 @@ Para calcular la activación de una capa Kohonen ve cuánto estímulo recibe una
 		j* = argmin_{j}||Y^{T} - W_{\bullet j}(t)||_{2}
 \end{align*}
 
-De esta forma calculamos la distancia entre $X$ y cada columna de $W$ y posteriomente nos quedamos con la neurona $j$ 
-cuya distancia minimiza la función. En la \textbf{Figura X1}, mostramos cómo se realiza dicha comparación teniendo en cuenta las dimensiones.
+De esta forma calculamos la distancia entre $X$ y cada columna de $W$ y posteriomente nos quedamos con la neurona $j$ cuya distancia minimiza la función. En la \textbf{Figura X1}, mostramos cómo se realiza dicha comparación teniendo en cuenta las dimensiones.
 
-Con esto logramos que una salida se apodere de un sector de la entrada y en consecuencia puede llegar a suceder que en nuestra red
-no haya un orden topológico. Por lo tanto, una vez elegida la neurona ganadora debemos implementar una topología de entrada.
-La topología que utilizamos se muestra en la \textbf{Figura X2}.
+Con esto logramos que una salida se apodere de un sector de la entrada y en consecuencia puede llegar a suceder que en nuestra red no haya un orden topológico. Por lo tanto, una vez elegida la neurona ganadora debemos implementar una topología de entrada. La topología que utilizamos se muestra en la \textbf{Figura X2}.
 
 \begin{figure}[ht!]
 	\centering
@@ -108,22 +103,22 @@ La topología que utilizamos se muestra en la \textbf{Figura X2}.
 
 Esta topología esta definida como la distacia euclidiana. 
 
-%\begin{algorithm}[H]
-%	\caption{def ddistance(self, i, j):}
-%	\begin{algorithmic}
-%		\State $w = self._output_layout[0]$
-%		\State $h = self._output_layout[1]$
-%		\State $min_x = min(i[0], j[0])$
-%		\State $min_y = min(i[1], j[1])$
-%		\State $max_x = max(i[0], j[0])$
-%		\State $max_y = max(i[1], j[1])$
-%
-%		\State $dist_x = min(max_x-min_x, min_x + w - max_x)$
-%		\State $dist_y = min(max_y - min_y, min_y + h - max_y)$
-%
-%		\State return $math.sqrt(dist_x**2 + dist_y**2)$
-%	\end{algorithmic}
-%\end{algorithm}
+\begin{algorithm}
+	\caption{ddistance(self, i, j):}
+	\begin{algorithmic}
+		\State $w = self._output_layout[0]$
+		\State $h = self._output_layout[1]$
+		\State $min_x = min(i[0], j[0])$
+		\State $min_y = min(i[1], j[1])$
+		\State $max_x = max(i[0], j[0])$
+		\State $max_y = max(i[1], j[1])$
+
+		\State $dist_x = min(max_x-min_x, min_x + w - max_x)$
+		\State $dist_y = min(max_y - min_y, min_y + h - max_y)$
+
+		\State return $math.sqrt(dist_x**2 + dist_y**2)$
+	\end{algorithmic}
+\end{algorithm}
 
 Este algoritmo tiene la característica particular de ser toroidal lo cual la superficie de revolución generada por el plano gire alrededor de un eje tal como se muestra en la \textbf{Figura X3}.
 
@@ -133,7 +128,7 @@ Este algoritmo tiene la característica particular de ser toroidal lo cual la su
 	\caption{\textbf{Figura X3}: Distancia euclidiana toroidal}
 \end{figure}
 
-En la figura anterior se puede ver que dada una neurona ganadora $c$, se definen $N_{c1}$, $N_{c2}$, $N_{c3}$, $N_{c4}$ como las neuronas vecinas,siedo , $N_{c1}$ las vecinas inmediatas y , $N_{c4}$ las vecinas más lejanas a $c$. Este tipo de topología fuerza a que los pesos no crezcan en forma desmedida con respecto a las neuronas vecinas. Dichos pesos los actualizamos mediante la Regla de Kohonen:
+En la figura anterior se puede ver que dada una neurona ganadora $c$, se definen $N_{c1}$, $N_{c2}$, $N_{c3}$, $N_{c4}$ como las neuronas vecinas, siendo, $N_{c1}$ las vecinas inmediatas y $N_{c4}$ las vecinas más lejanas a $c$. Este tipo de topología fuerza a que los pesos no crezcan en forma desmedida con respecto a las neuronas vecinas. Dichos pesos los actualizamos mediante la Regla de Kohonen:
 
 \begin{align*}
 	W_{i}(t+1) &=  \begin{cases}
@@ -142,22 +137,38 @@ En la figura anterior se puede ver que dada una neurona ganadora $c$, se definen
 					\end{cases} \\
 \end{align*}
 
+Para que un modelo sea auto-organizado debemos elegir el sigma $\sigma$ y  el eta $\eta$ adecuados. El sigma será utilizado como parámetro de la Gauseana y medirá la dispersión, cuantas neuronas vecinas a la neurona activada modificarán sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuestra red. 
 Inicialmente el vecindario está definido como todas las neuronas del plano, pero con el correr del tiempo 
-este vecindario disminuye su tamaño hasta afectar solamente el peso de la neurona ganadora. Esto lo regulamos con la variable $tau$. Si inicialmente, $tau$ es muy chico
+este vecindario disminuye su tamaño hasta afectar solamente el peso de la neurona ganadora. En un principio estos valores los habiamos inicializado muy grandes porque lo que nuestra red nunca se ordenaba, por lo que  fuimos variándolos hasta que llegamos a los óptimos. Si estos coeficientes eran siempre los mismos con el correr del tiempo, no llegabamos a ordenar la red, por lo que optamos por hacerlos dinámicos. 
+Para hacer $\sigma$ dinámico utilizamos la siguiente función:
+\begin{align*}
+		\sigma(t) = \frac{\sigma_{0}}{1 + t \sigma_{0} \sigma_{r}} 
+\end{align*}
 
+$\sigma_{r}$ está definido como $0.005$ y $\sigma_{0}$ es:
 
+\begin{align*}
+		\sigma_{0} = 4.5 * \frac{outputlayout[0]}{10} 
+\end{align*}
+
+Para definir estos valores nos basamos en valores experimentales:
+
+\begin{itemize}
+	\item $\sigma_{0}$: En un principio lo habiamos inicializado en 1 pero esto hacia que el vecindario sea muy angosto por lo que nunca llegaba a organizarse ya que los vecimos de una neurona ganadora eran relativamente pocos por lo que rápidamente el vecindario se achicaba hasta afectar solo a la neurona ganadora. Esto hacia que el mapa quedara desorganizado, lo que hicimos fue agrandar el $\sigma_{0}$ para que cubra todo el mapa y con esto se organizó bien.
+	\item $\sigma_{r}$: Fuimos probando con distintos valores hasta conseguir que el tamaño del vecindario no descendiera ni muy rápido ni muy despacio, encontrando que el mejor valor era $0.005$. 
+\end{itemize}	
 
 Para colorear el layout utilizamos el siguiente criterio: A cada categoría le asignamos un color. Para cada unidad de entrada contamos los inputs  que están asociados a la misma categoría y de ellos elegimos la categoría que corresponda a la mayoría. Uno de los problemas que no solucionamos fue cuando los porcentajes de categorías son similares. Por ejemplo: Dadas las categorías A, B y C. Si a una neurona le corresponde en un 40$\%$ la Categoría A, 40$\%$ la Categoría B y 20$\%$ la Categoría C nuestro algoritmo no es del todo confiable.
 
 El layout es un plano en el que coloreamos las coordenadas del color asociado a la categoría de la neurona ganadora. Este puede tener distintas dimensiones según lo definamos. Nosotros elegimos que nuestro layout tenga dimensión 15 $x$ 15 y un ejemplo de coloreo es la \textbf{Figura X4}.
 
-%\begin{figure}[ht!]
-%	\centering
-%	\includegraphics[width=0.7\linewidth]{img/parte2-layout.jpg}
-%	\caption{\textbf{Figura X4}: Ejemplo de Layout de dimensión $15 x 15$.}
-%\end{figure}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.7\linewidth]{img/parte2-ejemplocoloreo.png}
+	\caption{\textbf{Figura X4}: Ejemplo de Layout de dimensión 15x15.}
+\end{figure}
 
-En cuanto al clasificador del conjunto de test, para un X dado buscamos la unidad que más se parece a $X$ en $W$ y asignamos la categoría de la misma, como señala la \textbf{Figura X1}. En este clasificador no consideramos las unidades a las que el training no les asignó categoría.
+Para el clasificador del conjunto de test, dado un X buscamos la unidad que más se parece a $X$ en $W$ y asignamos la categoría de la misma, como señala la \textbf{Figura X1} y da como resultado, por ejemplo, la \textbf{Figura X4}. En este clasificador no consideramos las unidades a las que el training no les asignó categoría. En la \textbf{Figura X4} se puede ver como se clasifico según las distintas categorías, pero algunas no fueron clasificadas, como por ejemplo las de color azul. Esto se debe a que ... \textbf{COMPLETAR!!!}
 
 \subsection{Ejecución}
 
@@ -229,11 +240,6 @@ Ejemplo:
 
 \noindent\texttt{python khclassify.py -h} \\
 
-
-Para que un modelo sea auto-organizado debemos elegir el sigma $\sigma$ y  el eta $\eta$ adecuados. El sigma será 
-utilizado como parámetro de la Gauseana y medirá la dispersión, cuantas neuronas vecinas a la neurona activada modificarán 
-sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuestra red.
-
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{img/parte2-kohonen9clases.jpg}
@@ -242,7 +248,8 @@ sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuest
 
 
 \subsection{Resultados}
-
+Como resultados importantes podemos decir que llegamos a un orden de predicción de clasificación del 80$\%$, lo cual nos parece bastante bueno considerando que eran pocos datos de entrenamiento y que los datos del dataset no eran completamente separables.
 
 \subsection{Conclusiones}
-
+Como conclusiones podemos mencionar que la tarea de encontrar valores óptimos de $\eta$, $\sigma_{0}$, $\sigma_{r}$ fue bastante dificil, ya que si los valores no eran los correctos, ya sean muy grandes o muy chicos la red no se organizaba.
+Por otro lado, nos parece un algoritmo lento ya que por cada iteración se recorre cada ejemplo contra todas las neuronas lo que produce que de un orden de complejidad bastante elevado para que converja el algoritmo.
