@@ -122,7 +122,7 @@ Esta topología esta definida como la distacia euclidiana.
 	\end{algorithmic}
 \end{algorithm}
 
-Este algoritmo tiene la característica particular de ser toroidal lo cual la superficie de revolución generada por el plano gire alrededor de un eje tal como se muestra en la Fig~\ref{dist-euclideana}.
+Este algoritmo tiene la característica particular de ser toroidal por lo cual la superficie de revolución generada por el plano gira alrededor de un eje tal como se muestra en la Fig~\ref{dist-euclideana}.
 
 \begin{figure}[ht!]
 	\centering
@@ -140,7 +140,7 @@ En la figura anterior se puede ver que dada una neurona ganadora $c$, se definen
 					\end{cases} \\
 \end{align*}
 
-Para que un modelo sea auto-organizado debemos elegir el sigma $\sigma$ y  el eta $\eta$ adecuados. El sigma será utilizado como parámetro de la Gauseana y medirá la dispersión, cuantas neuronas vecinas a la neurona activada modificarán sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuestra red. 
+Para que un modelo sea auto-organizado debemos elegir el sigma $\sigma$ y  el eta $\eta$ adecuados. El $\sigma$ será utilizado como parámetro de la Gauseana y medirá la dispersión, cuántas neuronas vecinas a la neurona activada modificarán sus pesos. Por otro lado, el $\eta$ será el coeficiente de aprendizaje de nuestra red. 
 Inicialmente el vecindario está definido como todas las neuronas del plano, pero con el correr del tiempo 
 este vecindario disminuye su tamaño hasta afectar solamente el peso de la neurona ganadora. En un principio estos valores los habiamos inicializado muy grandes porque lo que nuestra red nunca se ordenaba, por lo que  fuimos variándolos hasta que llegamos a los óptimos. Si estos coeficientes eran siempre los mismos con el correr del tiempo, no llegabamos a ordenar la red, por lo que optamos por hacerlos dinámicos. 
 Para hacer $\sigma$ dinámico utilizamos la siguiente función:
@@ -157,11 +157,11 @@ $\sigma_{r}$ está definido como $0.005$ y $\sigma_{0}$ es:
 Para definir estos valores nos basamos en valores experimentales:
 
 \begin{itemize}
-	\item $\sigma_{0}$: En un principio lo habiamos inicializado en 1 pero esto hacia que el vecindario sea muy angosto por lo que nunca llegaba a organizarse ya que los vecimos de una neurona ganadora eran relativamente pocos por lo que rápidamente el vecindario se achicaba hasta afectar solo a la neurona ganadora. Esto hacia que el mapa quedara desorganizado, lo que hicimos fue agrandar el $\sigma_{0}$ para que cubra todo el mapa y con esto se organizó bien.
+	\item $\sigma_{0}$: En un principio lo habíamos inicializado en 1 pero esto hacía que el vecindario sea muy angosto por lo que nunca llegaba a organizarse ya que los vecimos de una neurona ganadora eran relativamente pocos y esto hacía lo que rápidamente el vecindario se achicaba hasta afectar solo a la neurona ganadora. Por ende el mapa quedaba desorganizado. Esto lo solucionamos agrandando el $\sigma_{0}$ para que cubra todo el mapa y con esto se organizó bien.
 	\item $\sigma_{r}$: Fuimos probando con distintos valores hasta conseguir que el tamaño del vecindario no descendiera ni muy rápido ni muy despacio, encontrando que el mejor valor era $0.005$. 
 \end{itemize}	
 
-Para colorear el layout utilizamos el siguiente criterio: A cada categoría le asignamos un color. Para cada unidad de entrada contamos los inputs  que están asociados a la misma categoría y de ellos elegimos la categoría que corresponda a la mayoría. Uno de los problemas que no solucionamos fue cuando los porcentajes de categorías son similares. Por ejemplo: Dadas las categorías A, B y C. Si a una neurona le corresponde en un 40$\%$ la Categoría A, 40$\%$ la Categoría B y 20$\%$ la Categoría C nuestro algoritmo no es del todo confiable.
+Para colorear el layout utilizamos el siguiente criterio: A cada categoría le asignamos un color. Para cada unidad de entrada contamos los inputs que están asociados a la misma categoría y de ellos elegimos la categoría que corresponda a la mayoría. Uno de los problemas que no solucionamos fue cuando los porcentajes de categorías son similares. Por ejemplo: Dadas las categorías A, B y C. Si a una neurona le corresponde en un 40$\%$ la Categoría A, 40$\%$ la Categoría B y 20$\%$ la Categoría C nuestro algoritmo no es del todo confiable.
 
 El layout es un plano en el que coloreamos las coordenadas del color asociado a la categoría de la neurona ganadora. Este puede tener distintas dimensiones según lo definamos. Nosotros elegimos que nuestro layout tenga dimensión 15 $x$ 15 y un ejemplo de coloreo es la Fig~\ref{ejemplo}.
 
@@ -172,7 +172,7 @@ El layout es un plano en el que coloreamos las coordenadas del color asociado a 
 	\label{ejemplo}
 \end{figure}
 
-Para el clasificador del conjunto de test, dado un X buscamos la unidad que más se parece a $X$ en $W$ y asignamos la categoría de la misma, como señala la Fig~\ref{comparacion} y da como resultado, por ejemplo, la Fig~\ref{ejemplo}. En este clasificador no consideramos las unidades a las que el training no les asignó categoría. En la Fig~\ref{ejemplo} se puede ver como se clasifico según las distintas categorías, pero algunas no fueron clasificadas, como por ejemplo las de color azul. Esto se debe a que ... \textbf{COMPLETAR!!!}
+Para el clasificador del conjunto de test, dado un X buscamos la unidad que más se parece a $X$ en $W$ y asignamos la categoría de la misma, como señala la Fig~\ref{comparacion} y da como resultado, por ejemplo, la Fig~\ref{ejemplo}. En este clasificador no consideramos las unidades a las que el training no les asignó categoría. En la Fig~\ref{ejemplo} se puede ver como se clasificó según las distintas categorías, pero algunas no fueron clasificadas, como por ejemplo las de color azul. Esto se debe a que ... \textbf{COMPLETAR!!!}
 
 \subsection{Ejecución}
 
@@ -202,7 +202,7 @@ optional arguments:
 
 Ejemplo: 
 
-\noindent\texttt{python khtrain.py -h} \\
+\noindent\texttt{python khtrain.py -x <el archivo con los datos de train> -p <el archivo de salida con los pesos> -w 15 -l 15 -n <epochs>} \\
 
 \textbf{Para mostrar el mapa coloreado según las categorías:}
 
@@ -253,8 +253,8 @@ Ejemplo:
 
 
 \subsection{Resultados}
-Como resultados importantes podemos decir que llegamos a un orden de predicción de clasificación del 80$\%$, lo cual nos parece bastante bueno considerando que eran pocos datos de entrenamiento y que los datos del dataset no eran completamente separables.
+Como resultados importantes podemos decir que llegamos a un orden de predicción de clasificación del 80$\%$, lo cual nos parece bastante bueno considerando que eran pocos datos de entrenamiento y que los datos del dataset no eran totalmente separables.
 
 \subsection{Conclusiones}
-Como conclusiones podemos mencionar que la tarea de encontrar valores óptimos de $\eta$, $\sigma_{0}$, $\sigma_{r}$ fue bastante dificil, ya que si los valores no eran los correctos, ya sean muy grandes o muy chicos la red no se organizaba.
-Por otro lado, nos parece un algoritmo lento ya que por cada iteración se recorre cada ejemplo contra todas las neuronas lo que produce que de un orden de complejidad bastante elevado para que converja el algoritmo.
+Como conclusiones podemos mencionar que la tarea de encontrar valores óptimos de $\eta$, $\sigma_{0}$, $\sigma_{r}$ fue bastante difícil, ya que si los valores no eran los correctos, ya sean muy grandes o muy chicos, la red no se organizaba.
+Por otro lado, nos parece un algoritmo lento ya que por cada iteración se recorre cada ejemplo contra todas las neuronas lo que produce que dé como resultado un orden de complejidad bastante elevado para que converja nuestro algoritmo.
