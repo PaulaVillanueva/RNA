@@ -35,3 +35,12 @@ class InputLayer(Layer):
     def derivative(self, z):
         raise NotImplementedError('input layers do not define derivative')
 
+class ReluLayer(Layer):
+    def __init__(self, num_layers):
+        self._num_layers = num_layers
+
+    def activation(self, z):
+        return z
+
+    def derivative(self, z):
+        return 1

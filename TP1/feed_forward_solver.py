@@ -17,7 +17,7 @@ class NetworkSolver:
         l = 0
         for b, w in zip(self._biases, self._weights):
             l = l + 1
-            z = np.dot(w, aa[-1]) + b
+            z = np.dot(w, aa[-1]) + np.reshape(b, (len(b),1))
             a = self._layer_model.getActivationFns()[l](z)
             zz.append(z)
             aa.append(a)

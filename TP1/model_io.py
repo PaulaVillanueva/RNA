@@ -1,6 +1,6 @@
 import json
 
-from layer import SigmoidLayer, InputLayer
+from layer import SigmoidLayer, InputLayer, ReluLayer
 from layer_model import LayerModel
 
 
@@ -15,6 +15,7 @@ class ModelIO:
          ltype = jlayer["type"]
 
          return {
+          'relu': lambda j: self._create_relu_layer(j),
           'sigmoid': lambda j: self._create_sigmoid_layer(j),
           'input': lambda j: self._create_input_layer(j)
             }[ltype](jlayer)
@@ -24,4 +25,8 @@ class ModelIO:
 
     def _create_input_layer(self, j):
         return InputLayer(int(j["size"]))
+
+
+    def _create_relu_layer(self, j):
+        return ReluLayer(int(j["size"]))
 
