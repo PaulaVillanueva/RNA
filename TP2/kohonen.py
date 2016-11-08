@@ -8,9 +8,9 @@ class Kohonen:
         self._weights = None
         # Normalizo el sigma inicial basado en valor experimental calculado para 10x10
         self._sigma0 = 4.5 * ((self._output_layout[0] / 10))
-        #self._tau = 50.0
+        #self._sigmar = 50.0
 
-        self._tau = 0.005
+        self._sigmar = 0.005
         self._epoch = 0
 
 
@@ -43,8 +43,8 @@ class Kohonen:
         return min(self._weights.keys(), key=lambda k: np.linalg.norm(self._weights[k] - sample))
 
     def sigma(self, n):
-        #return self._sigma0 * math.exp(-(n / self._tau))
-        return self._sigma0 / (1+n*self._sigma0 * self._tau)
+        #return self._sigma0 * math.exp(-(n / self._sigmar))
+        return self._sigma0 / (1+n*self._sigma0 * self._sigmar)
 
     def h(self, n, j, i):
         return math.exp(
@@ -101,9 +101,6 @@ class Kohonen:
 
     def setCheckpointHook(self, hook):
         self._checkpoint_hook = hook
-
-
-
 
     def get_epoch(self):
         return self._epoch
