@@ -111,10 +111,12 @@ class NetworkSolver:
         e = 0
         for x, y in batch:
             aa, zz = self.do_activation(x)
-            e = e + np.linalg.norm(aa[-1] - y)
-            print "Original: ", y[0], "Predicted:",aa[-1][0]
+            e = e + np.linalg.norm(aa[-1][0] - y)
+            print "Original: ", y[0], "Predicted:",aa[-1][0], "Error:", np.linalg.norm(aa[-1][0] - y)
 
+        print "Cantidad de ejemplos: ", len(batch)
         return e / len(batch)
+
 
     def get_hits(self, test_data):
         """
