@@ -29,6 +29,9 @@ data = loader.LoadData(args.x)
 features = data[0]
 labels = data[1]
 
+
+
+
 test_data = zip(features, labels)
 
 mini_batches_testing = [test_data]
@@ -42,6 +45,6 @@ weights, biases = ploader.load_params(args.p)
 
 solver = NetworkSolver(model,weights=weights,biases=biases)
 
-E = solver.predict(mini_batches_testing[0])
+E = solver.predict_linear(mini_batches_testing[0])
 
 print "Error cuadratico promedio: ", E

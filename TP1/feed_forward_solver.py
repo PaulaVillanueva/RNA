@@ -5,10 +5,11 @@ import sigmoid
 
 class NetworkSolver:
 
-    def __init__(self, layer_model, weights, biases):
+    def __init__(self, layer_model, weights, biases, checkpoint_fn=None):
         self._weights = weights
         self._biases = biases
         self._layer_model = layer_model
+        self._check_point_fn=checkpoint_fn
 
     def do_activation(self, sample):
         aa = [np.reshape(sample, (len(sample), 1))]
@@ -17,8 +18,8 @@ class NetworkSolver:
         l = 0
         for b, w in zip(self._biases, self._weights):
             l = l + 1
-            # z = np.dot(w, aa[-1]) + np.reshape(b, (len(b),1)) #no anda para b=1
-            z = np.dot(w, aa[-1]) + b
+            z = np.dot(w, aa[-1]) + np.reshape(b, (len(b),1)) #no anda para b=1  # es que no deberia ser b=1 tendria que ser b=[1]
+            #z = np.dot(w, aa[-1]) + b
             a = self._layer_model.getActivationFns()[l](z)
             zz.append(z)
             aa.append(a)
@@ -88,7 +89,10 @@ class NetworkSolver:
             t = t + 1
             e = self.get_prediction_error(mini_batches, False)
             et = self.get_prediction_error(mini_batches_testing, False)
-            print ("Training Error: ", e, "Val error:", et)
+            print "[",t,"] ", "Training Error: ", e, "Val error:", et
+            if t % 1000 == 0 and self._check_point_fn is not None:
+                print "Saving checkpoint..."
+                self._check_point_fn()
 
         #e = self.get_prediction_error(mini_batches, True)
 
@@ -122,6 +126,21 @@ class NetworkSolver:
 
         print "Hit rate: ", hits / len(batch) * 100, "%"
         return e / len(batch)
+
+    def predict_linear(self, batch):
+        e = 0
+        re = 0
+        for x, y in batch:
+            aa, zz = self.do_activation(x)
+            abs_error = np.linalg.norm(np.transpose(aa[-1]) - y)
+            e = e + abs_error
+            rel_error = abs_error / np.linalg.norm(y)
+            re = re + rel_error
+
+            print "Original: ", y, "Predicted:",np.transpose(aa[-1]), "AbsError:", abs_error, "Relative error: ", rel_error * 100 , "%"
+
+
+        return "Average absolute Error: ", e / len(batch), " -- Average relative Error: ", re / len(batch)
 
 
     def get_hits(self, test_data):

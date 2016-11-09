@@ -1,0 +1,52 @@
+Ejercicio 2
+
+Error cuadratico promedio:  ('Average absolute Error: ', 0.033265980076472017, ' -- Average relative Error: ', 0.38582970773387043)
+berna@berna-debian:/mypool/berna$ /usr/bin/python2.7  /home/berna/PycharmProjects/RNA/TP1/trainnet2.py -m /home/berna/PycharmProjects/RNA/TP1/models/ej2.lmodel -o redentrenada2.dat   -x /home/berna/PycharmProjects/RNA/TP1/ds/tp1_ej2_testing.csv  -t 50000 -e 0.05 -l 0.02 -b 1 -r 0
+
+{
+	"layers": [{
+		"type": "input",
+		"size": 8
+	}, {
+		"type": "sigmoid",
+		"size": 5,
+		"beta": 20
+
+	}, {
+		"type": "sigmoid",
+		"size": 5,
+		"beta": 20
+
+	}, {
+		"type": "tanh",
+		"size": 2,
+		"beta": 20
+	}]
+}
+
+Las condiciones para la mejora hasta ahora fueron:
+    - Cambiar la normalizacion, en vez de dividir por STD , dividir por max-min. Esto deja todo entre -1 y 1 que son los valores que maneja tanh. Con la std dan valores fuera de ese
+    rango y por lo tanto nunca se pueden representar a la salida
+
+    - Agregar un parametro de pendiente a tanh y usarlo de manera que esta sea una pendiente baja, de lo contrario satura enseguida y no queremos eso, queremos que se asimile a una recta
+
+
+[ 30000 ]  Training Error:  0.0692823701626 Val error: 0.101709677246
+Pesos guardados en  redentrenada2.dat
+berna@berna-debian:/mypool/berna$ /usr/bin/python2.7  /home/berna/PycharmProjects/RNA/TP1/trainnet2.py -m /home/berna/PycharmProjects/RNA/TP1/models/ej2.lmodel -o redentrenada2.dat   -x /home/berna/PycharmProjects/RNA/TP1/ds/tp1_ej2_testing.csv  -t 30000 -e 0.05 -l 0.03 -b 1 -r 0
+
+{
+	"layers": [{
+		"type": "input",
+		"size": 8
+	}, {
+		"type": "sigmoid",
+		"size": 20,
+		"beta": 20
+
+	}, {
+		"type": "tanh",
+		"size": 2,
+		"beta": 20
+	}]
+}

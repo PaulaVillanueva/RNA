@@ -1,6 +1,6 @@
 import json
 
-from layer import SigmoidLayer, InputLayer, ReluLayer
+from layer import SigmoidLayer, InputLayer, ReluLayer, TanhLayer, LinearLayer
 from layer_model import LayerModel
 
 
@@ -15,7 +15,9 @@ class ModelIO:
          ltype = jlayer["type"]
 
          return {
+          'tanh': lambda j: self._create_tanh_layer(j),
           'relu': lambda j: self._create_relu_layer(j),
+          'linear': lambda j: self._create_linear_layer(j),
           'sigmoid': lambda j: self._create_sigmoid_layer(j),
           'input': lambda j: self._create_input_layer(j)
             }[ltype](jlayer)
@@ -28,5 +30,11 @@ class ModelIO:
 
 
     def _create_relu_layer(self, j):
-        return ReluLayer(int(j["size"]))
+        return ReluLayer(int(j["size"]), float(j["beta"]))
+
+    def _create_linear_layer(self, j):
+        return LinearLayer(int(j["size"]), float(j["beta"]))
+
+    def _create_tanh_layer(self, j):
+        return TanhLayer(int(j["size"]),float(j["beta"]))
 

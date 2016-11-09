@@ -28,6 +28,9 @@ parser.add_argument('-l', metavar='L', type=float,
 parser.add_argument('-b', metavar='B', type=int, default=1,
                     help='Size minibatch (default 1)', required=True)
 
+parser.add_argument('-r', metavar='R', type=float, default=0,
+                    help='Regularization term (default 0)', required=True)
+
 parser.add_argument('-x', metavar='X', type=str, default=1,
                     help='Archivo de samples', required=True)
 
@@ -38,6 +41,9 @@ loader = ej2_data_loader.Ej2DataLoader()
 data = loader.LoadData(args.x)
 features = data[0] #shape=(333,10)
 labels = data[1]
+
+print data
+
 
 all_data = zip(features, labels)
 num_training_samples = int(len(all_data) * 0.75)
@@ -60,13 +66,14 @@ mini_batches_testing = [
 mloader = ModelIO()
 model =  mloader.load_model(args.m)
 
-solver = NetworkSolver(model,weights=model.getInitializedWeightMats(),biases=model.getInitializedBiasVectors())
+pio=ParamsIO()
+solver = NetworkSolver(model,weights=model.getInitializedWeightMats(),biases=model.getInitializedBiasVectors(),checkpoint_fn=lambda: pio.save_params( args.o , solver._weights, solver._biases))
 
 lr = args.l
 epochs =  args.t
 epsilon =  args.e
-reg_param = 0.0
+reg_param = args.r
 solver.learn_minibatch(mini_batches_training,mini_batches_testing,lr,epochs,epsilon,reg_param)
-pio=ParamsIO()
+
 pio.save_params( args.o , solver._weights, solver._biases)
 print "Pesos guardados en ", args.o

@@ -1,13 +1,16 @@
+
 {
 	"layers": [{
 		"type": "input",
 		"size": 8
 	}, {
 		"type": "sigmoid",
-		"size": 10,
-		"beta": 5
+		"size": 20,
+		"beta": 20
+
 	}, {
-		"type": "relu",
-		"size": 2
+		"type": "tanh",
+		"size": 2,
+		"beta": 20
 	}]
 }

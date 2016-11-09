@@ -3,13 +3,18 @@ import matplotlib.pyplot as plt
 
 
 class FeatureNormalizer:
-    def process(self, features):
+    def process(self, features, useMaxMin=False):
         """
         :param features: datos a normalizar
         :return: devuelve datos normalizados por columna
         """
         feature_means = np.mean(features, axis=0)
-        features_std = np.std(features, axis=0)
+        if not useMaxMin:
+            features_std = np.std(features, axis=0)
+        else:
+            features_std = np.max(features, axis=0) - np.min(features, axis=0)
+
+
         features_normalized = (features - feature_means) / features_std
         return features_normalized
 
