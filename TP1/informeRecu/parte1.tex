@@ -152,6 +152,31 @@ En estos casos, el error también fue menor a epsilon = 0.05 pero fueron necesar
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
+%\subsubsection{Pruebas con distintos umbrales}
+
+%Realizamos pruebas con el dataset de entrenamiento \texttt{tp1_ej1_training.csv} y el dataset de testing \texttt{tp1_ej1_testing.csv}, que conforman un 70\% y 30\% respectivamente del dataset otorgado por la cátedra.
+
+%Entrenamos la red con los siguientes parámetros:
+
+%\begin{itemize}
+%\item Épocas: 900 
+%\item Epsilon: 0.05 
+%\item Learning Rate: 0.005
+%\item Tamaño de Batch: 1 
+%\end{itemize}
+
+%Para predecir probamos con distintos umbrales para preprocesar los resultados obtenidos. Lo que obtenemos de la red son valores reales entre 0 y 1, nuestros labels posibles son 0 y 1 únicamente.
+%Para procesar los valores obtenidos, comparamos el valor contra el umbral y si es menor entonces el resultado obtenido corresponde al 0, caso contrario corresponde al 1. En base al valor elegido de umbral,
+%obtuvimos los siguientes hit rates (éxitos obtenidos / longitud del dataset de entrenamiento):
+
+%\begin{tabular}{ | c | c | }
+  %Umbral & Hit Rate \\
+  %0.4 & 76.24\% \\
+  %0.3 & 78.22\% \\
+  %0.2 & 79.20\% \\
+  %0.1 & 83.17\% \\
+%\end{tabular}
+
 \subsection{Conclusiones}
 
 
