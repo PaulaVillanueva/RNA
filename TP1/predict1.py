@@ -21,6 +21,9 @@ parser.add_argument('-p', type=str,
 parser.add_argument('-x', type=str, default=1,
                     help='Archivo de features', required=True)
 
+parser.add_argument('-t', type=float, default=0.5,
+                    help='Umbral', required=False)
+
 args = parser.parse_args()
 
 
@@ -32,16 +35,16 @@ labels = data[1]
 test_data = zip(features, labels)
 
 mini_batches_testing = [test_data]
-
+threshold = args.t
 
 mloader = ModelIO()
-model =  mloader.load_model(args.m)
+model = mloader.load_model(args.m)
 
 ploader = ParamsIO()
 weights, biases = ploader.load_params(args.p)
 
 solver = NetworkSolver(model,weights=weights,biases=biases)
 
-E = solver.predict(mini_batches_testing[0])
+E = solver.predict(mini_batches_testing[0],threshold)
 
 print "Error cuadratico promedio: ", E

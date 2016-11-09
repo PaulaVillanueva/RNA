@@ -17,7 +17,8 @@ class NetworkSolver:
         l = 0
         for b, w in zip(self._biases, self._weights):
             l = l + 1
-            z = np.dot(w, aa[-1]) + np.reshape(b, (len(b),1))
+            # z = np.dot(w, aa[-1]) + np.reshape(b, (len(b),1)) #no anda para b=1
+            z = np.dot(w, aa[-1]) + b
             a = self._layer_model.getActivationFns()[l](z)
             zz.append(z)
             aa.append(a)
@@ -107,14 +108,19 @@ class NetworkSolver:
 
         return e / cant
 
-    def predict(self, batch):
+    def predict(self, batch, threshold):
         e = 0
+        hits = 0.0
         for x, y in batch:
             aa, zz = self.do_activation(x)
             e = e + np.linalg.norm(aa[-1][0] - y)
+            if aa[-1][0] < threshold:
+                hits += int(y[0] == 0.0)
+            else:
+                hits += int(y[0] == 1.0)
             print "Original: ", y[0], "Predicted:",aa[-1][0], "Error:", np.linalg.norm(aa[-1][0] - y)
 
-        print "Cantidad de ejemplos: ", len(batch)
+        print "Hit rate: ", hits / len(batch) * 100, "%"
         return e / len(batch)
 
 
