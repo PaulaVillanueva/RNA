@@ -9,11 +9,52 @@
 
 \subsection{Modelo}
 
+Se probaron varias arquitecturas de red, incluyendo una con nivel más de profundidad respecto a la del punto 1, pero finalmente nos quedamos con la de 3 niveles (una capa oculta).
+
+{
+"layers": [{
+"type": "input",
+"size": 8
+}, {
+"type": "sigmoid",
+"size": 20,
+"beta": 20
+}, {
+"type": "tanh",
+"size": 2,
+"beta": 20
+}]
+}
+
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\linewidth]{fig/parte2-modelo.jpg}
+	\caption{Modelo de la red}
+\end{figure}
+
+Se colocaron a la salida dos unidades del tipo tanh, cada una representando uno de los valores de salida a aproximar (energía y lo otro). Se utilizó tanh (x) 
+dado que aproxima bastante a una recta dentro del codiminio (-1,1). Se utilizó la activación tanh(z / beta).  El valor beta nos permite ajustar la pendiente de la curva. 
+Pendientes mas bajas aceleran el entrenamiento.
+
+
+
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
 \subsection{Implementación}
 
+Overfitting: El otro problema que encaramos es que, cuando el error de entrenamiento absoluto llega a bajar a cierto valor (aproximadamente 0.06, dependiendo de los parámetros), 
+el error de testeo comienza a incrementarse (llega a un mínimo de 0.1 aproximadamente) y nunca baja. Intentamos palear esto incrementando el parámetro de regularización, pero no resultó.
+
 \subsubsection{Prepocesamiento de datos}
+
+Los datos pertenecientes al dataset fueron normalizados mediante la siguiente fórmula: 
+
+\begin{align*}
+		\frac{x - \mu}{max(features) - min(features)} 
+\end{align*}
+
+donde $x$ perteneces a features, y $\mu$ es la media de los features. Esto se hizo para que todos los datos  del dataset queden en el rango (-1,1).
 
 \subsubsection{Pseudocódigo}
 
@@ -23,11 +64,32 @@
 
 \subsubsection{Modo de uso}
 
+\textbf{Para entrenar las redes:}
+
+\noindent\texttt{\scriptsize{python trainnet1.py -m ej1.lmodel -o redentrenada1.params -t 3000 -e 0.01 -l 0.005 -b 1}} \\
+
+\texttt{\scriptsize{-x tp1\_ej1\_training.csv}} \\
+
+\noindent\texttt{\scriptsize{python predict2.py -m ej2.lmodel -p redentrenada2.params -x tp1\_ej2\_testing.csv}} \\
+
+
+
+
+
 \subsubsection{Requerimientos}
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
 \subsection{Resultados}
+
+Probando combinaciones de $\beta$, learning rate y el término de regularización, lo mejor que pudimos lograr fue:
+
+\begin{itemize}
+	\item Error absoluto promedio de testing: 0.033. Esto es, promediando las distancias euclidianas entre el vector de dos posiciones predicho y el verdadero. 
+	\item Error relativo promedio: 0.38 (38$\%$). Esto es la desviación relativa promedio de los valores verdaderos, tomado como el error absoluto / error promedio.
+\end{itemize}
+
+Como podemos ver, la estimación hasta el momento es bastante mala.
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
