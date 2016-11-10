@@ -26,7 +26,8 @@ Como dijimos anteriormente utilizaremos perceptrón multicapa. La red elegida es
 	\caption{Modelo de la red}
 \end{figure}
 
-El motivo por el cual elegimos este modelo es... \textbf{COMPLETAR!!!}
+El motivo por el cual elegimos este modelo es que al experimentar con él obtuvimos los mejores resultados. También probamos con menos capas ocultas, pero al igual que antes 
+obtuvimos mejores resultados con el modelo elegido.
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -40,11 +41,21 @@ Se normalizan los ejemplos del dataset.
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsubsection{Pseudocódigo}
+%\subsubsection{Pseudocódigo}
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
 \subsection{Ejecución}
+
+\textbf{Para entrenar la red:}
+
+\noindent\texttt{\scriptsize{python trainnet1.py -m models/ej1.lmodel -o parametros1.params -t 3000 -e 0.01 -l 0.005 -b 1}} \\
+
+\texttt{\scriptsize{-x tp1\_ej1\_training.csv}} \\
+
+\noindent\texttt{\scriptsize{python predict1.py -m models/ej1.lmodel -p parametros1.params -x ds/tp1\_ej1\_testing.csv}} \\
+
+En el paquete del TP ya viene una red entrenada llamada redentrenada.params
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,7 +65,9 @@ Para entrenar la red:
 
 Ejemplo: 
 
-\noindent\texttt{python trainnet1.py -m TP1/models/ej1.lmodel -o ./salida.params -t 900 -e 0.05 -l 0.005 -b 1 -x TP1/ds/tp1\_ej1\_training.csv}
+\noindent\texttt{python trainnet1.py -m TP1/models/ej1.lmodel -o ./salida.params -t 900 }
+
+\texttt{-e 0.05 -l 0.005 -b 1 -x TP1/ds/tp1\_ej1\_training.csv} \\
 
 Explicación:
 
@@ -78,7 +91,10 @@ Para predecir:
 
 Ejemplo:
 
-\noindent\texttt{\small{python predict1.py -m TP1/models/ej1.lmodel -p TP1/salida.params -x TP1/ds/tp1\_ej1\_training.csv}}
+\noindent\texttt{\small{python predict1.py -m TP1/models/ej1.lmodel -p TP1/salida.params }}
+
+\texttt{-x TP1/ds/tp1\_ej1\_training.csv} \\
+
 
 Explicación:
 
@@ -91,6 +107,11 @@ Explicación:
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
 \subsubsection{Requerimientos}
+
+Se necesita:
+\begin{itemize}
+\item numpy
+\end{itemize}
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -170,32 +191,38 @@ En estos casos, el error también fue menor a epsilon = 0.05 pero fueron necesar
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
-%\subsubsection{Pruebas con distintos umbrales}
+\subsubsection{Pruebas con distintos umbrales}
 
-%Realizamos pruebas con el dataset de entrenamiento \texttt{tp1_ej1_training.csv} y el dataset de testing \texttt{tp1_ej1_testing.csv}, que conforman un 70\% y 30\% respectivamente del dataset otorgado por la cátedra.
+Realizamos pruebas con el dataset de entrenamiento \texttt{tp1\_ej1\_training.csv} y el dataset de testing \texttt{tp1\_ej1\_testing.csv}, que conforman un 70$\%$ y 30$\%$ respectivamente del dataset otorgado por la cátedra.
 
-%Entrenamos la red con los siguientes parámetros:
+Entrenamos la red con los siguientes parámetros:
 
-%\begin{itemize}
-%\item Épocas: 900 
-%\item Epsilon: 0.05 
-%\item Learning Rate: 0.005
-%\item Tamaño de Batch: 1 
-%\end{itemize}
+\begin{itemize}
+\item Épocas: 900 
+\item Epsilon: 0.05 
+\item Learning Rate: 0.005
+\item Tamaño de Batch: 1 
+\end{itemize}
 
-%Para predecir probamos con distintos umbrales para preprocesar los resultados obtenidos. Lo que obtenemos de la red son valores reales entre 0 y 1, nuestros labels posibles son 0 y 1 únicamente.
-%Para procesar los valores obtenidos, comparamos el valor contra el umbral y si es menor entonces el resultado obtenido corresponde al 0, caso contrario corresponde al 1. En base al valor elegido de umbral,
-%obtuvimos los siguientes hit rates (éxitos obtenidos / longitud del dataset de entrenamiento):
 
-%\begin{tabular}{ | c | c | }
-  %Umbral & Hit Rate \\
-  %0.4 & 76.24\% \\
-  %0.3 & 78.22\% \\
-  %0.2 & 79.20\% \\
-  %0.1 & 83.17\% \\
-%\end{tabular}
+Para predecir probamos con distintos umbrales para preprocesar los resultados obtenidos. Lo que obtenemos de la red son valores reales entre 0 y 1, nuestros labels posibles son 0 y 1 únicamente.
+Para procesar los valores obtenidos, comparamos el valor contra el umbral y si es menor entonces el resultado obtenido corresponde al 0, caso contrario corresponde al 1. En base al valor elegido de umbral,
+obtuvimos los siguientes hit rates (éxitos obtenidos / longitud del dataset de entrenamiento):
 
-\subsection{Conclusiones}
+\begin{center}
+\begin{tabular}{ | c | c | }
+  Umbral & Hit Rate \\
+  0.4 & 76.24\% \\
+  0.3 & 78.22\% \\
+  0.2 & 79.20\% \\
+  0.1 & 83.17\% \\
+\end{tabular}
+\end{center}
+
+El umbral que da mejores resultados es 0,1 pero hay que tener en cuenta que cambia según el data set de entrenamiento. Nuestra idea para mejorar la implementación es hacer variar corridas del predict con 
+distintos umbrales y el datset de testing y quedarnos con la red con el umbral que da mayor hit rate.
+
+%\subsection{Conclusiones}
 
 
 

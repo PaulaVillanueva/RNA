@@ -3,7 +3,7 @@
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Introducci처n}
+%\subsection{Introducci처n}
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ Los datos pertenecientes al dataset fueron normalizados mediante la siguiente f�
 
 donde $x$ perteneces a features, y $\mu$ es la media de los features. Esto se hizo para que todos los datos  del dataset queden en el rango (-1,1).
 
-\subsubsection{Pseudoc처digo}
+%\subsubsection{Pseudoc처digo}
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -64,17 +64,15 @@ donde $x$ perteneces a features, y $\mu$ es la media de los features. Esto se hi
 
 \subsubsection{Modo de uso}
 
-\textbf{Para entrenar las redes:}
+\textbf{Para entrenar la red:}
 
-\noindent\texttt{\scriptsize{python trainnet1.py -m ej1.lmodel -o redentrenada1.params -t 3000 -e 0.01 -l 0.005 -b 1}} \\
+\noindent\texttt{\scriptsize{python trainnet2.py -m models/ej2.lmodel -o parametros2.params -t 20000 -e 0.01 -l 0.005 -b 1}} \\
 
-\texttt{\scriptsize{-x tp1\_ej1\_training.csv}} \\
+\texttt{\scriptsize{-x tp1\_ej2\_training.csv -r 0}} \\
 
-\noindent\texttt{\scriptsize{python predict2.py -m ej2.lmodel -p redentrenada2.params -x tp1\_ej2\_testing.csv}} \\
+\noindent\texttt{\scriptsize{python predict2.py -m models/ej2.lmodel -p parametros1.params -x ds/tp2\_ej2\_testing.csv}} \\
 
-
-
-
+En el paquete del TP ya viene una red entrenada llamada redentrenada.params
 
 \subsubsection{Requerimientos}
 
@@ -93,4 +91,4 @@ Como podemos ver, la estimaci처n hasta el momento es bastante mala.
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Conclusiones}
+%\subsection{Conclusiones}
