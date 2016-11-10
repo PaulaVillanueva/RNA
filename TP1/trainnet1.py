@@ -63,8 +63,8 @@ model =  mloader.load_model(args.m)
 solver = NetworkSolver(model,weights=model.getInitializedWeightMats(),biases=model.getInitializedBiasVectors())
 
 lr = args.l
-epochs =  args.t
-epsilon =  args.e
+epochs = args.t
+epsilon = args.e
 reg_param = 0.0
 solver.learn_minibatch(mini_batches_training,mini_batches_testing,lr,epochs,epsilon,reg_param)
 pio=ParamsIO()
