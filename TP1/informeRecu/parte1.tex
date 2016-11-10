@@ -4,11 +4,29 @@
 
 \subsection{Introducción}
 
+Disponemos de un dataset que contiene resultados de examen que se utiliza para la detección de cáncer de mamas. Cada entrada 
+corresponde a los datos obtenidos para distintos pacientes y contiene diez características provenientes de imágenes digitalizadas 
+de muestras de células.También tenemos el diagnóstico final donde indica si el tumor era benigno o maligno. 
+
+Nuestro trabajo será determinar si es posible utilizar un modelo de red neuronal artificial para predecir eldiagnóstico final utilizando
+únicamente los datos de este examen.
+
+Nuestra red será entrenada de manera supervisada ya que tenemos el diagnóstico final. Para ellos utilizaremos perceptron multicapa de 
+dos niveles.
+
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
 \subsection{Modelo}
+Como dijimos anteriormente utilizaremos perceptrón multicapa. La red elegida está compuesta por la capa de entrada con 10 neuronas 
+(una por cada feature), una capa oculta con 12 neuronas y la capa de salida con una sola neurona. 
 
-La red elegida está compuesta por la capa de entrada con 10 neuronas (una por cada feature), una capa oculta con 12 neuronas y la capa de salida con una sola neurona. 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.9\linewidth]{fig/parte1-modelo.jpg}
+	\caption{Modelo de la red}
+\end{figure}
+
+El motivo por el cual elegimos este modelo es... \textbf{COMPLETAR!!!}
 
 %%--------------------------------------------------------------------------------------------------------------------------------------------------
 
